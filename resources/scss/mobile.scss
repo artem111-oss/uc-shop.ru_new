@@ -1,10 +1,6 @@
 /* =========================================================
    MOBILE OVERRIDES — max-width: 768px
-   Стратегия:
-   - Шапка: sticky (уже есть)
-   - Пакеты: прокручиваемый контент, 2 колонки
-   - Форма (uc-id-form): фиксирована снизу (уже задано в app.scss)
-   - Нижние секции (FAQ, отзывы, доверие): скрыты, не мешают
+   UX v2: 3-column grid + collapsible bottom panel
    ========================================================= */
 
 @media (max-width: 768px) {
@@ -14,16 +10,14 @@
     overflow-x: hidden;
   }
 
-  /* ── HERO SECTION ─────────────────────────────────────── */
+  /* ── HERO: убираем жёлтый fallback-фон ───────────────── */
   .uc-hero {
     min-height: unset !important;
     padding: 0 !important;
-    /* Убираем жёлтый fallback-фон — он виден когда скрыты оверлеи */
     background: #23282e !important;
   }
 
   .uc-hero__background {
-    /* Оставляем, но упрощаем — даём тёмный фон вместо gradient */
     background: #23282e !important;
     opacity: 1 !important;
   }
@@ -32,7 +26,7 @@
     display: none !important;
   }
 
-  /* ── WRAPPER: одна колонка, flex ──────────────────────── */
+  /* ── WRAPPER ──────────────────────────────────────────── */
   .uc-hero__wrapper {
     display: flex !important;
     flex-direction: column !important;
@@ -42,14 +36,13 @@
     max-width: 100% !important;
   }
 
-  /* ── ЛЕВАЯ ЗОНА: пакеты, скролл ──────────────────────── */
+  /* ── ЛЕВАЯ ЗОНА: пакеты ───────────────────────────────── */
   .uc-hero__left {
     width: 100% !important;
     flex-basis: auto !important;
-    /* Отступ снизу = высота фиксированной формы ≈ 200px */
-    /* Паддинг = высота формы (≈180px) + запас */
-    padding-bottom: 200px !important;
-    padding-top: 12px !important;
+    /* Отступ снизу = высота нижней панели (~120px) + запас */
+    padding-bottom: 130px !important;
+    padding-top: 10px !important;
     padding-left: 8px !important;
     padding-right: 8px !important;
     margin-bottom: 0 !important;
@@ -58,35 +51,33 @@
 
   /* ── ЗАГОЛОВОК И ПОДЗАГОЛОВОК ─────────────────────────── */
   .uc-packages-title {
-    font-size: 1.4rem !important;
+    font-size: 1.3rem !important;
     margin-bottom: 2px !important;
     padding: 0 4px !important;
     line-height: 1.2 !important;
-    letter-spacing: 0.5px;
   }
 
   .uc-packages-subtitle {
-    font-size: 0.78rem !important;
+    font-size: 0.75rem !important;
     margin-bottom: 10px !important;
     padding: 0 4px !important;
-    line-height: 1.3 !important;
     display: block;
   }
 
-  /* ── СЕТКА ПАКЕТОВ: 2 колонки ──────────────────────────── */
+  /* ── СЕТКА: 3 колонки ─────────────────────────────────── */
   .uc-packages-grid {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
     max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
   }
 
-  /* ── КАРТОЧКА ПАКЕТА ─────────────────────────────────── */
+  /* ── КАРТОЧКА ─────────────────────────────────────────── */
   .uc-package-card {
     aspect-ratio: unset !important;
-    padding: 10px 8px !important;
+    padding: 8px 4px 6px !important;
     min-height: unset !important;
     height: auto !important;
     border-radius: 10px !important;
@@ -94,7 +85,7 @@
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 5px !important;
+    gap: 4px !important;
 
     &:active {
       transform: scale(0.95);
@@ -102,15 +93,14 @@
   }
 
   .uc-package-uc {
-    font-size: 1.05rem !important;
+    font-size: 0.9rem !important;
     font-weight: 700 !important;
     margin-bottom: 0 !important;
     line-height: 1.2 !important;
-    letter-spacing: 0.2px;
   }
 
   .uc-package-price {
-    font-size: 0.95rem !important;
+    font-size: 0.82rem !important;
     font-weight: 700 !important;
     margin-bottom: 0 !important;
     flex-grow: 0 !important;
@@ -121,8 +111,8 @@
   .uc-package-ribbon {
     top: -1px !important;
     right: -1px !important;
-    font-size: 0.58rem !important;
-    padding: 2px 6px !important;
+    font-size: 0.5rem !important;
+    padding: 1px 4px !important;
     border-radius: 4px !important;
     transform: rotate(0deg) !important;
     line-height: 1.3 !important;
@@ -130,35 +120,31 @@
 
   /* ── КНОПКИ +/- ──────────────────────────────────────── */
   .uc-package-calc {
-    gap: 6px !important;
+    gap: 4px !important;
     margin-top: 2px !important;
   }
 
   .uc-calc-btn {
-    width: 34px !important;
-    height: 34px !important;
-    font-size: 1.2rem !important;
-    border-radius: 7px !important;
-    /* Минимальный touch target по Apple HIG */
-    min-width: 34px !important;
-    min-height: 34px !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    font-size: 1.1rem !important;
+    border-radius: 6px !important;
   }
 
   .uc-calc-qty {
-    font-size: 0.9rem !important;
-    min-width: 18px !important;
+    font-size: 0.85rem !important;
+    min-width: 14px !important;
   }
 
-  /* ── LIVE COUNTER: скрыть на мобиле ──────────────────── */
+  /* ── LIVE COUNTER: скрыть ─────────────────────────────── */
   .uc-live-counter {
     display: none !important;
   }
 
-  /* ── ПРАВАЯ ЗОНА (ФОРМА): фиксирована снизу ──────────── */
-  /* app.scss уже ставит position: fixed; bottom: 0 для .uc-id-form.
-     Здесь только уточняем отступы и убираем лишнее. */
+  /* ── ПРАВАЯ ЗОНА: вырвать из потока ──────────────────── */
   .uc-hero__right {
-    /* Полностью вырываем из потока — форма фиксирована позиционированием */
     position: absolute !important;
     width: 0 !important;
     height: 0 !important;
@@ -171,97 +157,64 @@
     min-height: 0 !important;
   }
 
+  /* ── НИЖНЯЯ ПАНЕЛЬ (uc-id-form) ──────────────────────── */
   .uc-id-form {
-    /* Перекрываем значения из app.scss для точных отступов */
-    padding: 10px 14px 14px !important;
-    border-radius: 16px 16px 0 0 !important;
-    /* Отступ от края для устройств с safe area (iPhone X+) */
-    padding-bottom: calc(14px + env(safe-area-inset-bottom)) !important;
-    border-top: 1px solid rgba(255, 165, 0, 0.25) !important;
+    padding: 10px 12px 10px !important;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+    border-radius: 14px 14px 0 0 !important;
+    border-top: 1px solid rgba(255, 165, 0, 0.3) !important;
+
+    /* Скрываем всё кроме поля ID и кнопки */
+    .uc-id-form__title { display: none !important; }
+    .uc-id-form__info  { display: none !important; }
+    .uc-id-form__cart  { display: none !important; }
+    .uc-id-form__note  {
+      font-size: 0.6rem !important;
+      margin: 4px 0 0 !important;
+      text-align: center !important;
+      opacity: 0.6;
+    }
   }
 
-  /* Корзина: компактная строка */
-  .uc-id-form__cart {
-    margin-top: 6px !important;
-    padding: 6px 10px !important;
-    border-radius: 8px !important;
-  }
-
-  .uc-id-form__cart-title {
-    font-size: 0.85rem !important;
-    margin-bottom: 0 !important;
-  }
-
-  .uc-cart-clear-btn {
-    font-size: 0.7rem !important;
-    padding: 2px 8px !important;
-  }
-
-  .uc-id-form__cart-summary {
-    display: flex !important;
-    gap: 10px !important;
-    font-size: 0.82rem !important;
-
-    p { margin: 0 !important; }
-  }
-
-  /* Поле Player ID */
   .uc-id-form__group {
-    margin-bottom: 0 !important;
+    margin-bottom: 8px !important;
   }
 
   .uc-id-form__input-wrapper {
-    margin-bottom: 4px !important;
+    margin-bottom: 3px !important;
   }
 
   .uc-id-form__hint {
-    font-size: 0.7rem !important;
+    font-size: 0.68rem !important;
     margin: 2px 0 0 !important;
   }
 
-  /* Кнопка оплаты */
+  /* ── КНОПКА ОПЛАТЫ — динамический текст ─────────────── */
   .uc-id-form__submit {
     width: 100% !important;
     padding: 13px !important;
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
     font-weight: 700 !important;
     border-radius: 10px !important;
-    margin-top: 8px !important;
+    margin-top: 0 !important;
     margin-bottom: 0 !important;
+
+    /* Неактивное состояние (корзина пуста) */
+    &.is-empty {
+      background: rgba(255, 255, 255, 0.1) !important;
+      color: rgba(255, 255, 255, 0.4) !important;
+      cursor: default !important;
+      box-shadow: none !important;
+    }
   }
 
-  .uc-id-form__note {
-    font-size: 0.62rem !important;
-    margin: 4px 0 0 !important;
-    text-align: center !important;
-  }
-
-  /* Скрываем info-блок если есть */
-  .uc-id-form__info {
-    display: none !important;
-  }
-
-  /* Скрываем title формы — экономим место */
-  .uc-id-form__title {
-    display: none !important;
-  }
-
-  /* ── НИЖНИЕ СЕКЦИИ: скрыть, не мешают оформлению ─────── */
-  /* FAQ, отзывы, доверие — пользователь может прокрутить
-     страницу вниз после оформления заказа, если нужно.
-     При активной форме они под ней и не мешают конверсии. */
+  /* ── НИЖНИЕ СЕКЦИИ: скрыть ────────────────────────────── */
   .uc-faq-reviews-section,
   .uc-social-proof,
   .uc-payment-methods {
     display: none !important;
   }
 
-  /* ── НИЖНЯЯ НАВИГАЦИЯ: скрыть на мобиле ──────────────── */
-  .uc-navbar__menu {
-    display: none !important;
-  }
-
-  /* ── FOOTER: скрыть на мобиле ────────────────────────── */
   footer {
     display: none !important;
   }

@@ -212,7 +212,7 @@
               </div>
             </div>
 
-            <button class="uc-id-form__submit uc-id-form__submit--primary" onclick="proceedToCheckout()">Получить UC за 30 секунд</button>
+            <button class="uc-id-form__submit uc-id-form__submit--primary is-empty" id="mobile-submit-btn" onclick="proceedToCheckout()">Выберите пакет выше</button>
 
             <p class="uc-id-form__note">
               Продолжая, я принимаю условия<br>
@@ -687,7 +687,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalPriceEl = document.getElementById('cart-total-price');
         if (totalUcEl) totalUcEl.innerHTML = `<strong>${totalUc.toLocaleString('ru-RU')}</strong> <strong>UC</strong>`;
         if (totalPriceEl) totalPriceEl.textContent = totalPrice.toLocaleString('ru-RU') + ' ₽';
-        
+
+        // Обновляем кнопку на мобиле
+        if (window.innerWidth <= 768) {
+            const submitBtn = document.getElementById('mobile-submit-btn');
+            if (submitBtn) {
+                if (totalUc > 0) {
+                    submitBtn.textContent = `Получить ${totalUc.toLocaleString('ru-RU')} UC за ${totalPrice.toLocaleString('ru-RU')} ₽ →`;
+                    submitBtn.classList.remove('is-empty');
+                } else {
+                    submitBtn.textContent = 'Выберите пакет выше';
+                    submitBtn.classList.add('is-empty');
+                }
+            }
+        }
+
         console.log('✅ updateCart:', window.cart);
     };
     
@@ -705,6 +719,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (totalUcEl) totalUcEl.innerHTML = '<strong>0</strong> <strong>UC</strong>';
         if (totalPriceEl) totalPriceEl.textContent = '0 ₽';
         
+        // Сбрасываем кнопку на мобиле
+        if (window.innerWidth <= 768) {
+            const submitBtn = document.getElementById('mobile-submit-btn');
+            if (submitBtn) {
+                submitBtn.textContent = 'Выберите пакет выше';
+                submitBtn.classList.add('is-empty');
+            }
+        }
+
         showToast('Корзина очищена', 'success');
         console.log('✅ Cart cleared');
     };
