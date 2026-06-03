@@ -109,13 +109,18 @@
 
   /* ── БЕЙДЖ "ПОПУЛЯРНО" ────────────────────────────────── */
   .uc-package-ribbon {
-    top: -1px !important;
+    /* Бейдж внизу карточки — не перекрывает текст */
+    top: auto !important;
+    bottom: -1px !important;
     right: -1px !important;
-    font-size: 0.5rem !important;
-    padding: 1px 4px !important;
-    border-radius: 4px !important;
+    left: -1px !important;
+    font-size: 0.48rem !important;
+    padding: 2px 4px !important;
+    border-radius: 0 0 8px 8px !important;
     transform: rotate(0deg) !important;
-    line-height: 1.3 !important;
+    line-height: 1.4 !important;
+    text-align: center !important;
+    width: calc(100% + 2px) !important;
   }
 
   /* ── КНОПКИ +/- ──────────────────────────────────────── */
@@ -184,9 +189,9 @@
     margin-bottom: 3px !important;
   }
 
+  /* Скрываем hint — экономим место в панели */
   .uc-id-form__hint {
-    font-size: 0.68rem !important;
-    margin: 2px 0 0 !important;
+    display: none !important;
   }
 
   /* ── КНОПКА ОПЛАТЫ — динамический текст ─────────────── */
@@ -205,6 +210,32 @@
       color: rgba(255, 255, 255, 0.4) !important;
       cursor: default !important;
       box-shadow: none !important;
+    }
+  }
+
+  /* ── РЯД КНОПОК: сабмит + очистка ─────────────────────── */
+  .uc-mobile-submit-row {
+    display: flex !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+
+  .uc-mobile-clear-btn {
+    flex-shrink: 0;
+    width: 46px;
+    background: rgba(255, 107, 107, 0.15);
+    border: 1px solid rgba(255, 107, 107, 0.4);
+    border-radius: 10px;
+    color: #ff6b6b;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:active {
+      background: rgba(255, 107, 107, 0.3);
+      transform: scale(0.95);
     }
   }
 

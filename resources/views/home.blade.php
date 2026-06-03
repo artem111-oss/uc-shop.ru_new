@@ -25,6 +25,16 @@
               </div>
             </div>
 
+            <div class="uc-package-card" data-uc="120" data-price="170">
+              <div class="uc-package-uc">120 UC</div>
+              <div class="uc-package-price">₽ 170</div>
+              <div class="uc-package-calc">
+                <button class="uc-calc-btn uc-calc-btn--minus">−</button>
+                <span class="uc-calc-qty">0</span>
+                <button class="uc-calc-btn uc-calc-btn--plus">+</button>
+              </div>
+            </div>
+
             <div class="uc-package-card" data-uc="180" data-price="255">
               <div class="uc-package-uc">180 UC</div>
               <div class="uc-package-price">₽ 255</div>
@@ -109,9 +119,29 @@
               </div>
             </div>
 
+            <div class="uc-package-card" data-uc="2460" data-price="2900">
+              <div class="uc-package-uc">2.460 UC</div>
+              <div class="uc-package-price">₽ 2.900</div>
+              <div class="uc-package-calc">
+                <button class="uc-calc-btn uc-calc-btn--minus">−</button>
+                <span class="uc-calc-qty">0</span>
+                <button class="uc-calc-btn uc-calc-btn--plus">+</button>
+              </div>
+            </div>
+
             <div class="uc-package-card" data-uc="1920" data-price="2270">
               <div class="uc-package-uc">1.920 UC</div>
               <div class="uc-package-price">₽ 2.270</div>
+              <div class="uc-package-calc">
+                <button class="uc-calc-btn uc-calc-btn--minus">−</button>
+                <span class="uc-calc-qty">0</span>
+                <button class="uc-calc-btn uc-calc-btn--plus">+</button>
+              </div>
+            </div>
+
+            <div class="uc-package-card" data-uc="5650" data-price="6200">
+              <div class="uc-package-uc">5.650 UC</div>
+              <div class="uc-package-price">₽ 6.200</div>
               <div class="uc-package-calc">
                 <button class="uc-calc-btn uc-calc-btn--minus">−</button>
                 <span class="uc-calc-qty">0</span>
@@ -123,6 +153,26 @@
               <div class="uc-package-ribbon">⭐ ПОПУЛЯРНО</div>
               <div class="uc-package-uc">3.850 UC</div>
               <div class="uc-package-price">₽ 4.100</div>
+              <div class="uc-package-calc">
+                <button class="uc-calc-btn uc-calc-btn--minus">−</button>
+                <span class="uc-calc-qty">0</span>
+                <button class="uc-calc-btn uc-calc-btn--plus">+</button>
+              </div>
+            </div>
+
+            <div class="uc-package-card" data-uc="9900" data-price="9900">
+              <div class="uc-package-uc">9.900 UC</div>
+              <div class="uc-package-price">₽ 9.900</div>
+              <div class="uc-package-calc">
+                <button class="uc-calc-btn uc-calc-btn--minus">−</button>
+                <span class="uc-calc-qty">0</span>
+                <button class="uc-calc-btn uc-calc-btn--plus">+</button>
+              </div>
+            </div>
+
+            <div class="uc-package-card" data-uc="12010" data-price="12010">
+              <div class="uc-package-uc">12.010 UC</div>
+              <div class="uc-package-price">₽ 12.010</div>
               <div class="uc-package-calc">
                 <button class="uc-calc-btn uc-calc-btn--minus">−</button>
                 <span class="uc-calc-qty">0</span>
@@ -180,6 +230,16 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
+
+            <div class="uc-package-card" data-uc="81000" data-price="81000">
+              <div class="uc-package-uc">81.000 UC</div>
+              <div class="uc-package-price">₽ 81.000</div>
+              <div class="uc-package-calc">
+                <button class="uc-calc-btn uc-calc-btn--minus">−</button>
+                <span class="uc-calc-qty">0</span>
+                <button class="uc-calc-btn uc-calc-btn--plus">+</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -212,7 +272,10 @@
               </div>
             </div>
 
-            <button class="uc-id-form__submit uc-id-form__submit--primary is-empty" id="mobile-submit-btn" onclick="proceedToCheckout()">Выберите пакет выше</button>
+            <div class="uc-mobile-submit-row">
+              <button class="uc-id-form__submit uc-id-form__submit--primary is-empty" id="mobile-submit-btn" onclick="proceedToCheckout()">Выберите пакет выше</button>
+              <button class="uc-mobile-clear-btn" id="mobile-clear-btn" onclick="clearCart()" title="Очистить корзину" style="display:none">✕</button>
+            </div>
 
             <p class="uc-id-form__note">
               Продолжая, я принимаю условия<br>
@@ -691,13 +754,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Обновляем кнопку на мобиле
         if (window.innerWidth <= 768) {
             const submitBtn = document.getElementById('mobile-submit-btn');
+            const clearBtn = document.getElementById('mobile-clear-btn');
             if (submitBtn) {
                 if (totalUc > 0) {
                     submitBtn.textContent = `Получить ${totalUc.toLocaleString('ru-RU')} UC за ${totalPrice.toLocaleString('ru-RU')} ₽ →`;
                     submitBtn.classList.remove('is-empty');
+                    if (clearBtn) clearBtn.style.display = 'flex';
                 } else {
                     submitBtn.textContent = 'Выберите пакет выше';
                     submitBtn.classList.add('is-empty');
+                    if (clearBtn) clearBtn.style.display = 'none';
                 }
             }
         }
@@ -722,10 +788,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Сбрасываем кнопку на мобиле
         if (window.innerWidth <= 768) {
             const submitBtn = document.getElementById('mobile-submit-btn');
+            const clearBtn = document.getElementById('mobile-clear-btn');
             if (submitBtn) {
                 submitBtn.textContent = 'Выберите пакет выше';
                 submitBtn.classList.add('is-empty');
             }
+            if (clearBtn) clearBtn.style.display = 'none';
         }
 
         showToast('Корзина очищена', 'success');
