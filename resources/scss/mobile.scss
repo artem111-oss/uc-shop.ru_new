@@ -18,11 +18,18 @@
   .uc-hero {
     min-height: unset !important;
     padding: 0 !important;
+    /* Убираем жёлтый fallback-фон — он виден когда скрыты оверлеи */
+    background: #23282e !important;
   }
 
-  .uc-hero__background,
+  .uc-hero__background {
+    /* Оставляем, но упрощаем — даём тёмный фон вместо gradient */
+    background: #23282e !important;
+    opacity: 1 !important;
+  }
+
   .uc-hero__overlay {
-    display: none; /* убираем тяжёлые слои — на мобиле не видно */
+    display: none !important;
   }
 
   /* ── WRAPPER: одна колонка, flex ──────────────────────── */
@@ -39,10 +46,8 @@
   .uc-hero__left {
     width: 100% !important;
     flex-basis: auto !important;
-    /* Отступ снизу = высота фиксированной формы.
-       Реальная высота формы на iPhone ≈ 220px.
-       + safe area на iPhone с чёлкой */
-    padding-bottom: 230px !important;
+    /* Отступ снизу = высота фиксированной формы ≈ 200px */
+    padding-bottom: 210px !important;
     padding-top: 12px !important;
     padding-left: 8px !important;
     padding-right: 8px !important;
