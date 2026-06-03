@@ -3,6 +3,13 @@ volumes:
   redis-data:
 
 services:
+  redis:
+    container_name: 'pubg-redis'
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
   nginx:
     container_name: 'pubg-nginx'
     image: nginx:alpine
