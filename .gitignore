@@ -17,3 +17,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+# Database files
+docker/db/avasiliev8/
+docker/db/*.log
+docker/db/ibtmp1
+docker/db/ib_logfile*
+docker/db/ibdata*
+*.sql
