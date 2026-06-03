@@ -47,7 +47,8 @@
     width: 100% !important;
     flex-basis: auto !important;
     /* Отступ снизу = высота фиксированной формы ≈ 200px */
-    padding-bottom: 210px !important;
+    /* Паддинг = высота формы (≈180px) + запас */
+    padding-bottom: 200px !important;
     padding-top: 12px !important;
     padding-left: 8px !important;
     padding-right: 8px !important;
@@ -157,12 +158,17 @@
   /* app.scss уже ставит position: fixed; bottom: 0 для .uc-id-form.
      Здесь только уточняем отступы и убираем лишнее. */
   .uc-hero__right {
-    order: 2;
-    /* right-зона не занимает место в потоке — форма fixed */
+    /* Полностью вырываем из потока — форма фиксирована позиционированием */
+    position: absolute !important;
+    width: 0 !important;
     height: 0 !important;
     overflow: visible !important;
     padding: 0 !important;
     margin: 0 !important;
+    flex-basis: 0 !important;
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+    min-height: 0 !important;
   }
 
   .uc-id-form {
