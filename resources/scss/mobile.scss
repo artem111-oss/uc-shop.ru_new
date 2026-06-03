@@ -59,7 +59,7 @@
 
   .uc-packages-subtitle {
     font-size: 0.75rem !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 4px !important;
     padding: 0 4px !important;
     display: block;
   }
@@ -107,21 +107,7 @@
     line-height: 1.2 !important;
   }
 
-  /* ── БЕЙДЖ "ПОПУЛЯРНО" ────────────────────────────────── */
-  .uc-package-ribbon {
-    /* Бейдж внизу карточки — не перекрывает текст */
-    top: auto !important;
-    bottom: -1px !important;
-    right: -1px !important;
-    left: -1px !important;
-    font-size: 0.48rem !important;
-    padding: 2px 4px !important;
-    border-radius: 0 0 8px 8px !important;
-    transform: rotate(0deg) !important;
-    line-height: 1.4 !important;
-    text-align: center !important;
-    width: calc(100% + 2px) !important;
-  }
+
 
   /* ── КНОПКИ +/- ──────────────────────────────────────── */
   .uc-package-calc {
@@ -189,9 +175,10 @@
     margin-bottom: 3px !important;
   }
 
-  /* Скрываем hint — экономим место в панели */
   .uc-id-form__hint {
-    display: none !important;
+    font-size: 0.68rem !important;
+    margin: 3px 0 0 !important;
+    text-align: center !important;
   }
 
   /* ── КНОПКА ОПЛАТЫ — динамический текст ─────────────── */
@@ -237,6 +224,16 @@
       background: rgba(255, 107, 107, 0.3);
       transform: scale(0.95);
     }
+  }
+
+  /* ── TOAST: поднять выше фиксированной панели ─────────── */
+  .uc-toast {
+    bottom: 140px !important; /* выше панели ввода ID */
+    right: 12px !important;
+    left: 12px !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    width: auto !important;
   }
 
   /* ── НИЖНИЕ СЕКЦИИ: скрыть ────────────────────────────── */

@@ -24,17 +24,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
-            <div class="uc-package-card" data-uc="120" data-price="170">
-              <div class="uc-package-uc">120 UC</div>
-              <div class="uc-package-price">₽ 170</div>
-              <div class="uc-package-calc">
-                <button class="uc-calc-btn uc-calc-btn--minus">−</button>
-                <span class="uc-calc-qty">0</span>
-                <button class="uc-calc-btn uc-calc-btn--plus">+</button>
-              </div>
-            </div>
-
             <div class="uc-package-card" data-uc="180" data-price="255">
               <div class="uc-package-uc">180 UC</div>
               <div class="uc-package-price">₽ 255</div>
@@ -45,8 +34,7 @@
               </div>
             </div>
 
-            <div class="uc-package-card uc-package-card--popular" data-uc="325" data-price="470">
-              <div class="uc-package-ribbon">⭐ ПОПУЛЯРНО</div>
+            <div class="uc-package-card" data-uc="325" data-price="470">
               <div class="uc-package-uc">325 UC</div>
               <div class="uc-package-price">₽ 470</div>
               <div class="uc-package-calc">
@@ -66,8 +54,7 @@
               </div>
             </div>
 
-            <div class="uc-package-card uc-package-card--popular" data-uc="660" data-price="890">
-              <div class="uc-package-ribbon">⭐ ПОПУЛЯРНО</div>
+            <div class="uc-package-card" data-uc="660" data-price="890">
               <div class="uc-package-uc">660 UC</div>
               <div class="uc-package-price">₽ 890</div>
               <div class="uc-package-calc">
@@ -97,8 +84,7 @@
               </div>
             </div>
 
-            <div class="uc-package-card uc-package-card--popular" data-uc="1320" data-price="1780">
-              <div class="uc-package-ribbon">⭐ ПОПУЛЯРНО</div>
+            <div class="uc-package-card" data-uc="1320" data-price="1780">
               <div class="uc-package-uc">1.320 UC</div>
               <div class="uc-package-price">₽ 1.780</div>
               <div class="uc-package-calc">
@@ -108,8 +94,7 @@
               </div>
             </div>
 
-            <div class="uc-package-card uc-package-card--popular" data-uc="1800" data-price="2100">
-              <div class="uc-package-ribbon">⭐ ПОПУЛЯРНО</div>
+            <div class="uc-package-card" data-uc="1800" data-price="2100">
               <div class="uc-package-uc">1.800 UC</div>
               <div class="uc-package-price">₽ 2.100</div>
               <div class="uc-package-calc">
@@ -149,8 +134,7 @@
               </div>
             </div>
 
-            <div class="uc-package-card uc-package-card--popular" data-uc="3850" data-price="4100">
-              <div class="uc-package-ribbon">⭐ ПОПУЛЯРНО</div>
+            <div class="uc-package-card" data-uc="3850" data-price="4100">
               <div class="uc-package-uc">3.850 UC</div>
               <div class="uc-package-price">₽ 4.100</div>
               <div class="uc-package-calc">
@@ -180,8 +164,7 @@
               </div>
             </div>
 
-            <div class="uc-package-card uc-package-card--popular" data-uc="8100" data-price="8100">
-              <div class="uc-package-ribbon">⭐ ПОПУЛЯРНО</div>
+            <div class="uc-package-card" data-uc="8100" data-price="8100">
               <div class="uc-package-uc">8.100 UC</div>
               <div class="uc-package-price">₽ 8.100</div>
               <div class="uc-package-calc">
