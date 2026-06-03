@@ -1,55 +1,258 @@
-/* Mobile-specific styles for product selection block */
+/* =========================================================
+   MOBILE OVERRIDES — max-width: 768px
+   Стратегия:
+   - Шапка: sticky (уже есть)
+   - Пакеты: прокручиваемый контент, 2 колонки
+   - Форма (uc-id-form): фиксирована снизу (уже задано в app.scss)
+   - Нижние секции (FAQ, отзывы, доверие): скрыты, не мешают
+   ========================================================= */
+
 @media (max-width: 768px) {
-  /* HERO SECTION ADJUSTMENTS */
-  .uc-hero__wrapper {
-    flex-direction: column;
-    gap: 0.5rem; /* Tighter spacing between sections */
-    padding-top: 1rem; /* Reduced top padding */
-    padding-bottom: 1rem; /* Reduced bottom padding */
-  }
-  
-  .uc-hero__left, .uc-hero__right {
-    width: 100%;
-    max-width: 100%;
-  }
-  
-  /* STEP 1: COMPACT TITLE & SUBTITLE */
-  .uc-packages-title {
-    font-size: 1.75rem; /* Increased for better readability */
-    margin-bottom: 0.4rem; /* Slightly increased spacing */
-    font-weight: 700;
-    line-height: 1.2;
-  }
-  
-  .uc-packages-subtitle {
-    font-size: 0.85rem; /* Increased from 0.7rem for better readability */
-    margin-top: 0.2rem; /* Slightly increased vertical space */
-    display: inline-block;
-    line-height: 1.3;
-    color: rgba(255, 165, 0, 0.9);
-  }
-  
-  /* STEP 2: GRID OPTIMIZATION - BETTER MOBILE UX */
-  .uc-packages-grid {
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 0.5rem;
-    row-gap: 0.5rem;
+
+  /* ── BODY ─────────────────────────────────────────────── */
+  body {
+    overflow-x: hidden;
   }
 
+  /* ── HERO SECTION ─────────────────────────────────────── */
+  .uc-hero {
+    min-height: unset !important;
+    padding: 0 !important;
+  }
+
+  .uc-hero__background,
+  .uc-hero__overlay {
+    display: none; /* убираем тяжёлые слои — на мобиле не видно */
+  }
+
+  /* ── WRAPPER: одна колонка, flex ──────────────────────── */
+  .uc-hero__wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: unset !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* ── ЛЕВАЯ ЗОНА: пакеты, скролл ──────────────────────── */
+  .uc-hero__left {
+    width: 100% !important;
+    flex-basis: auto !important;
+    /* Отступ снизу = высота фиксированной формы.
+       Реальная высота формы на iPhone ≈ 220px.
+       + safe area на iPhone с чёлкой */
+    padding-bottom: 230px !important;
+    padding-top: 12px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    margin-bottom: 0 !important;
+    order: 1;
+  }
+
+  /* ── ЗАГОЛОВОК И ПОДЗАГОЛОВОК ─────────────────────────── */
+  .uc-packages-title {
+    font-size: 1.4rem !important;
+    margin-bottom: 2px !important;
+    padding: 0 4px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.5px;
+  }
+
+  .uc-packages-subtitle {
+    font-size: 0.78rem !important;
+    margin-bottom: 10px !important;
+    padding: 0 4px !important;
+    line-height: 1.3 !important;
+    display: block;
+  }
+
+  /* ── СЕТКА ПАКЕТОВ: 2 колонки ──────────────────────────── */
+  .uc-packages-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* ── КАРТОЧКА ПАКЕТА ─────────────────────────────────── */
   .uc-package-card {
-    aspect-ratio: auto;
-    padding: 0.75rem;
-    font-size: 0.9rem;
-    min-height: 90px;
+    aspect-ratio: unset !important;
+    padding: 10px 8px !important;
+    min-height: unset !important;
+    height: auto !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+
+    &:active {
+      transform: scale(0.95);
+    }
   }
-  
-  /* STEP 3: FIXED BLOCK POSITIONING (UNCHANGED) */
-  .uc-fixed-block {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: rgba(255,255,255,0.9);
-    z-index: 1000;
-    padding: 0.5rem;
+
+  .uc-package-uc {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.2px;
   }
+
+  .uc-package-price {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0 !important;
+    flex-grow: 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  /* ── БЕЙДЖ "ПОПУЛЯРНО" ────────────────────────────────── */
+  .uc-package-ribbon {
+    top: -1px !important;
+    right: -1px !important;
+    font-size: 0.58rem !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    transform: rotate(0deg) !important;
+    line-height: 1.3 !important;
+  }
+
+  /* ── КНОПКИ +/- ──────────────────────────────────────── */
+  .uc-package-calc {
+    gap: 6px !important;
+    margin-top: 2px !important;
+  }
+
+  .uc-calc-btn {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 1.2rem !important;
+    border-radius: 7px !important;
+    /* Минимальный touch target по Apple HIG */
+    min-width: 34px !important;
+    min-height: 34px !important;
+  }
+
+  .uc-calc-qty {
+    font-size: 0.9rem !important;
+    min-width: 18px !important;
+  }
+
+  /* ── LIVE COUNTER: скрыть на мобиле ──────────────────── */
+  .uc-live-counter {
+    display: none !important;
+  }
+
+  /* ── ПРАВАЯ ЗОНА (ФОРМА): фиксирована снизу ──────────── */
+  /* app.scss уже ставит position: fixed; bottom: 0 для .uc-id-form.
+     Здесь только уточняем отступы и убираем лишнее. */
+  .uc-hero__right {
+    order: 2;
+    /* right-зона не занимает место в потоке — форма fixed */
+    height: 0 !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .uc-id-form {
+    /* Перекрываем значения из app.scss для точных отступов */
+    padding: 10px 14px 14px !important;
+    border-radius: 16px 16px 0 0 !important;
+    /* Отступ от края для устройств с safe area (iPhone X+) */
+    padding-bottom: calc(14px + env(safe-area-inset-bottom)) !important;
+    border-top: 1px solid rgba(255, 165, 0, 0.25) !important;
+  }
+
+  /* Корзина: компактная строка */
+  .uc-id-form__cart {
+    margin-top: 6px !important;
+    padding: 6px 10px !important;
+    border-radius: 8px !important;
+  }
+
+  .uc-id-form__cart-title {
+    font-size: 0.85rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .uc-cart-clear-btn {
+    font-size: 0.7rem !important;
+    padding: 2px 8px !important;
+  }
+
+  .uc-id-form__cart-summary {
+    display: flex !important;
+    gap: 10px !important;
+    font-size: 0.82rem !important;
+
+    p { margin: 0 !important; }
+  }
+
+  /* Поле Player ID */
+  .uc-id-form__group {
+    margin-bottom: 0 !important;
+  }
+
+  .uc-id-form__input-wrapper {
+    margin-bottom: 4px !important;
+  }
+
+  .uc-id-form__hint {
+    font-size: 0.7rem !important;
+    margin: 2px 0 0 !important;
+  }
+
+  /* Кнопка оплаты */
+  .uc-id-form__submit {
+    width: 100% !important;
+    padding: 13px !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    margin-top: 8px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .uc-id-form__note {
+    font-size: 0.62rem !important;
+    margin: 4px 0 0 !important;
+    text-align: center !important;
+  }
+
+  /* Скрываем info-блок если есть */
+  .uc-id-form__info {
+    display: none !important;
+  }
+
+  /* Скрываем title формы — экономим место */
+  .uc-id-form__title {
+    display: none !important;
+  }
+
+  /* ── НИЖНИЕ СЕКЦИИ: скрыть, не мешают оформлению ─────── */
+  /* FAQ, отзывы, доверие — пользователь может прокрутить
+     страницу вниз после оформления заказа, если нужно.
+     При активной форме они под ней и не мешают конверсии. */
+  .uc-faq-reviews-section,
+  .uc-social-proof,
+  .uc-payment-methods {
+    display: none !important;
+  }
+
+  /* ── НИЖНЯЯ НАВИГАЦИЯ: скрыть на мобиле ──────────────── */
+  .uc-navbar__menu {
+    display: none !important;
+  }
+
+  /* ── FOOTER: скрыть на мобиле ────────────────────────── */
+  footer {
+    display: none !important;
+  }
+
 }

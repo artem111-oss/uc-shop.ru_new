@@ -49,8 +49,6 @@ $prefix: "uc-";
 // Utilities
 @import "../node_modules/bootstrap/scss/utilities/api";
 
-@import 'mobile';
-
 // ========== GLOBAL STYLES ==========
 * {
   box-sizing: border-box;
@@ -456,7 +454,7 @@ a {
   text-align: left;
 
   @media (max-width: 768px) {
-    font-size: 1.5rem !important;
+    font-size: 1.5rem;
     padding: 0 0.5rem;
   }
 }
@@ -484,17 +482,18 @@ a {
   margin: 0 auto;
 
   @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
-    padding: 0 0.75rem;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px !important;
+    padding: 0 0.5rem;
     max-width: 100%;
     width: 100%;
   }
 
   @media (max-width: 480px) {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6px !important;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
   }
+}
 
 .uc-package-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
@@ -515,14 +514,12 @@ a {
   -webkit-tap-highlight-color: transparent;
   
   @media (max-width: 768px) {
-    aspect-ratio: auto !important;
-    min-height: 85px !important;
-    padding: 0.6rem 0.4rem !important;
-    justify-content: center;
-    gap: 4px;
-    font-size: 0.85rem;
-    border-radius: 8px;
-  }
+    aspect-ratio: 1 / 1;
+    padding: clamp(6px, 1.5vw, 10px);
+    justify-content: space-between;
+    gap: clamp(2px, 0.5vw, 4px);
+    height: auto;
+    border-radius: clamp(6px, 2vw, 10px);
     
     &:active {
       transform: scale(0.95);
@@ -2253,3 +2250,5 @@ label {
   background: rgba(81, 207, 102, 0.1) !important;
   border-color: rgba(81, 207, 102, 0.3) !important;
 }
+// ========== MOBILE OVERRIDES (must be last) ==========
+@import 'mobile';
