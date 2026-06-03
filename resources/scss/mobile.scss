@@ -42,7 +42,7 @@
     flex-basis: auto !important;
     /* Отступ снизу = высота нижней панели (~120px) + запас */
     padding-bottom: 130px !important;
-    padding-top: 10px !important;
+    padding-top: 2px !important;
     padding-left: 8px !important;
     padding-right: 8px !important;
     margin-bottom: 0 !important;
@@ -52,14 +52,14 @@
   /* ── ЗАГОЛОВОК И ПОДЗАГОЛОВОК ─────────────────────────── */
   .uc-packages-title {
     font-size: 1.3rem !important;
-    margin-bottom: 2px !important;
+    margin: 0 0 0 !important;
     padding: 0 4px !important;
     line-height: 1.2 !important;
   }
 
   .uc-packages-subtitle {
     font-size: 0.75rem !important;
-    margin-bottom: 4px !important;
+    margin-bottom: 6px !important;
     padding: 0 4px !important;
     display: block;
   }
