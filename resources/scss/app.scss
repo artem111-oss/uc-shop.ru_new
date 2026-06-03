@@ -456,7 +456,7 @@ a {
   text-align: left;
 
   @media (max-width: 768px) {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
     padding: 0 0.5rem;
   }
 }
@@ -484,18 +484,17 @@ a {
   margin: 0 auto;
 
   @media (max-width: 768px) {
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 4px !important;
-    padding: 0 0.5rem;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    padding: 0 0.75rem;
     max-width: 100%;
     width: 100%;
   }
 
   @media (max-width: 480px) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6px !important;
   }
-}
 
 .uc-package-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
@@ -516,12 +515,14 @@ a {
   -webkit-tap-highlight-color: transparent;
   
   @media (max-width: 768px) {
-    aspect-ratio: 1 / 1;
-    padding: clamp(6px, 1.5vw, 10px);
-    justify-content: space-between;
-    gap: clamp(2px, 0.5vw, 4px);
-    height: auto;
-    border-radius: clamp(6px, 2vw, 10px);
+    aspect-ratio: auto !important;
+    min-height: 85px !important;
+    padding: 0.6rem 0.4rem !important;
+    justify-content: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+  }
     
     &:active {
       transform: scale(0.95);

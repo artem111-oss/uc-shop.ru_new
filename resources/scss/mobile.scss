@@ -31,16 +31,16 @@
   
   /* STEP 2: GRID OPTIMIZATION - BETTER MOBILE UX */
   .uc-packages-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr)); /* Keep 4 columns for compact view */
-    column-gap: 0.75rem; /* Increased horizontal spacing for better touch targets */
-    row-gap: 1rem; /* Increased vertical spacing between rows */
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
   }
-  
+
   .uc-package-card {
-    aspect-ratio: 5 / 6; /* Increased from 4/5 for better readability */
-    padding: 0.875rem; /* Increased from 0.625rem for better touch targets */
-    font-size: 1rem; /* Increased from 0.875rem for better readability */
-    min-height: 110px; /* Ensure minimum height for comfortable interaction */
+    aspect-ratio: auto;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    min-height: 90px;
   }
   
   /* STEP 3: FIXED BLOCK POSITIONING (UNCHANGED) */

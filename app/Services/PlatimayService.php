@@ -53,11 +53,11 @@ class PlatimayService
         ];
 
         Log::info('Creating Platima payment', [
-            'order_id' => $order->id,
-            'platima_order_id' => $orderId,
-            'amount' => $amountFormatted,
-            'signature_string' => $signString
-        ]);
+    'order_id' => $order->id,
+    'platima_order_id' => $orderId,
+    'amount' => $amountFormatted,
+    'signature_preview' => substr($signature, 0, 8) . '...',
+]);
 
         $response = $this->makeRequestWithRetry('POST', '/acquiring', $payload, $signature);
 
