@@ -39,12 +39,12 @@ export function usePayment() {
     return token || ''
   }
 
-  const createOrder = async (payload: OrderPayload): Promise<OrderResponse | null> => {
+    const createOrder = async (payload: OrderPayload): Promise<OrderResponse | null> => {
     isLoading.value = true
     error.value = ''
 
     try {
-      const response = await fetch('/api/orders/create', {
+      const response = await fetch('/order/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export function usePayment() {
       const data: OrderResponse = await response.json()
 
       if (!response.ok || !data.success) {
-        error.value = data.errors 
+        error.value = data.errors
           ? Object.values(data.errors).flat().join(', ')
           : 'Failed to create order'
         return null
@@ -77,7 +77,7 @@ export function usePayment() {
     error.value = ''
 
     try {
-      const response = await fetch('/api/payment/init', {
+      const response = await fetch('/order/payment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,15 +89,19 @@ export function usePayment() {
 
       const data: PaymentResponse = await response.json()
 
-      if (!response.ok || !data.success) {
-        error.value = data.errors 
-          ? Object.values(data.errors).flat().join(', ')
-          : data.message || 'Payment initialization failed'
+      if (!response.ok) {
+        error.value = data.message || 'Payment initialization failed'
         return null
       }
 
-      successMessage.value = data.message || 'Payment initialized'
-      return data
+      // OrderController@createPayment возвращает { link, payment_id, provider }
+      if (!data.link) {
+        error.value = 'Payment link not received'
+        return null
+      }
+
+      successMessage.value = 'Payment initialized'
+      return { ...data, success: true }
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Network error'
       return null

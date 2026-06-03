@@ -2,18 +2,6 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Third Party Services
-    |--------------------------------------------------------------------------
-    |
-    | This file is for storing the credentials for third party services such
-    | as Mailgun, Postmark, AWS and more. This file provides the de facto
-    | location for this type of information, allowing packages to have
-    | a conventional file to locate the various service credentials.
-    |
-    */
-
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
@@ -33,16 +21,25 @@ return [
 
     'platima' => [
         'api_key_project' => env('PLATIMA_API_KEY_PROJECT'),
-        'project_id' => env('PLATIMA_PROJECT_ID'),
-        'base_url' => env('PLATIMA_BASE_URL'),
+        'project_id'      => env('PLATIMA_PROJECT_ID'),
+        'base_url'        => env('PLATIMA_BASE_URL'),
     ],
+
     'telegram' => [
-    'bot_token' => env('TELEGRAM_BOT_TOKEN'),
-    'chat_id' => env('TELEGRAM_CHAT_ID'),
-],
-    'pubg_api' => [
-        'base_url' => env('PUBG_API_BASE_URL', 'http://92.51.47.47'),
-        'api_key' => env('PUBG_API_KEY'),
+        'bot_token' => env('TELEGRAM_BOT_TOKEN'),
+        'chat_id'   => env('TELEGRAM_CHAT_ID'),
+    ],
+
+    'ragner' => [
+        'base_url' => env('RAGNER_API_BASE_URL', 'https://ragnergiftcard.com/api/v1'),
+        'key'      => env('RAGNER_API_KEY'),
+    ],
+
+    'pally' => [
+        'token'       => env('PALLY_API_TOKEN'),
+        'shop_id'     => env('PALLY_SHOP_ID'),
+        'success_url' => env('PALLY_SUCCESS_URL'),
+        'fail_url'    => env('PALLY_FAIL_URL'),
     ],
 
 ];

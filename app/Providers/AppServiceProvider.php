@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Helpers\Telegram;
-use App\Services\PlatimayService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
@@ -17,10 +16,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(Telegram::class, function ($app) {
             return new Telegram(new Http(), config('bots.bot'));
-        });
-
-        $this->app->singleton(PlatimayService::class, function ($app) {
-            return new PlatimayService();
         });
     }
 

@@ -10,13 +10,14 @@ use Exception;
 
 class PlatimayService
 {
-    private string $apiUrl;
-    private string $apiKey;
-    private string $secretKey;
-    private string $merchantId;
+    private ?string $apiUrl;
+    private ?string $apiKey;
+    private ?string $secretKey;
+    private ?string $merchantId;
     private int $timeout;
     private int $retryAttempts;
     private int $retryDelay;
+
 
     public function __construct()
     {
@@ -27,10 +28,6 @@ class PlatimayService
         $this->timeout = config('platima.timeout', 30);
         $this->retryAttempts = config('platima.retry_attempts', 3);
         $this->retryDelay = config('platima.retry_delay', 1000);
-
-        if (!$this->apiKey || !$this->merchantId) {
-            throw new \Exception('Platima credentials not configured');
-        }
     }
 
     public function createPayment(Order $order, float $amount, string $gameId): array

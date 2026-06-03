@@ -13,33 +13,39 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function create(OrderRequest $request): Order
-    {
-        $product = Product::find((int)$request->input('product_id'));
+    public function create(OrderRequest $request)
+{
+    $product = Product::find((int)$request->input('product_id'));
 
-        if (!$product) {
-            Log::error('Order create: product not found', ['product_id' => $request->input('product_id')]);
-            throw new \Exception('Product not found');
-        }
-
-        $order = new Order();
-        $order->client_id = 1;
-        $order->status_id = 1;
-        $order->price = $product->price;
-        $order->product_id = $product->id;
-        $order->type_id = 1;
-        $order->user_id = 1;
-        $order->uid = $request->input('uid');
-        $order->save();
-
-        Log::info('Order created', [
-            'order_id' => $order->id,
-            'uid' => $order->uid,
-            'product_id' => $product->id,
-        ]);
-
-        return $order;
+    if (!$product) {
+        Log::error('Order create: product not found', ['product_id' => $request->input('product_id')]);
+        return response()->json(['success' => false, 'message' => 'Product not found'], 404);
     }
+
+    $order = new Order();
+    $order->client_id = 1;
+    $order->status_id = 1;
+    $order->price = $product->price;
+    $order->product_id = $product->id;
+    $order->type_id = 1;
+    $order->user_id = 1;
+    $order->uid = $request->input('uid');
+    $order->game_id = $request->input('uid'); // PUBG ID = game_id
+    $order->email = $request->input('email'); // nullable, OK
+    $order->save();
+
+    Log::info('Order created', [
+        'order_id'   => $order->id,
+        'uid'        => $order->uid,
+        'product_id' => $product->id,
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'id'      => $order->id,
+        'uid'     => $order->uid,
+    ]);
+}
 
     public function orderUser(Request $request, string $id, string $uid)
     {

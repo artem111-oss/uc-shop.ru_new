@@ -512,7 +512,7 @@
         console.log('Total amount:', totalAmount, 'Cart items:', cartItems);
         
         // Step 1: Create Order
-        const orderResponse = await fetch('/api/orders/create', {
+        const orderResponse = await fetch('/order/add', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -520,9 +520,9 @@
             'X-CSRF-TOKEN': csrfToken
           },
           body: JSON.stringify({
-            game_id: gameId,
-            cart: cartItems // Отправляем полную корзину
-          })
+          product_id: cartItems[0].product_id,
+          uid: gameId
+        })
         });
         
         if (!orderResponse.ok) {
@@ -540,7 +540,7 @@
         savePlayerId(gameId);
         
         // Step 2: Initialize Payment
-        const paymentResponse = await fetch('/api/payment/init', {
+        const paymentResponse = await fetch('/order/payment', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -568,8 +568,8 @@
         const paymentData = await paymentResponse.json();
         console.log('Payment data:', paymentData);
         
-        if (!paymentData.success || !paymentData.link) {
-          throw new Error('Invalid payment response: ' + JSON.stringify(paymentData));
+        if (!paymentData.link) {
+          throw new Error(paymentData.error || 'Ошибка инициализации платежа');
         }
         
         // Step 3: Redirect to payment page
