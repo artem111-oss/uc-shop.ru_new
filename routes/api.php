@@ -1,0 +1,59 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaymentController;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+/**
+ * Payment API Routes
+ * 
+ * POST /api/orders/create          - Создание заказа
+ * POST /api/payment/init           - Инициализация платежа
+ * POST /api/payment/webhook        - Вебхук от Platima
+ */
+Route::group(['prefix' => 'orders'], function () {
+    Route::post('/create', [PaymentController::class, 'createOrder'])
+        ->name('api.order.create')
+        ->middleware('throttle:60,1'); // Rate limiting: 60 запросов в минуту (высокая нагрузка)
+});
+
+Route::group(['prefix' => 'payment'], function () {
+    Route::post('/init', [PaymentController::class, 'initPayment'])
+        ->name('api.payment.init')
+        ->middleware('throttle:60,1'); // Rate limiting: 60 запросов в минуту (высокая нагрузка)
+    
+    Route::post('/webhook', [PaymentController::class, 'handleWebhook'])
+        ->name('api.payment.webhook')
+        ->withoutMiddleware(['api']); // Webhook не требует CSRF токена
+});
+
+/**
+ * Stats API Routes
+ * 
+ * GET /api/stats/uc - Получить статистику отправленных UC
+ */
+Route::get('/stats/uc', [\App\Http\Controllers\StatsController::class, 'getUcStats'])
+    ->name('api.stats.uc');
+
+/**
+ * Reviews API Routes
+ * 
+ * GET /api/reviews - Получить сгенерированные отзывы
+ */
+Route::get('/reviews', [\App\Http\Controllers\ReviewsController::class, 'getReviews'])
+    ->name('api.reviews');

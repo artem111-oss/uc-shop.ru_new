@@ -1,0 +1,62 @@
+# robots.txt for uc-shop.ru
+# Generated: 2025-11-16
+
+User-agent: *
+Allow: /
+
+# Disallow admin and API endpoints
+Disallow: /admin
+Disallow: /api/
+Disallow: /storage/
+Disallow: /vendor/
+Disallow: /order/*
+
+# Disallow test and development paths
+Disallow: /test-tg
+Disallow: /tg
+Disallow: /_pgbackup/
+Disallow: /_pginfo/
+
+# Allow important pages
+Allow: /
+Allow: /contacts
+Allow: /faq
+Allow: /how-to-purchase
+Allow: /politic
+Allow: /refund
+Allow: /agrement
+Allow: /terms
+Allow: /privacy
+
+# Sitemap
+Sitemap: https://uc-shop.ru/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
+
+# Specific bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Disallow: /
+
+# Block aggressive crawlers
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

@@ -1,0 +1,88 @@
+
+volumes:
+  redis-data:
+
+services:
+  nginx:
+    container_name: 'pubg-nginx'
+    image: nginx:alpine
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d:ro
+      - ./docker/log/nginx:/var/log/nginx:rw
+      - ./public:/var/www/app/public:delegated
+      - ./:/home/www/sites
+    ports:
+      - '86:86'
+    depends_on:
+      - php
+  php:
+    container_name: 'pubg-php'
+    build: ./docker/php
+    working_dir: /var/www/app/
+    #environment:
+      #- PHP_IDE_CONFIG=serverName=bubg.loc
+      #- XDEBUG_CONFIG=client_host=host.docker.internal
+      #- XDEBUG_SESSION=1
+      #- XDEBUG_MODE=debug
+    links:
+      - mariadb:db
+    volumes:
+      - .:/var/www/app:delegated
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    # - ./docker/php/without-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    #extra_hosts: ['host.docker.internal:172.17.0.1'] # for Linux hosts
+    depends_on:
+      mariadb:
+        condition: service_healthy
+  mariadb:
+    container_name: "pubg-mysql"
+    image: mariadb:10.11
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/db:/var/lib/mysql
+      #- ./docker/mariadb/logs:/var/log/mysql
+      #- ./docker/mariadb/restore:/var/lib/mysql_restore
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: avasiliev8
+    healthcheck:
+      test: mysqladmin ping -p$$MYSQL_ROOT_PASSWORD
+      interval: 3s
+      retries: 10
+
+  #mysql:
+  #  container_name: 'pubg-mysql'
+  #  image: mysql:8
+  #  platform: linux/amd64
+  #  ports:
+  #    - '3306:3306'
+  #  environment:
+  #    MARIADB_ROOT_PASSWORD: root,
+  #    #MYSQL_ROOT_PASSWORD: root
+  #    #MYSQL_DATABASE: avasiliev8
+  #  command: '--default-authentication-plugin=mysql_native_password'
+    #volumes:
+      #- ./docker/db:/var/lib/mysql
+      #- ./docker/mariadb/logs:/var/log/mysql
+      #- ./docker/mariadb/restore:/var/lib/mysql_restore
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - '8085:85'
+    links:
+      - mariadb:db
+    #environment:
+    #  PMA_HOST: root
+      #PMA_USER: $DB_USER
+      #PMA_PASSWORD: $DB_PASSWORD
+      #PHP_UPLOAD_MAX_FILESIZE: 1G
+      #PHP_MAX_INPUT_VARS: 1G
+    depends_on:
+      - mariadb
+networks:
+  sail:
+    driver: bridge
+

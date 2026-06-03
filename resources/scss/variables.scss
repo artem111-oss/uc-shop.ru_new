@@ -1,0 +1,299 @@
+// Body colors
+$body-bg: #fff;
+$body-color: #000;
+
+// Typography
+$font-family-secondary-sans-serif: 'Roboto', sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.231; //1.2;
+
+$font-family-sans-serif: 'Cera Pro', sans-serif;
+
+$cerapro: 'Cera Pro', sans-serif;
+$roboto: 'Roboto', sans-serif;
+$euclidflex: 'Euclid Flex', sans-serif;
+
+// Colors
+$orange: #F86630;
+$red: #E21E24;
+$orange: #F86630;
+$grey1: #999999;
+$grey2: #CFCFCF;
+$grey3: #F7F7F7;
+$blue: #0099FF;
+$green: #8dc73f;
+
+
+// редизайн
+$body-dark: #242E35; // черный основной
+$body-basic: #4A565E; // черный основной
+//$red: #FF153F;
+$red: #e31e24;
+$grey4: #636C72;
+$blue: #0087D2;
+
+
+// setting colors
+$primary: #edba45; // orange
+$secondary: $grey4;
+$success: $green;
+$info: $orange;
+$danger: $red;
+$dark: $body-dark;
+$warning: #f8ca30;
+
+$gray-300: #E5ECF1;
+
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info, // main orange
+    "warning": $warning, // ?
+    "danger": $danger,
+    "light": $grey3,
+    "dark": $dark,
+);
+
+.dark {
+  /* переопределение цветов темы для темной темы */
+  $primary: $orange;
+  $secondary: $grey3;
+  $success: $warning;
+  $dark: #fff;
+  $light: $body-dark;
+  $info: green;
+
+  $theme-colors: (
+      "primary": $primary,
+      "secondary": $secondary,
+      "success": $success,
+      "dark": $dark,
+      "light": $light,
+      "info": $dark
+  );
+
+  /* Переопределение цветов для темной темы */
+  @each $color, $value in $theme-colors {
+    --#{$variable-prefix}#{$color}: #{$value};
+  }
+
+  /* переопределение цвета темы rgb vars (используется для bg-colors) */
+  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+  @each $color, $value in $theme-colors-rgb {
+    --#{$variable-prefix}#{$color}-rgb: #{$value};
+  }
+
+  $body-color: $dark;
+  $body-bg: $light;
+  $primary-color: $primary;
+
+  --#{$variable-prefix}body-color: #{$body-color};
+  --#{$variable-prefix}body-bg: #{$body-bg};
+}
+
+// breakpoints
+$grid-breakpoints: (
+    xs: 375px,
+    sm: 576px, // Компактные устройства (смартфоны в горизонтальном положении, 576px и больше)
+    md: 768px, // Средние устройства (планшеты, 768px и больше)
+    lg: 992px, // Большие устройства (десктопы, 992px и больше
+    xl: 1200px, // Очень большие устройства (ноутбуки и десктопы с большими экранами, 1200px и больше)
+    xxl: 1400px
+);
+
+$container-max-widths: (
+    xs: 345px,
+    sm: 536px,
+    md: 738px,
+    lg: 930px,
+    xl: 1140px,
+    xxl: 1320px
+);
+
+circle.shadow {
+  -webkit-filter: drop-shadow(0px 0px 5px rgba(36, 46, 53, 0.15));
+  filter: drop-shadow(3px 3px 2px rgba(36, 46, 53, 0.15));
+}
+
+// form
+$form-check-input-border: none;
+$form-check-ba: none;
+$form-check-input-border-radius: 4px;
+
+input:not([type=checkbox]):not([type=radio]),
+textarea,
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+$input-btn-font-size: 14px;
+$input-btn-focus-box-shadow: none;
+$input-btn-focus-box-shadow: none;
+$input-focus-box-shadow: none;
+
+
+// radio
+$form-check-radio-border-radius: 50%;
+
+// checkbox
+$form-check-input-checked-bg-color: $primary;
+$form-check-input-border-radius: 8px;
+$form-check-input-focus-box-shadow: none;
+$form-check-input-checked-border-color: #E5ECF1;
+$form-check-input-bg: #E5ECF1;
+.form-check-input[type=checkbox]:not(.form-check) {
+  //border: 1px solid #939B9F;
+
+  &:checked {
+    //border: 1px solid $primary;
+  }
+}
+
+
+// кнопки
+$btn-box-shadow: 0;
+$btn-focus-box-shadow: 0;
+$btn-font-weight: $font-weight-bold;
+//$btn-link-color: white;
+$btn-padding-y: 10px;
+$btn-padding-x: 20px;
+
+// switch
+//$form-check-input-box-shadow: 0px 0px 5px rgba(36, 46, 53, 0.08), 0px 1px 3px rgba(36, 46, 53, 0.15);
+//form-switch
+//$form-switch-width: 3rem;
+//$form-switch-checked-color: red;
+//$form-switch-focus-bg-image: url(map-get($sprites, 'icon-switch-circle'));
+//$form-switch-checked-bg-image: url(map-get($sprites, 'icon-switch-circle'));
+//$form-switch-checked-bg-position: 20px -2px;
+$form-switch-focus-color: transparent;
+
+// buttons
+$border-radius: 4px;
+$input-btn-padding-y: 20px;
+$input-btn-padding-x: 10px;
+$input-btn-font-family: null;
+$input-btn-font-size: $font-size-base;
+$input-btn-line-height: 1.25;
+
+$input-btn-focus-width: .25rem;
+$input-btn-focus-color-opacity: .25;
+$input-btn-focus-color: rgba($component-active-bg, $input-btn-focus-color-opacity);
+$input-btn-focus-blur: 0;
+$input-btn-focus-box-shadow: 0 0 $input-btn-focus-blur $input-btn-focus-width $input-btn-focus-color;
+
+$input-btn-padding-y-sm: .25rem;
+$input-btn-padding-x-sm: .5rem;
+$input-btn-font-size-sm: $font-size-sm;
+
+$input-btn-padding-y-lg: .5rem;
+$input-btn-padding-x-lg: 1rem;
+$input-btn-font-size-lg: $font-size-lg;
+
+$btn-border-width: 0px;
+
+.btn{
+  &.btn-primary, &.btn-success, &.btn-danger, &.btn-warning{
+    --bs-btn-color: var(--bs-white);
+    &:focus,&:hover{
+      --bs-btn-color: var(--bs-white);
+      color: var(--bs-white);
+    }
+  }
+}
+
+
+// range
+$form-range-track-box-shadow: inherit;
+$form-range-thumb-bg: white;
+$form-range-track-bg: $gray-300;
+//$form-range-track-box-shadow: none;
+
+$form-range-thumb-width: 1.5rem;
+$form-range-thumb-height: $form-range-thumb-width;
+$form-range-thumb-box-shadow: 0px 0px 5px rgba(36, 46, 53, 0.08), 0px 1px 3px rgba(36, 46, 53, 0.15);
+$form-range-thumb-focus-box-shadow: 0px 0px 5px rgba(36, 46, 53, 0.08), 0px 1px 3px rgba(36, 46, 53, 0.15);;
+$form-range-thumb-focus-bg: white;
+$form-range-thumb-active-bg: white;
+
+input[type=range]::-webkit-slider-thumb {
+  border: 4px solid $primary;
+}
+
+// &::-moz-range-track
+
+/*
+$form-range-track-width:          100%;
+$form-range-track-height:         4px;
+$form-range-track-cursor:         pointer;
+$form-range-track-bg:             $gray-300;
+$form-range-track-border-radius:  1rem;
+$form-range-track-box-shadow:     $box-shadow-inset;
+
+$form-range-thumb-width:                   1rem;
+$form-range-thumb-height:                  $form-range-thumb-width;
+$form-range-thumb-bg:                      $primary;
+$form-range-thumb-border:                  0;
+$form-range-thumb-border-radius:           1rem;
+$form-range-thumb-box-shadow:              none;
+$form-range-thumb-focus-box-shadow:        none;
+$form-range-thumb-focus-box-shadow-width:  inherit; // For focus box shadow issue in Edge
+$form-range-thumb-active-bg:               tint-color($component-active-bg, 70%);
+$form-range-thumb-disabled-bg:             $gray-500;
+$form-range-thumb-transition:              background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+*/
+
+//selects
+$form-select-disabled-bg: #DADBDC;
+$form-select-focus-width: none;
+//$form-select-focus-box-shadow:    0 0 0 $form-select-focus-width $input-btn-focus-color;
+$form-select-border-width: none;
+//$form-select-border-color: red;
+$form-select-font-weight: 400;
+select{
+  padding: 0;
+  margin-bottom: calc(2rem / 2);
+}
+
+// breadcrumbs
+$breadcrumb-divider-color: $secondary;
+$breadcrumb-active-color: $secondary;
+$breadcrumb-divider: quote("›");
+
+//swiper
+
+.swiper-pagination-bullet {
+  --swiper-theme-color: var(--bs-primary);
+  --swiper-pagination-bullet-inactive-color: #939B9F;
+  --swiper-pagination-bullet-size: 5px;
+  --swiper-pagination-bullet-width: 5px;
+  --swiper-pagination-bullet-height: 5px;
+  --swiper-pagination-bullet-horizontal-gap: 2px;
+  --swiper-pagination-bullet-vertical-gap: 5px;
+  &:not(.swiper-pagination-bullet-active) {
+    border: 1px solid #939B9F;
+    background: transparent;
+    opacity: 1;
+  }
+}
+
+.swiper-pagination-fraction,
+.swiper-pagination-custom,
+.swiper-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal {
+  margin-bottom: -12px;
+}
+
+// accordion
+$accordion-transition:                    $btn-transition, border-radius 0s ease;
+$accordion-icon-transition:               transform 0s ease-in-out;
+
+$transition-collapse:         height .0s ease;
+
+
+// modal
+$modal-fade-transform: translate(0, 0);
+

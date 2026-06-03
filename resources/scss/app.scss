@@ -1,0 +1,2254 @@
+// Google Fonts moved to HTML head with optimized loading strategy
+// Using only required weights: 400 (normal), 500 (medium), 700 (bold)
+
+// Bootstrap imports
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap/scss/functions";
+
+// Variable overrides
+$primary: #0396ff;
+$enable-shadows: false;
+$prefix: "uc-";
+
+// Required Bootstrap imports
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+
+@import 'variables';
+
+// Optional components
+@import "../node_modules/bootstrap/scss/utilities";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/containers";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/helpers";
+@import "../node_modules/bootstrap/scss/utilities/api";
+
+// Layout & components
+@import "../node_modules/bootstrap/scss/type";
+@import "../node_modules/bootstrap/scss/images";
+@import "../node_modules/bootstrap/scss/buttons";
+@import "../node_modules/bootstrap/scss/tables";
+@import "../node_modules/bootstrap/scss/card";
+@import "../node_modules/bootstrap/scss/breadcrumb";
+@import "../node_modules/bootstrap/scss/forms";
+@import "../node_modules/bootstrap/scss/offcanvas";
+@import "../node_modules/bootstrap/scss/nav";
+@import "../node_modules/bootstrap/scss/navbar";
+@import "../node_modules/bootstrap/scss/accordion";
+@import "../node_modules/bootstrap/scss/transitions";
+@import "../node_modules/bootstrap/scss/modal";
+@import "../node_modules/bootstrap/scss/tooltip";
+
+// Helpers
+@import "../node_modules/bootstrap/scss/helpers";
+
+// Utilities
+@import "../node_modules/bootstrap/scss/utilities/api";
+
+@import 'mobile';
+
+// ========== GLOBAL STYLES ==========
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #23282e;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+
+  // Optimize for performance
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+// ========== HEADER STYLES ==========
+.uc-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, rgba(35, 40, 46, 0.95), rgba(50, 55, 65, 0.95));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 165, 0, 0.1);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (вертикальные отступы шапки сайта)
+  padding: 0.5rem 0;
+}
+
+.uc-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // ИЗМЕНЯЙ ЗДЕСЬ: gap (расстояние между элементами навигации)
+  gap: 1rem;
+  // ИЗМЕНЯЙ ЗДЕСЬ: max-width (максимальная ширина навигации)
+  max-width: 1400px;
+  margin: 0 auto;
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (боковые отступы навигации)
+  padding: 0 1rem;
+}
+
+.uc-navbar__brand {
+  flex-shrink: 0;
+}
+
+.uc-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.uc-brand-logo {
+  max-height: 40px;
+  width: auto;
+}
+
+.uc-brand-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffa500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  @media (max-width: 576px) {
+    font-size: 1rem;
+  }
+}
+
+.uc-navbar__menu {
+  display: flex;
+  align-items: center;
+  // ИЗМЕНЯЙ ЗДЕСЬ: gap (расстояние между пунктами меню)
+  gap: 2rem;
+  flex: 1;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.uc-menu-link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    color: #ffa500;
+
+    &::after {
+      width: 100%;
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ffa500;
+    transition: width 0.3s ease;
+  }
+}
+
+.uc-navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.uc-btn-support {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid #ffa500;
+  border-radius: 8px;
+  background: transparent;
+  color: #ffa500;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+
+  &:hover {
+    background: rgba(255, 165, 0, 0.1);
+    box-shadow: 0 0 16px rgba(255, 165, 0, 0.3);
+  }
+
+  &__icon {
+    font-size: 1.1rem;
+  }
+
+  &__text {
+    @media (max-width: 576px) {
+      display: none;
+    }
+  }
+}
+
+.uc-btn-telegram {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы кнопки Telegram)
+  padding: 0.5rem 1rem;
+  border: none;
+  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление углов кнопки Telegram)
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffa500, #ff8c00);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 165, 0, 0.3);
+  }
+
+  &__icon {
+    font-size: 1.1rem;
+  }
+
+  &__text {
+    @media (max-width: 576px) {
+      display: none;
+    }
+  }
+}
+
+// Burger Menu
+.uc-burger-menu {
+  display: none;
+  flex-direction: column;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+
+  span {
+    width: 24px;
+    height: 2px;
+    background: #ffa500;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  &--active {
+    span:nth-child(1) {
+      transform: rotate(45deg) translateY(10px);
+    }
+
+    span:nth-child(2) {
+      opacity: 0;
+    }
+
+    span:nth-child(3) {
+      transform: rotate(-45deg) translateY(-10px);
+    }
+  }
+}
+
+// Mobile Menu
+.uc-mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, rgba(50, 55, 65, 0.95), rgba(35, 40, 46, 0.95));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 165, 0, 0.1);
+  padding: 1rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: slideDown 0.3s ease-out;
+
+  @media (max-width: 768px) {
+    &--active {
+      display: flex;
+    }
+  }
+
+  &__link {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 165, 0, 0.1);
+      color: #ffa500;
+    }
+
+    &--secondary {
+      background: rgba(255, 165, 0, 0.15);
+      color: #ffa500;
+
+      &:hover {
+        background: rgba(255, 165, 0, 0.25);
+      }
+    }
+  }
+
+  &__divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0.5rem 0;
+  }
+}
+
+// ========== HERO SECTION ==========
+.uc-hero {
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 2rem 0;
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+
+  @media (max-width: 768px) {
+    min-height: unset;
+    padding: 2rem 1rem;
+  }
+}
+
+.uc-hero__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 25%, #7e22ce 50%, #be185d 75%, #dc2626 100%);
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.uc-hero__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, rgba(35, 40, 46, 0.95) 0%, rgba(35, 40, 46, 0.85) 50%, rgba(35, 40, 46, 0.7) 100%);
+  z-index: 2;
+}
+
+.uc-hero__wrapper {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  // ИЗМЕНЯЙ ЗДЕСЬ: Ширина левой части | Ширина блока ID
+  grid-template-columns: 1fr 340px;
+  // ИЗМЕНЯЙ ЗДЕСЬ: Расстояние между блоками
+  gap: 0.5rem;
+  align-items: flex-start;
+  // ИЗМЕНЯЙ ЗДЕСЬ: Внутренние отступы (верх/низ | лево/право)
+  padding: 0rem 14rem;
+  // ИЗМЕНЯЙ ЗДЕСЬ: Максимальная ширина контейнера
+  max-width: 1800px;
+  margin: 0 auto;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 0;
+    gap: 0;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+}
+
+.uc-hero__left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  
+  @media (max-width: 768px) {
+    width: 100% !important;
+    flex-basis: 100% !important;
+    margin-bottom: 1rem;
+  }
+}
+// Или зафиксировать в определенном месте
+.uc-hero__right {
+  // ИЗМЕНЯЙ ЗДЕСЬ: sticky = прилипает при прокрутке, relative = обычное положение
+  position: sticky;
+  // ИЗМЕНЯЙ ЗДЕСЬ: Отступ от верха при прокрутке
+  top: 100px;
+
+  @media (max-width: 1024px) {
+    position: relative;
+    top: auto;
+  }
+  
+  @media (max-width: 768px) {
+    width: 100% !important;
+    flex-basis: 100% !important;
+    order: 2;
+  }
+  
+  .uc-live-counter {
+    // ИЗМЕНЯЙ ЗДЕСЬ: margin-bottom (отступ снизу от live-counter до формы ID)
+    margin-bottom: 0.5rem;
+  }
+}
+
+.uc-packages-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.5rem;
+  text-align: left;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+  }
+}
+
+.uc-packages-subtitle {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 1.5rem;
+  text-align: left;
+  
+  @media (max-width: 768px) {
+    padding: 0 0.5rem;
+  }
+}
+
+.uc-packages-grid {
+  display: grid;
+  // ИЗМЕНЯЙ ЗДЕСЬ: Минимальный размер карточки (120px = 2 ряда по 8 штук)
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  // ИЗМЕНЯЙ ЗДЕСЬ: Расстояние между карточками
+  gap: 0.3rem;
+  // ИЗМЕНЯЙ ЗДЕСЬ: Максимальная ширина блока товаров
+  max-width: 1000px;
+  // ИЗМЕНЯЙ ЗДЕСЬ: Выравнивание (auto=центр, 0 auto 0 60px=сдвиг вправо на 60px)
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px !important;
+    padding: 0 0.5rem;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+}
+
+.uc-package-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  // ИЗМЕНЯЙ ЗДЕСЬ: Скругление углов карточек
+  border-radius: 10px;
+  // ИЗМЕНЯЙ ЗДЕСЬ: Внутренние отступы карточек (верх/низ | лево/право)
+  padding: 0.65rem 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.15s ease-out;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  
+  @media (max-width: 768px) {
+    aspect-ratio: 1 / 1;
+    padding: clamp(6px, 1.5vw, 10px);
+    justify-content: space-between;
+    gap: clamp(2px, 0.5vw, 4px);
+    height: auto;
+    border-radius: clamp(6px, 2vw, 10px);
+    
+    &:active {
+      transform: scale(0.95);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  // &:hover {
+  //   background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+  //   border-color: rgba(255, 255, 255, 0.5);
+  //   transform: translateY(-4px);
+  //   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  // }
+
+  &--popular {
+    border-color: #ff6b6b;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 107, 0.05));
+
+    // &:hover {
+    //   background: linear-gradient(135deg, rgba(255, 107, 107, 0.3), rgba(255, 107, 107, 0.1));
+    //   border-color: #ff6b6b;
+    // }
+  }
+}
+
+.uc-package-ribbon {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: linear-gradient(135deg, #ff6b6b, #ff4444);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transform: rotate(45deg);
+  transform-origin: right top;
+  
+  @media (max-width: 768px) {
+    top: 2px;
+    right: 2px;
+    font-size: clamp(7px, 2vw, 9px);
+    padding: clamp(2px, 0.5vw, 3px) clamp(4px, 1vw, 6px);
+    border-radius: clamp(3px, 1vw, 4px);
+    transform: rotate(0deg);
+    line-height: 1.2;
+    font-weight: 600;
+  }
+}
+
+.uc-package-uc {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.3rem;
+  line-height: 1.1;
+  
+  @media (max-width: 768px) {
+    font-size: clamp(14px, 3.5vw, 18px);
+    font-weight: 700;
+    margin-bottom: clamp(2px, 0.5vw, 4px);
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+  }
+}
+
+.uc-package-price {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffb700;
+  margin-bottom: 0.4rem;
+  flex-grow: 1;
+  line-height: 1.1;
+  
+  @media (max-width: 768px) {
+    font-size: clamp(14px, 3.5vw, 18px);
+    font-weight: 700;
+    margin-bottom: clamp(2px, 0.5vw, 4px);
+    line-height: 1.2;
+    flex-grow: 0;
+  }
+}
+
+.uc-package-btn {
+  width: 100%;
+  padding: 0.7rem;
+  background: linear-gradient(135deg, #0396ff, #0276cc);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  // transition: all 0.3s ease; // DISABLED FOR CALCULATOR FUNCTIONALITY
+  margin-top: auto;
+
+  // &:hover {
+  //   transform: scale(1.05);
+  //   box-shadow: 0 4px 12px rgba(3, 150, 255, 0.3);
+  // }
+
+  &--primary {
+    background: linear-gradient(135deg, #ff6b6b, #ff4444);
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    }
+  }
+}
+
+// ========== CALCULATOR SECTION ==========
+.uc-package-calc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  margin-top: auto;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  transition: all 0.3s ease;
+}
+
+.uc-calc-btn {
+  // ИЗМЕНЯЙ ЗДЕСЬ: width и height (размер кнопок калькулятора +/-)
+  width: 30px;
+  height: 30px;
+  
+  @media (max-width: 768px) {
+    width: 44px; // Apple HIG touch target minimum
+    height: 44px;
+    font-size: 1.4rem;
+  }
+  padding: 0;
+  background: linear-gradient(135deg, #0396ff, #0276cc);
+  border: none;
+  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление кнопок калькулятора)
+  border-radius: 6px;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+  cursor: pointer;
+  // transition: all 0.3s ease; // DISABLED FOR CALCULATOR FUNCTIONALITY
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(3, 150, 255, 0.2);
+
+  // &:hover {
+  //   transform: scale(1.1);
+  //   box-shadow: 0 4px 16px rgba(3, 150, 255, 0.4);
+  //   background: linear-gradient(135deg, #04a9ff, #0396ff);
+  // }
+
+  // &:active {
+  //   transform: scale(0.95);
+  // }
+
+  &--minus {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+
+    // &:hover {
+    //   background: linear-gradient(135deg, #ff8787, #ff6b6b);
+    //   box-shadow: 0 4px 16px rgba(255, 107, 107, 0.4);
+    // }
+  }
+
+  &--plus {
+    background: linear-gradient(135deg, #51cf66, #37b24d);
+
+    // &:hover {
+    //   background: linear-gradient(135deg, #69db7c, #51cf66);
+    //   box-shadow: 0 4px 16px rgba(81, 207, 102, 0.4);
+    // }
+  }
+}
+
+.uc-calc-qty {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: white;
+  min-width: 28px;
+  text-align: center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ========== ID FORM SECTION ==========
+.uc-id-form {
+  background: linear-gradient(135deg, rgba(35, 40, 46, 0.95), rgba(50, 55, 65, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 1024px) {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  @media (max-width: 768px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 16px 16px 0 0;
+    z-index: 999;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.uc-id-form__title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 1.5rem;
+  text-align: center;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+.uc-id-form__cart {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.uc-id-form__cart-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  &:before {
+    content: '🛒';
+    font-size: 1.2rem;
+  }
+}
+
+.uc-cart-clear-btn {
+  background: rgba(255, 107, 107, 0.2);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba(255, 107, 107, 0.3);
+    border-color: rgba(255, 107, 107, 0.5);
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.uc-id-form__cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 80px;
+  margin-bottom: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(3, 150, 255, 0.5);
+    border-radius: 3px;
+    
+    &:hover {
+      background: rgba(3, 150, 255, 0.7);
+    }
+  }
+}
+
+.uc-id-form__cart-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+  font-size: 0.9rem;
+  padding: 2rem 1rem;
+  
+  &:before {
+    content: '🛍️';
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.uc-cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы элементов корзины)
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление элементов корзины)
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(3, 150, 255, 0.3);
+  }
+}
+
+.uc-cart-item__name {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  
+  .qty {
+    color: #0396ff;
+    font-weight: 700;
+    margin-left: 0.25rem;
+  }
+}
+
+.uc-cart-item__price {
+  color: #51cf66;
+  font-weight: 700;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.uc-id-form__cart-summary {
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    
+    &--total {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      padding-top: 0.5rem;
+      margin-top: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      
+      .value {
+        color: #51cf66;
+        font-size: 1.3rem;
+      }
+    }
+  }
+  
+  .label {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .value {
+    font-weight: 700;
+    color: #fff;
+    
+    &--uc {
+      color: #ffd700;
+    }
+  }
+}
+
+.uc-id-form__input-wrapper {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.uc-id-form__input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление углов полей ввода)
+  border-radius: 8px;
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы полей ввода)
+  padding: 0.8rem;
+  color: white;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #0396ff;
+    background: rgba(3, 150, 255, 0.1);
+    box-shadow: 0 0 12px rgba(3, 150, 255, 0.2);
+  }
+}
+
+.uc-id-form__check {
+  background: linear-gradient(135deg, #0396ff, #0276cc);
+  border: none;
+  color: white;
+  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление углов кнопки проверки ID)
+  border-radius: 8px;
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы кнопки проверки ID)
+  padding: 0.8rem 1.2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(3, 150, 255, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.uc-id-form__hint {
+  font-size: 0.8rem;
+  color: rgba(255, 165, 0, 0.8);
+  margin: 0.5rem 0 0;
+  text-align: center;
+}
+
+.uc-id-form__info {
+  background: rgba(3, 150, 255, 0.08);
+  border: 1px solid rgba(3, 150, 255, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+
+  p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: white;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    span {
+      color: #ffb700;
+      font-weight: 600;
+    }
+  }
+}
+
+.uc-id-form__submit {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #0396ff, #0276cc);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(3, 150, 255, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &--primary {
+    background: linear-gradient(135deg, #ff6b34, #ff4757);
+    box-shadow: 0 4px 12px rgba(255, 71, 87, 0.2);
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(255, 71, 87, 0.4);
+    }
+  }
+}
+
+.uc-id-form__note {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  margin: 1rem 0 0;
+  line-height: 1.4;
+
+  a {
+    color: #0396ff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      text-decoration: underline;
+      color: #0586ff;
+    }
+  }
+}
+
+// ========== MAIN FORM SECTION ==========
+.uc-main-form {
+  position: relative;
+  z-index: 10;
+  padding: -2rem 1rem 3rem;
+  background: linear-gradient(180deg, transparent, rgba(35, 40, 46, 0.5));
+
+  .container {
+    max-width: 1200px;
+  }
+}
+
+.uc-form-wrapper {
+  margin: -2rem auto 0;
+  position: relative;
+  z-index: 11;
+}
+
+// ========== SOCIAL PROOF SECTION ==========
+.uc-social-proof {
+  // ИЗМЕНЯЙ ЗДЕСЬ: Отступы секции "Почему выбирают нас" (верх/низ | лево/право)
+  padding: 1rem 1rem 2rem 1rem;
+  background: linear-gradient(180deg, rgba(35, 40, 46, 0.5), rgba(50, 55, 65, 0.3));
+  border-top: 1px solid rgba(255, 165, 0, 0.1);
+}
+
+.uc-section-title {
+  // ИЗМЕНЯЙ ЗДЕСЬ: Размер заголовков секций
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  // ИЗМЕНЯЙ ЗДЕСЬ: Отступ после заголовка
+  margin-bottom: 1.5rem;
+  color: white;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.uc-section-subtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2rem;
+}
+
+.uc-proof-grid {
+  display: grid;
+  // ИЗМЕНЯЙ ЗДЕСЬ: Минимальная ширина карточек "Почему выбирают нас"
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  // ИЗМЕНЯЙ ЗДЕСЬ: Расстояние между карточками
+  gap: 1.5rem;
+  margin-bottom: 0;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+}
+
+.uc-proof-card {
+  // ИЗМЕНЯЙ ЗДЕСЬ: Внутренние отступы карточек
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 165, 0, 0.1);
+  // ИЗМЕНЯЙ ЗДЕСЬ: Скругление углов
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 165, 0, 0.1);
+    border-color: #ffa500;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(255, 165, 0, 0.15);
+  }
+
+  &__icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 0.5rem;
+  }
+
+  &__text {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+  }
+}
+
+// Reviews Slider
+.uc-reviews-slider {
+  margin: 2rem 0;
+  overflow: hidden;
+}
+
+.uc-reviews-container {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #ffa500;
+    border-radius: 2px;
+
+    &:hover {
+      background: #ff8c00;
+    }
+  }
+}
+
+.uc-review-card {
+  min-width: 300px;
+  padding: 1.5rem;
+  background: rgba(255, 165, 0, 0.08);
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  border-radius: 10px;
+  animation: slideUp 0.6s ease-out;
+
+  @media (max-width: 768px) {
+    min-width: 250px;
+  }
+}
+
+.uc-review-text {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 0.75rem;
+  font-style: italic;
+}
+
+.uc-review-author {
+  font-size: 0.85rem;
+  color: #ffa500;
+  font-weight: 600;
+  margin: 0;
+}
+
+// Live Counter
+.uc-live-counter {
+  text-align: center;
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы счетчика онлайн пользователей)
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(3, 150, 255, 0.1), rgba(255, 107, 107, 0.1));
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление углов счетчика)
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 107, 107, 0.1) 50%, transparent 70%);
+    animation: shimmer 2s infinite;
+    pointer-events: none;
+  }
+
+  &__pulse {
+    position: absolute;
+    top: 1.5rem;
+    left: 0.5rem;
+    width: 10px;
+    height: 10px;
+    background: #41ba55;
+    border-radius: 50%;
+    animation: livePulse 2s infinite;
+    box-shadow: 0 0 10px rgba(65, 186, 85, 0.6);
+  }
+
+  &__text {
+    font-size: 1rem;
+    color: #ffffff;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__number {
+    color: #4caf50;
+    font-weight: 700;
+    font-size: 1.2em;
+    animation: pulse 1s ease-in-out infinite;
+  }
+}
+
+#live-count {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #41ba55;
+  display: inline-block;
+}
+
+// ========== PAYMENT METHODS SECTION ==========
+.uc-payment-methods {
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (вертикальные и горизонтальные отступы секции)
+  padding: 4rem 1rem;
+  background: linear-gradient(180deg, rgba(50, 55, 65, 0.3), rgba(35, 40, 46, 0.5));
+  border-top: 1px solid rgba(255, 165, 0, 0.1);
+}
+
+.uc-payment-icons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  // ИЗМЕНЯЙ ЗДЕСЬ: gap (расстояние между иконками способов оплаты)
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
+}
+
+.uc-payment-icon {
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы иконок оплаты)
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 165, 0, 0.1);
+  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление углов иконок)
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 165, 0, 0.1);
+    border-color: #ffa500;
+    transform: scale(1.05);
+  }
+}
+
+// ========== TRUST BADGES ==========
+.uc-payment-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.uc-trust-badges {
+  display: grid;
+  // ИЗМЕНЯЙ ЗДЕСЬ: grid-template-columns (минимальная ширина карточек доверия: 220px)
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  // ИЗМЕНЯЙ ЗДЕСЬ: gap (расстояние между карточками доверия)
+  gap: 1.5rem;
+}
+
+.uc-trust-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы карточек доверия)
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(3, 150, 255, 0.05), rgba(255, 107, 107, 0.05));
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление углов карточек доверия)
+  border-radius: 12px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: rgba(255, 165, 0, 0.5);
+    background: linear-gradient(135deg, rgba(3, 150, 255, 0.1), rgba(255, 107, 107, 0.1));
+    transform: translateY(-2px);
+  }
+}
+
+.uc-trust-badge__icon {
+  font-size: 2rem;
+  min-width: 40px;
+  text-align: center;
+}
+
+.uc-trust-badge__content {
+  flex: 1;
+}
+
+.uc-trust-badge__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 0.3rem 0;
+}
+
+.uc-trust-badge__desc {
+  font-size: 0.8rem;
+  color: rgba(255, 165, 0, 0.7);
+  margin: 0;
+}
+
+// ========== FAQ + REVIEWS COMBINED SECTION ==========
+.uc-faq-reviews-section {
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (вертикальные и горизонтальные отступы объединенной секции)
+  padding: 2rem 1rem 0.5rem 1rem;
+  background: linear-gradient(180deg, rgba(35, 40, 46, 0.6), rgba(50, 55, 65, 0.4));
+  border-top: 1px solid rgba(255, 165, 0, 0.15);
+  border-bottom: 1px solid rgba(255, 165, 0, 0.15);
+}
+
+.uc-faq-reviews-wrapper {
+  display: grid;
+  // ИЗМЕНЯЙ ЗДЕСЬ: grid-template-columns (соотношение FAQ и отзывов, например: 1fr 1fr для равных)
+  grid-template-columns: 1fr 1fr;
+  // ИЗМЕНЯЙ ЗДЕСЬ: gap (расстояние между FAQ и отзывами)
+  gap: 2.5rem;
+  align-items: stretch;
+  max-width: 1400px;
+  margin: 0 auto;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.uc-faq-column,
+.uc-reviews-column {
+  background: linear-gradient(135deg, rgba(50, 55, 65, 0.5), rgba(35, 40, 46, 0.5));
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  max-height: 720px;
+  
+  &:hover {
+    border-color: rgba(255, 165, 0, 0.4);
+    box-shadow: 0 12px 32px rgba(255, 165, 0, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  .uc-section-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffa500;
+    position: relative;
+    padding-bottom: 1rem;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #ffa500, #ff6b6b);
+      border-radius: 2px;
+      box-shadow: 0 2px 8px rgba(255, 165, 0, 0.3);
+    }
+  }
+}
+
+.uc-accordion__item {
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление углов FAQ элементов)
+  border-radius: 12px;
+  // ИЗМЕНЯЙ ЗДЕСЬ: margin-bottom (отступ между FAQ вопросами)
+  margin-bottom: 1rem;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(50, 55, 65, 0.5), rgba(35, 40, 46, 0.5));
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  &--active {
+    background: rgba(255, 165, 0, 0.08);
+    border-color: #ffa500;
+
+    .uc-accordion__header {
+      background: rgba(255, 165, 0, 0.1);
+    }
+
+    .uc-accordion__icon {
+      transform: rotate(45deg);
+    }
+
+    .uc-accordion__content {
+      max-height: 500px;
+      opacity: 1;
+      visibility: visible;
+      padding: 1rem;
+    }
+  }
+}
+
+.uc-accordion__header {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  outline: none;
+
+  &:hover {
+    background: rgba(255, 165, 0, 0.05);
+  }
+
+  &:focus {
+    box-shadow: inset 0 0 0 2px rgba(255, 165, 0, 0.3);
+  }
+}
+
+.uc-accordion__title {
+  flex: 1;
+}
+
+.uc-accordion__icon {
+  color: #ffa500;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.uc-accordion__content {
+  max-height: 0;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  p {
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.6;
+    margin: 0;
+
+    br {
+      display: block;
+      content: '';
+      margin: 0.5rem 0;
+    }
+  }
+}
+
+// ========== FOOTER STYLES ==========
+footer {
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (вертикальные и горизонтальные отступы футера)
+  padding: 3rem 1rem;
+  background: linear-gradient(180deg, rgba(35, 40, 46, 0.8), rgba(20, 23, 28, 0.95));
+  border-top: 1px solid rgba(255, 165, 0, 0.1);
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+
+  a {
+    color: #ffa500;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// ========== ANIMATIONS ==========
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+// ========== UTILITY CLASSES ==========
+.wrap {
+  min-height: 56vh;
+}
+
+.home-main {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 25%, #7e22ce 50%, #be185d 75%, #dc2626 100%);
+  background-size: cover;
+  min-height: 600px;
+}
+
+.logo {
+  max-height: 40px;
+}
+
+.company-name {
+  color: white;
+  height: 40px;
+  margin-left: 0.5rem;
+  vertical-align: sub;
+  display: inline-block;
+  line-height: 40px;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  height: 25px;
+  margin-bottom: 10px;
+}
+
+.play-id {
+  .tooltip {
+    display: none;
+    position: absolute;
+    margin-left: -6px;
+  }
+
+  .what-uid:hover ~ .tooltip {
+    display: block;
+  }
+}
+
+.what-uid {
+  border: 2px solid white;
+  padding: 3px;
+  border-radius: 50px;
+  margin-left: 6px;
+  width: 20px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  display: flex;
+}
+
+.checkout__payment {
+  label {
+    width: 100%;
+    height: 100%;
+
+    &.checked {
+      figure {
+        box-shadow: 0 0 3px 2px #edba45e0;
+      }
+    }
+  }
+
+  input {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+  }
+
+  figure {
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    height: auto;
+    background: white;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+// ========== MULTI-TIER PACKAGES SECTION ==========
+.uc-main-form {
+  padding: 3rem 1rem;
+  background: linear-gradient(180deg, rgba(35, 40, 46, 0.3), rgba(50, 55, 65, 0.3));
+}
+
+.uc-packages-section {
+  margin-bottom: 4rem;
+  animation: slideUp 0.8s ease-out;
+}
+
+.uc-packages-title {
+  font-size: 4rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: -0.5rem;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+.uc-packages-subtitle {
+  text-align: center;
+  color: rgba(255, 165, 0, 0.85);
+  margin-bottom: 0.5rem;
+  font-size: 1.7rem;
+  font-weight: 500;
+}
+
+.uc-packages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.uc-package-card {
+  background: linear-gradient(135deg, rgba(50, 150, 220, 0.15), rgba(100, 150, 255, 0.08));
+  border: 1.5px solid rgba(3, 150, 255, 0.3);
+  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление углов карточек пакетов)
+  border-radius: 14px;
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы карточек пакетов)
+  padding: 1.5rem 0rem;
+  text-align: center;
+  // transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); // DISABLED FOR CALCULATOR FUNCTIONALITY
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   top: -50%;
+  //   left: -50%;
+  //   width: 200%;
+  //   height: 200%;
+  //   background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  //   opacity: 0;
+  //   transition: opacity 0.3s ease;
+  // }
+
+  // &:hover {
+  //   transform: scale(1.12) translateY(-10px);
+  //   border-color: rgba(3, 150, 255, 0.8);
+  //   background: linear-gradient(135deg, rgba(50, 150, 220, 0.25), rgba(100, 150, 255, 0.15));
+  //   box-shadow: 0 16px 40px rgba(3, 150, 255, 0.2);
+  // }
+
+  &--popular {
+    // transform: scale(1); // DISABLED FOR CALCULATOR FUNCTIONALITY
+    border: 2px solid rgba(255, 107, 107, 0.7);
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 165, 0, 0.1));
+    box-shadow: 0 12px 30px rgba(255, 107, 107, 0.15);
+
+    // &:hover {
+    //   transform: scale(1.12) translateY(-10px);
+    //   box-shadow: 0 20px 50px rgba(255, 107, 107, 0.25);
+    // }
+  }
+}
+
+.uc-package-ribbon {
+    position: absolute;
+    top: -19px;
+    right: -12px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    color: #fff;
+    padding: 0.3rem 2.5rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    transform: rotate(0deg);
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 12px #ff6b6b4d;
+}
+
+.uc-package-uc {
+  // ИЗМЕНЯЙ ЗДЕСЬ: font-size (размер шрифта UC в пакетах)
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 0.8rem;
+  line-height: 1.2;
+}
+
+.uc-package-price {
+  // ИЗМЕНЯЙ ЗДЕСЬ: font-size (размер шрифта цены в пакетах)
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffa500;
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
+}
+
+.uc-package-btn {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: linear-gradient(135deg, rgba(3, 150, 255, 0.3), rgba(3, 150, 255, 0.15));
+  color: #0396ff;
+  border: 1.5px solid rgba(3, 150, 255, 0.5);
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(3, 150, 255, 0.5), rgba(3, 150, 255, 0.3));
+    border-color: #0396ff;
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(3, 150, 255, 0.3);
+  }
+
+  &--primary {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.4), rgba(255, 165, 0, 0.25));
+    color: #ff6b6b;
+    border: 1.5px solid rgba(255, 107, 107, 0.6);
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.6), rgba(255, 165, 0, 0.4));
+      border-color: #ff6b6b;
+      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+    }
+  }
+}
+
+// ========== PROMO BANNER & URGENCY ELEMENTS ==========
+.uc-hero__promo-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+  color: white;
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы промо-баннера сверху)
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  z-index: 1;
+  animation: slideDown 0.5s ease-out;
+
+  strong {
+    font-size: 1.1rem;
+  }
+}
+
+.uc-hero__promo-icon {
+  font-size: 1.2rem;
+  animation: pulse 1.5s infinite;
+}
+
+.uc-hero__promo-timer {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+// ========== REVIEWS CAROUSEL ==========
+.uc-reviews-carousel {
+  position: relative;
+  overflow: hidden;
+  // ИЗМЕНЯЙ ЗДЕСЬ: height (высота контейнера карусели для показа 3 отзывов)
+  // 3 карточки × 105px + 2 отступа × 16px = 347px
+  height: 347px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.uc-reviews-carousel__track {
+  display: flex;
+  flex-direction: column;
+  // ИЗМЕНЯЙ ЗДЕСЬ: gap (расстояние между карточками отзывов в карусели)
+  gap: 1rem;
+  transition: transform 0.6s ease-in-out;
+  will-change: transform;
+  
+  .uc-review-card {
+    flex-shrink: 0 !important;
+    width: 100%;
+    // ИЗМЕНЯЙ ЗДЕСЬ: height (фиксированная высота карточки отзыва для 3 штук)
+    height: 105px !important;
+    min-height: 105px !important;
+    max-height: 105px !important;
+    overflow: hidden;
+  }
+}
+
+// ========== REVIEWS SECTION ==========
+.uc-reviews-highlight {
+  h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+}
+
+.uc-reviews-grid {
+  display: grid;
+  // ИЗМЕНЯЙ ЗДЕСЬ: grid-template-columns (минимальная ширина карточек отзывов: 280px)
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  // ИЗМЕНЯЙ ЗДЕСЬ: gap (расстояние между карточками отзывов)
+  gap: 1.5rem;
+}
+
+.uc-review-card {
+  background: linear-gradient(135deg, rgba(50, 55, 65, 0.6), rgba(35, 40, 46, 0.6));
+  border: 1px solid rgba(255, 165, 0, 0.25);
+  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление углов карточек отзывов)
+  border-radius: 12px;
+  // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы карточек отзывов)
+  padding: 0.875rem 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+
+  // Удалили ::before с кавычкой - она создавала "стоп" символ перед звёздами
+
+  &:hover {
+    border-color: rgba(255, 165, 0, 0.5);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(255, 107, 107, 0.15);
+  }
+
+  &--featured {
+    border-left: 4px solid #ff6b6b;
+    animation: slideIn 0.6s ease-out;
+  }
+}
+
+.uc-review-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.375rem;
+  border-bottom: 1px solid rgba(255, 165, 0, 0.1);
+}
+
+.uc-review-card__rating {
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  color: #FFD700;
+  text-shadow: 0 0 3px rgba(255, 215, 0, 0.5);
+  
+  &::before,
+  &::after {
+    content: none !important;
+    display: none !important;
+  }
+  
+  .star {
+    &::before,
+    &::after {
+      content: none !important;
+      display: none !important;
+    }
+  }
+}
+
+.uc-review-card__time {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.uc-review-card__text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+  position: relative;
+  z-index: 1;
+  font-style: italic;
+  max-height: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  line-clamp: 7;
+  -webkit-box-orient: vertical;
+}
+
+.uc-review-card__author {
+  font-size: 0.85rem;
+  color: rgba(255, 165, 0, 0.8);
+  font-weight: 600;
+  margin: 0;
+}
+
+// ========== ANIMATIONS ==========
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes livePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(255, 107, 107, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// ========== RESPONSIVE FIXES ==========
+@media (max-width: 576px) {
+  body {
+    font-size: 14px;
+  }
+
+  .uc-hero__title {
+    font-size: 1.5rem;
+  }
+
+  .uc-hero__promo-banner {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .uc-hero__promo-timer {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .uc-section-title {
+    font-size: 1.25rem;
+  }
+
+  .uc-form-label {
+    font-size: 0.85rem;
+  }
+
+  .uc-proof-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uc-payment-icons {
+    gap: 0.75rem;
+  }
+
+  .uc-activity-section {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .uc-reviews-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uc-review-card {
+    padding: 1rem;
+
+    &::before {
+      font-size: 2.5rem;
+      left: 5px;
+    }
+  }
+
+  .uc-review-card__text {
+    font-size: 0.9rem;
+  }
+
+  .uc-live-counter {
+    padding: 1.5rem 1rem;
+  }
+
+  #live-count {
+    font-size: 1.1rem;
+  }
+
+  .uc-trust-badges {
+    grid-template-columns: 1fr;
+  }
+
+  .uc-trust-badge {
+    padding: 1rem;
+  }
+
+  .uc-trust-badge__icon {
+    font-size: 1.5rem;
+  }
+
+  .uc-trust-badge__title {
+    font-size: 0.9rem;
+  }
+
+  .uc-trust-badge__desc {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .uc-activity-section {
+    grid-template-columns: 1fr;
+  }
+
+  .uc-reviews-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+// ========== TOAST NOTIFICATIONS ==========
+.uc-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  min-width: 300px;
+  max-width: 500px;
+  background: rgba(35, 40, 46, 0.95);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 10000;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  
+  &--show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  &--error {
+    border-left: 4px solid #ff6b6b;
+    background: rgba(255, 107, 107, 0.15);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  
+  &--success {
+    border-left: 4px solid #51cf66;
+    background: rgba(81, 207, 102, 0.15);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  
+  &--info {
+    border-left: 4px solid #0396ff;
+    background: rgba(3, 150, 255, 0.15);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  
+  &__icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  
+  &__message {
+    flex: 1;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  
+  @media (max-width: 768px) {
+    right: 10px;
+    left: 10px;
+    min-width: auto;
+    max-width: none;
+  }
+}
+
+// ========== SPINNER ==========
+.uc-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ========== INPUT AUTOFILL INDICATOR ==========
+.uc-input-autofilled {
+  background: rgba(81, 207, 102, 0.1) !important;
+  border-color: rgba(81, 207, 102, 0.3) !important;
+}
