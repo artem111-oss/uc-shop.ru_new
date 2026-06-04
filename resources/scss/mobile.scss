@@ -49,18 +49,18 @@
     order: 1;
   }
 
-  /* ── ЗАГОЛОВОК И ПОДЗАГОЛОВОК ─────────────────────────── */
+  /* ── ЗАГОЛОВОК И ПОДЗАГОЛОВОК ───────────────────────── */
   .uc-packages-title {
     font-size: 1.77rem !important;
-    margin: 1px 0 0 !important;
+    margin: 0px 0 0 !important;
     padding: 0 0px !important;
     line-height: 1 !important;
   }
 
   .uc-packages-subtitle {
     font-size: 0.75rem !important;
-    margin: -15px 0 -15px 0 !important;   // top right bottom left
-    padding: 0 4px !important;
+    margin: 1px 0 -20px 0 !important;   // top right bottom left
+    padding: 0 0px !important;
     display: block;
   }
 
