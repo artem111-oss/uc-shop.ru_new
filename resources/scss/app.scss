@@ -413,9 +413,17 @@ a {
 
 /* Десктоп: заголовки над гридом, центрируются на 100% ширине */
 .uc-hero__titles {
+  position: relative;
+  z-index: 3;
   width: 100%;
   text-align: center;
-  padding: 2rem 1rem 0.5rem;
+  padding: 2rem 14rem 0.5rem;
+  max-width: 1800px;
+  margin: 0 auto;
+
+  @media (max-width: 1024px) {
+    padding: 2rem 1rem 0.5rem;
+  }
 
   @media (max-width: 768px) {
     display: none;
