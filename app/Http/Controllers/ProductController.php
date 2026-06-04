@@ -10,21 +10,18 @@ class ProductController extends Controller
 {
   public function index(): View
   {
-    $arr = [];
-    $products = Product::where('status', 1)->get();
+      $products = Product::where('status', 1)->get()->map(function ($p) {
+          return [
+              'id'      => $p->id,
+              'name'    => $p->name,
+              'price'   => $p->price,
+              'type_id' => $p->type_id,
+          ];
+      });
 
-    foreach ($products as $product) {
-      $arr[] = array(
-        'id' => $product['id'],
-        'name' => $product['name'],
-        'price' => $product['price'],
-        'type_id' => $product['type_id']
-      );
-    }
-      //dd($arr);
-    return view("home", [
-      'products' => $arr,
-    ]);
+      return view('home', [
+          'products' => $products,
+      ]);
   }
 
 

@@ -25,7 +25,9 @@ class OrderController extends Controller
     $order = new Order();
     $order->client_id = 1;
     $order->status_id = 1;
-    $order->price = $product->price;
+    $qty = max(1, (int)$request->input('qty', 1));
+    $order->price      = $product->price * $qty;
+    $order->qty        = $qty;
     $order->product_id = $product->id;
     $order->type_id = 1;
     $order->user_id = 1;
@@ -513,7 +515,7 @@ class OrderController extends Controller
             'Content-Type' => 'application/json',
         ])->timeout(30)->post('https://ragnergiftcard.com/api/v1/order', [
             'product_id' => $productId,
-            'qty'        => 1,
+            'qty'        => $order->qty ?? 1,
             'player_id'  => $pubgId,
         ]);
 
