@@ -752,10 +752,18 @@ a {
 }
 
 // ========== ID FORM SECTION ==========
-/* Счётчик + hint-row видны только на мобиле */
-.uc-mobile-counter,
-.uc-id-form__hint-row {
+/* Счётчик виден только на мобиле */
+.uc-mobile-counter {
   display: none;
+}
+
+/* hint-row скрыт только на мобиле (на десктопе показывается под полем ID) */
+.uc-id-form__hint-row {
+  display: flex;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .uc-id-form {
@@ -795,7 +803,7 @@ a {
 
 .uc-id-form__cart {
   margin-top: 1.5rem;
-  padding: 1rem;
+  padding: 0.5rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1014,9 +1022,9 @@ a {
 }
 
 .uc-id-form__hint {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: rgba(255, 165, 0, 0.8);
-  margin: 0.5rem 0 0;
+  margin: 0rem 7px -20px;
   text-align: center;
 }
 

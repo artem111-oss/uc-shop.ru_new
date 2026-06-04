@@ -728,20 +728,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (totalUcEl) totalUcEl.innerHTML = `<strong>${totalUc.toLocaleString('ru-RU')}</strong> <strong>UC</strong>`;
         if (totalPriceEl) totalPriceEl.textContent = totalPrice.toLocaleString('ru-RU') + ' ₽';
 
-        // Обновляем кнопку на мобиле
-        if (window.innerWidth <= 768) {
-            const submitBtn = document.getElementById('mobile-submit-btn');
-            const clearBtn = document.getElementById('mobile-clear-btn');
-            if (submitBtn) {
-                if (totalUc > 0) {
+        // Обновляем кнопку (мобиле и десктоп)
+        const submitBtn = document.getElementById('mobile-submit-btn');
+        const clearBtn = document.getElementById('mobile-clear-btn');
+        if (submitBtn) {
+            if (totalUc > 0) {
+                if (window.innerWidth <= 768) {
                     submitBtn.textContent = `Получить ${totalUc.toLocaleString('ru-RU')} UC за ${totalPrice.toLocaleString('ru-RU')} ₽ →`;
-                    submitBtn.classList.remove('is-empty');
-                    if (clearBtn) clearBtn.style.display = 'flex';
+                    if (clearBtn) clearBtn.style.display = 'flex'; // ← только на мобиле
                 } else {
-                    submitBtn.textContent = 'Выберите пакет UC';
-                    submitBtn.classList.add('is-empty');
-                    if (clearBtn) clearBtn.style.display = 'none';
+                    submitBtn.textContent = 'Получить UC за 30 секунд →';
+                    if (clearBtn) clearBtn.style.display = 'none'; // ← на десктопе крестик скрыт
                 }
+                submitBtn.classList.remove('is-empty');
+            } else {
+                submitBtn.textContent = 'Выберите пакет UC';
+                submitBtn.classList.add('is-empty');
+                if (clearBtn) clearBtn.style.display = 'none';
             }
         }
 
@@ -751,31 +754,26 @@ document.addEventListener('DOMContentLoaded', () => {
     window.clearCart = function() {
         window.cart = {};
         
-        // Обнуляем все счетчики на карточках
         document.querySelectorAll('.uc-calc-qty').forEach(el => {
             el.textContent = '0';
         });
         
-        // Обнуляем итоги корзины
         const totalUcEl = document.getElementById('cart-total-uc');
         const totalPriceEl = document.getElementById('cart-total-price');
         if (totalUcEl) totalUcEl.innerHTML = '<strong>0</strong> <strong>UC</strong>';
         if (totalPriceEl) totalPriceEl.textContent = '0 ₽';
         
-        // Сбрасываем кнопку на мобиле
-        if (window.innerWidth <= 768) {
-            const submitBtn = document.getElementById('mobile-submit-btn');
-            const clearBtn = document.getElementById('mobile-clear-btn');
-            if (submitBtn) {
-                submitBtn.textContent = 'Выберите пакет UC';
-                submitBtn.classList.add('is-empty');
-            }
-            if (clearBtn) clearBtn.style.display = 'none';
+        const submitBtn = document.getElementById('mobile-submit-btn');
+        const clearBtn = document.getElementById('mobile-clear-btn');
+        if (submitBtn) {
+            submitBtn.textContent = 'Выберите пакет UC';
+            submitBtn.classList.add('is-empty');
         }
+        if (clearBtn) clearBtn.style.display = 'none';
 
         showToast('Корзина очищена', 'success');
         console.log('✅ Cart cleared');
-    };
+    };             // ← закрывает функцию
     
     // pointerdown + отключение transition
     document.addEventListener('pointerdown', (e) => {
