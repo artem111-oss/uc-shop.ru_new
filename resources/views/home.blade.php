@@ -372,36 +372,41 @@
         
         console.log('Total amount:', totalAmount, 'Cart items:', cartItems);
         
-        // Step 1: Create Order
-        const orderResponse = await fetch('/order/add', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-          },
-        body: JSON.stringify({
-          product_id: cartItems[0].product_id,
-          qty: cartItems[0].quantity,
-          uid: gameId
-        })
-        });
-        
-        if (!orderResponse.ok) {
-          const error = await orderResponse.json();
-          throw new Error(error.message || 'Ошибка создания заказа');
+        // Step 1: Create orders for each item in cart
+        const createdOrderIds = [];
+
+        for (const item of cartItems) {
+          const orderResponse = await fetch('/order/add', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+              product_id: item.product_id,
+              qty: item.quantity,
+              uid: gameId
+            })
+          });
+
+          if (!orderResponse.ok) {
+            const error = await orderResponse.json();
+            throw new Error(error.message || 'Ошибка создания заказа');
+          }
+
+          const orderData = await orderResponse.json();
+          if (!orderData.success || !orderData.id) {
+            throw new Error('Ошибка при создании заказа');
+          }
+
+          createdOrderIds.push(orderData.id);
         }
-        
-        const orderData = await orderResponse.json();
-        
-        if (!orderData.success || !orderData.id) {
-          throw new Error('Invalid order response');
-        }
-        
+
         // Save Player ID for future use
         savePlayerId(gameId);
-        
-        // Step 2: Initialize Payment
+
+        // Step 2: Initialize Payment for all orders combined
         const paymentResponse = await fetch('/order/payment', {
           method: 'POST',
           headers: {
@@ -410,15 +415,15 @@
             'X-CSRF-TOKEN': csrfToken
           },
           body: JSON.stringify({
-            order_id: orderData.id,
+            order_id: createdOrderIds[0],
+            order_ids: createdOrderIds,
             amount: totalAmount,
             game_id: gameId
           })
         });
-        
+
         if (!paymentResponse.ok) {
           const errorText = await paymentResponse.text();
-          console.error('Payment init error response:', errorText);
           try {
             const error = JSON.parse(errorText);
             throw new Error(error.message || 'Ошибка инициализации платежа');
@@ -426,14 +431,13 @@
             throw new Error('Ошибка инициализации платежа: ' + paymentResponse.status);
           }
         }
-        
+
         const paymentData = await paymentResponse.json();
-        console.log('Payment data:', paymentData);
-        
+
         if (!paymentData.link) {
           throw new Error(paymentData.error || 'Ошибка инициализации платежа');
         }
-        
+
         // Step 3: Redirect to payment page
         showToast('Переход к оплате...', 'success');
         setTimeout(() => {

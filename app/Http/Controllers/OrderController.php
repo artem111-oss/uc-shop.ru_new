@@ -22,18 +22,19 @@ class OrderController extends Controller
         return response()->json(['success' => false, 'message' => 'Product not found'], 404);
     }
 
+    $qty = max(1, (int)$request->input('qty', 1));
+
     $order = new Order();
     $order->client_id = 1;
     $order->status_id = 1;
-    $qty = max(1, (int)$request->input('qty', 1));
-    $order->price      = $product->price * $qty;
-    $order->qty        = $qty;
+    $order->price     = $product->price * $qty;
+    $order->qty       = $qty;
     $order->product_id = $product->id;
-    $order->type_id = 1;
-    $order->user_id = 1;
-    $order->uid = $request->input('uid');
-    $order->game_id = $request->input('uid'); // PUBG ID = game_id
-    $order->email = $request->input('email'); // nullable, OK
+    $order->type_id   = 1;
+    $order->user_id   = 1;
+    $order->uid       = $request->input('uid');
+    $order->game_id   = $request->input('uid');
+    $order->email     = $request->input('email');
     $order->save();
 
     Log::info('Order created', [
@@ -83,7 +84,9 @@ class OrderController extends Controller
 
     public function createPayment(Request $request)
     {
-        $orderId = $request->input('order_id');
+        $orderId  = $request->input('order_id');
+        $orderIds = $request->input('order_ids', []);
+
         if (!$orderId) {
             return response()->json(['error' => 'order_id отсутствует'], 400);
         }
@@ -93,12 +96,20 @@ class OrderController extends Controller
             return response()->json(['error' => 'Заказ не найден'], 404);
         }
 
+        // Если передан массив заказов — суммируем цены всех
+        $orderIds = $request->input('order_ids', []);
+        if (!empty($orderIds) && count($orderIds) > 1) {
+            $totalPrice = Order::whereIn('id', $orderIds)->sum('price');
+        } else {
+            $totalPrice = $order->price;
+        }
+
         $product = Product::find($order->product_id);
         if (!$product) {
             return response()->json(['error' => 'Товар не найден'], 404);
         }
 
-        $amount   = number_format((float)$product->price, 2, '.', '');
+        $amount = number_format((float)$totalPrice, 2, '.', '');
         $currency = 'RUB';
 
         // 1) Попытка через Pally
