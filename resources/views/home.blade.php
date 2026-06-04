@@ -37,6 +37,7 @@
               </div>
             @endforeach
           </div>
+        </div><!-- /uc-hero__left -->
 
         <!-- RIGHT: ID INPUT FORM -->
         <div class="uc-hero__right">

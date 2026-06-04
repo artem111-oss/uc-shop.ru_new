@@ -383,23 +383,12 @@ a {
   position: relative;
   z-index: 3;
   display: grid;
-  // ИЗМЕНЯЙ ЗДЕСЬ: Ширина левой части | Ширина блока ID
   grid-template-columns: 1fr 340px;
-  // ИЗМЕНЯЙ ЗДЕСЬ: Расстояние между блоками
-  gap: 0.5rem;
+  gap: 1.5rem;
   align-items: flex-start;
-  // ИЗМЕНЯЙ ЗДЕСЬ: Внутренние отступы (верх/низ | лево/право)
-  padding: 0rem 14rem;
-  // ИЗМЕНЯЙ ЗДЕСЬ: Максимальная ширина контейнера
-  max-width: 1800px;
+  padding: 0 2rem;
+  max-width: 1400px;
   margin: 0 auto;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 1rem;
-  }
-
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     padding: 0;
@@ -417,8 +406,8 @@ a {
   z-index: 3;
   width: 100%;
   text-align: center;
-  padding: 0rem 14rem 0rem;
-  max-width: 1800px;
+  padding: 1.5rem 2rem 0.5rem;
+  max-width: 1400px;
   margin: 0 auto;
 
   @media (max-width: 1024px) {
@@ -450,7 +439,7 @@ a {
   @media (max-width: 768px) {
     width: 100% !important;
     flex-basis: 100% !important;
-    margin-bottom: 1rem;
+    padding-bottom: 180px;
   }
 }
 // Или зафиксировать в определенном месте
@@ -779,16 +768,19 @@ a {
   }
   
   @media (max-width: 768px) {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-width: 100%;
-    margin: 0;
-    border-radius: 16px 16px 0 0;
-    z-index: 999;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
-  }
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  border-radius: 16px 16px 0 0;
+  z-index: 999;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+  // Скрываем корзину на мобиле — она не нужна в fixed-панели
+  .uc-id-form__cart { display: none; }
+}
 }
 
 .uc-id-form__title {
