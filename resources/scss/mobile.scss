@@ -51,15 +51,15 @@
 
   /* ── ЗАГОЛОВОК И ПОДЗАГОЛОВОК ─────────────────────────── */
   .uc-packages-title {
-    font-size: 1.3rem !important;
-    margin: -1px 0 0 !important;
-    padding: 0 4px !important;
-    line-height: 1.2 !important;
+    font-size: 1.77rem !important;
+    margin: 1px 0 0 !important;
+    padding: 0 0px !important;
+    line-height: 1 !important;
   }
 
   .uc-packages-subtitle {
     font-size: 0.75rem !important;
-    margin-bottom: -19px !important;
+    margin: -15px 0 -15px 0 !important;   // top right bottom left
     padding: 0 4px !important;
     display: block;
   }
@@ -228,7 +228,7 @@
 
   /* ── TOAST: поднять выше фиксированной панели ─────────── */
   .uc-toast {
-    bottom: 140px !important; /* выше панели ввода ID */
+    bottom: 200px !important; /* выше панели ввода ID */
     right: 12px !important;
     left: 12px !important;
     min-width: unset !important;
