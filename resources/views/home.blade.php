@@ -227,8 +227,8 @@
                 <button class="uc-id-form__check" onclick="event.preventDefault(); validatePlayerId(document.querySelector('.uc-id-form__input').value) && showToast('ID корректный', 'success')">✓</button>
               </div>
               <div class="uc-id-form__hint-row">
-                <span class="uc-mobile-counter">🟢 <strong id="live-count-mobile">...</strong> UC за <span id="live-period-mobile">час</span></span>
                 <p class="uc-id-form__hint">💡 Где найти? <br> PUBG Mobile → Профиль → ID под ником</p>
+                <span class="uc-mobile-counter">🟢 <strong id="live-count-mobile">...</strong> UC отправлено за <span id="live-period-mobile">час</span></span>
               </div>
             </div>
             <div class="uc-id-form__cart">
