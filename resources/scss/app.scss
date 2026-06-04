@@ -472,8 +472,8 @@ a {
 
 .uc-packages-grid {
   display: grid;
-  // ИЗМЕНЯЙ ЗДЕСЬ: Минимальный размер карточки (120px = 2 ряда по 8 штук)
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  // ИЗМЕНЯЙ ЗДЕСЬ: 7 колонок на десктопе = 3 ряда по 7 карточек
+  grid-template-columns: repeat(7, 1fr);
   // ИЗМЕНЯЙ ЗДЕСЬ: Расстояние между карточками
   gap: 0.3rem;
   // ИЗМЕНЯЙ ЗДЕСЬ: Максимальная ширина блока товаров
@@ -721,6 +721,12 @@ a {
 }
 
 // ========== ID FORM SECTION ==========
+/* Счётчик + hint-row видны только на мобиле */
+.uc-mobile-counter,
+.uc-id-form__hint-row {
+  display: none;
+}
+
 .uc-id-form {
   background: linear-gradient(135deg, rgba(35, 40, 46, 0.95), rgba(50, 55, 65, 0.95));
   border: 1px solid rgba(255, 255, 255, 0.1);

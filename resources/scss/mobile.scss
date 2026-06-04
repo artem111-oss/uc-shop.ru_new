@@ -175,7 +175,7 @@
     margin-bottom: 3px !important;
   }
 
-  /* Счётчик + hint в одну строку */
+  /* Счётчик + hint в одну строку: hint слева, счётчик справа */
   .uc-id-form__hint-row {
     display: flex !important;
     align-items: flex-start !important;
@@ -184,23 +184,24 @@
     margin-top: 3px !important;
   }
 
-  .uc-mobile-counter {
+  .uc-id-form__hint {
     font-size: 0.68rem !important;
+    margin: 0 !important;
+    text-align: left !important;
+    flex: 1 !important;
+  }
+
+  .uc-mobile-counter {
+    display: inline !important; /* перебиваем display:none из app.scss */
+    font-size: 0.65rem !important;
     color: rgba(255, 255, 255, 0.65) !important;
-    white-space: nowrap !important;
-    padding-top: 1px !important;
+    text-align: right !important;
     flex-shrink: 0 !important;
+    padding-top: 1px !important;
 
     strong {
       color: #4ade80 !important;
     }
-  }
-
-  .uc-id-form__hint {
-    font-size: 0.68rem !important;
-    margin: 0 !important;
-    text-align: right !important;
-    flex: 1 !important;
   }
 
   /* ── КНОПКА ОПЛАТЫ — динамический текст ─────────────── */
