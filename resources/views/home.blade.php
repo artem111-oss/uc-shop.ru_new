@@ -7,12 +7,19 @@
     <div class="uc-hero__background"></div>
     <div class="uc-hero__overlay"></div>
     <div class="container-fluid">
+      <!-- ЗАГОЛОВКИ: отдельный блок, центрируется независимо от grid -->
+      <div class="uc-hero__titles">
+        <h2 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UC SHOP</h2>
+        <p class="uc-packages-subtitle">ДОСТАВКА ЗА 30 СЕКУНД • ЛУЧШИЕ ЦЕНЫ • 100% БЕЗОПАСНО</p>
+      </div>
       <div class="uc-hero__wrapper">
         <!-- LEFT: PACKAGES -->
         <div class="uc-hero__left">
-          <h2 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UC SHOP</h2>
-          <p class="uc-packages-subtitle">ДОСТАВКА ЗА 30 СЕКУНД • ЛУЧШИЕ ЦЕНЫ • 100% БЕЗОПАСНО</p>
-          
+          <!-- Заголовки для мобильной версии (desktop скрыты через CSS) -->
+          <div class="uc-hero__titles-mobile">
+            <h2 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UC SHOP</h2>
+            <p class="uc-packages-subtitle">ДОСТАВКА ЗА 30 СЕКУНД • ЛУЧШИЕ ЦЕНЫ • 100% БЕЗОПАСНО</p>
+          </div>
           <!-- ALL PACKAGES IN 2 ROWS -->
           <div class="uc-packages-grid">
             <!-- Ряд 1: 60 → 985 -->

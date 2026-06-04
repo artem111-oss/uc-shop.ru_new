@@ -411,6 +411,28 @@ a {
   }
 }
 
+/* Десктоп: заголовки над гридом, центрируются на 100% ширине */
+.uc-hero__titles {
+  width: 100%;
+  text-align: center;
+  padding: 2rem 1rem 0.5rem;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+/* Мобиль: заголовки внутри uc-hero__left, на десктопе скрыты */
+.uc-hero__titles-mobile {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+}
+
 .uc-hero__left {
   display: flex;
   flex-direction: column;
