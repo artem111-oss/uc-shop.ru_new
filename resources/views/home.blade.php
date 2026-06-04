@@ -15,6 +15,7 @@
           
           <!-- ALL PACKAGES IN 2 ROWS -->
           <div class="uc-packages-grid">
+            <!-- Ряд 1: 60 → 985 -->
             <div class="uc-package-card" data-uc="60" data-price="85">
               <div class="uc-package-uc">60 UC</div>
               <div class="uc-package-price">₽ 85</div>
@@ -33,7 +34,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
             <div class="uc-package-card" data-uc="325" data-price="470">
               <div class="uc-package-uc">325 UC</div>
               <div class="uc-package-price">₽ 470</div>
@@ -43,7 +43,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
             <div class="uc-package-card" data-uc="385" data-price="555">
               <div class="uc-package-uc">385 UC</div>
               <div class="uc-package-price">₽ 555</div>
@@ -53,7 +52,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
             <div class="uc-package-card" data-uc="660" data-price="890">
               <div class="uc-package-uc">660 UC</div>
               <div class="uc-package-price">₽ 890</div>
@@ -63,7 +61,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
             <div class="uc-package-card" data-uc="720" data-price="975">
               <div class="uc-package-uc">720 UC</div>
               <div class="uc-package-price">₽ 975</div>
@@ -73,7 +70,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
             <div class="uc-package-card" data-uc="985" data-price="1360">
               <div class="uc-package-uc">985 UC</div>
               <div class="uc-package-price">₽ 1.360</div>
@@ -83,7 +79,7 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
+            <!-- Ряд 2: 1320 → 8100 -->
             <div class="uc-package-card" data-uc="1320" data-price="1780">
               <div class="uc-package-uc">1.320 UC</div>
               <div class="uc-package-price">₽ 1.780</div>
@@ -93,7 +89,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
             <div class="uc-package-card" data-uc="1800" data-price="2100">
               <div class="uc-package-uc">1.800 UC</div>
               <div class="uc-package-price">₽ 2.100</div>
@@ -103,17 +98,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
-            <div class="uc-package-card" data-uc="2460" data-price="2900">
-              <div class="uc-package-uc">2.460 UC</div>
-              <div class="uc-package-price">₽ 2.900</div>
-              <div class="uc-package-calc">
-                <button class="uc-calc-btn uc-calc-btn--minus">−</button>
-                <span class="uc-calc-qty">0</span>
-                <button class="uc-calc-btn uc-calc-btn--plus">+</button>
-              </div>
-            </div>
-
             <div class="uc-package-card" data-uc="1920" data-price="2270">
               <div class="uc-package-uc">1.920 UC</div>
               <div class="uc-package-price">₽ 2.270</div>
@@ -123,17 +107,15 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
-            <div class="uc-package-card" data-uc="5650" data-price="6200">
-              <div class="uc-package-uc">5.650 UC</div>
-              <div class="uc-package-price">₽ 6.200</div>
+            <div class="uc-package-card" data-uc="2460" data-price="2900">
+              <div class="uc-package-uc">2.460 UC</div>
+              <div class="uc-package-price">₽ 2.900</div>
               <div class="uc-package-calc">
                 <button class="uc-calc-btn uc-calc-btn--minus">−</button>
                 <span class="uc-calc-qty">0</span>
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
             <div class="uc-package-card" data-uc="3850" data-price="4100">
               <div class="uc-package-uc">3.850 UC</div>
               <div class="uc-package-price">₽ 4.100</div>
@@ -143,27 +125,15 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
-            <div class="uc-package-card" data-uc="9900" data-price="9900">
-              <div class="uc-package-uc">9.900 UC</div>
-              <div class="uc-package-price">₽ 9.900</div>
+            <div class="uc-package-card" data-uc="5650" data-price="6200">
+              <div class="uc-package-uc">5.650 UC</div>
+              <div class="uc-package-price">₽ 6.200</div>
               <div class="uc-package-calc">
                 <button class="uc-calc-btn uc-calc-btn--minus">−</button>
                 <span class="uc-calc-qty">0</span>
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
-            <div class="uc-package-card" data-uc="12010" data-price="12010">
-              <div class="uc-package-uc">12.010 UC</div>
-              <div class="uc-package-price">₽ 12.010</div>
-              <div class="uc-package-calc">
-                <button class="uc-calc-btn uc-calc-btn--minus">−</button>
-                <span class="uc-calc-qty">0</span>
-                <button class="uc-calc-btn uc-calc-btn--plus">+</button>
-              </div>
-            </div>
-
             <div class="uc-package-card" data-uc="8100" data-price="8100">
               <div class="uc-package-uc">8.100 UC</div>
               <div class="uc-package-price">₽ 8.100</div>
@@ -173,7 +143,25 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
+            <!-- Ряд 3: 9900 → 81000 -->
+            <div class="uc-package-card" data-uc="9900" data-price="9900">
+              <div class="uc-package-uc">9.900 UC</div>
+              <div class="uc-package-price">₽ 9.900</div>
+              <div class="uc-package-calc">
+                <button class="uc-calc-btn uc-calc-btn--minus">−</button>
+                <span class="uc-calc-qty">0</span>
+                <button class="uc-calc-btn uc-calc-btn--plus">+</button>
+              </div>
+            </div>
+            <div class="uc-package-card" data-uc="12010" data-price="12010">
+              <div class="uc-package-uc">12.010 UC</div>
+              <div class="uc-package-price">₽ 12.010</div>
+              <div class="uc-package-calc">
+                <button class="uc-calc-btn uc-calc-btn--minus">−</button>
+                <span class="uc-calc-qty">0</span>
+                <button class="uc-calc-btn uc-calc-btn--plus">+</button>
+              </div>
+            </div>
             <div class="uc-package-card" data-uc="16200" data-price="16200">
               <div class="uc-package-uc">16.200 UC</div>
               <div class="uc-package-price">₽ 16.200</div>
@@ -183,7 +171,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
             <div class="uc-package-card" data-uc="24300" data-price="24300">
               <div class="uc-package-uc">24.300 UC</div>
               <div class="uc-package-price">₽ 24.300</div>
@@ -193,7 +180,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
             <div class="uc-package-card" data-uc="32400" data-price="32400">
               <div class="uc-package-uc">32.400 UC</div>
               <div class="uc-package-price">₽ 32.400</div>
@@ -203,7 +189,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
             <div class="uc-package-card" data-uc="40500" data-price="40500">
               <div class="uc-package-uc">40.500 UC</div>
               <div class="uc-package-price">₽ 40.500</div>
@@ -213,7 +198,6 @@
                 <button class="uc-calc-btn uc-calc-btn--plus">+</button>
               </div>
             </div>
-
             <div class="uc-package-card" data-uc="81000" data-price="81000">
               <div class="uc-package-uc">81.000 UC</div>
               <div class="uc-package-price">₽ 81.000</div>
@@ -242,7 +226,10 @@
                 <input type="text" placeholder="Ваш Player ID" class="uc-id-form__input" inputmode="numeric" pattern="5[0-9]*">
                 <button class="uc-id-form__check" onclick="event.preventDefault(); validatePlayerId(document.querySelector('.uc-id-form__input').value) && showToast('ID корректный', 'success')">✓</button>
               </div>
-              <p class="uc-id-form__hint">💡 Где найти? <br> PUBG Mobile → Профиль → ID под ником</p>
+              <div class="uc-id-form__hint-row">
+                <span class="uc-mobile-counter">🟢 <strong id="live-count-mobile">...</strong> UC за <span id="live-period-mobile">час</span></span>
+                <p class="uc-id-form__hint">💡 Где найти? <br> PUBG Mobile → Профиль → ID под ником</p>
+              </div>
             </div>
             <div class="uc-id-form__cart">
               <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -256,7 +243,7 @@
             </div>
 
             <div class="uc-mobile-submit-row">
-              <button class="uc-id-form__submit uc-id-form__submit--primary is-empty" id="mobile-submit-btn" onclick="proceedToCheckout()">Выберите пакет выше</button>
+              <button class="uc-id-form__submit uc-id-form__submit--primary is-empty" id="mobile-submit-btn" onclick="proceedToCheckout()">Выберите пакет UC</button>
               <button class="uc-mobile-clear-btn" id="mobile-clear-btn" onclick="clearCart()" title="Очистить корзину" style="display:none">✕</button>
             </div>
 
@@ -744,7 +731,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     submitBtn.classList.remove('is-empty');
                     if (clearBtn) clearBtn.style.display = 'flex';
                 } else {
-                    submitBtn.textContent = 'Выберите пакет выше';
+                    submitBtn.textContent = 'Выберите пакет UC';
                     submitBtn.classList.add('is-empty');
                     if (clearBtn) clearBtn.style.display = 'none';
                 }
@@ -773,7 +760,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const submitBtn = document.getElementById('mobile-submit-btn');
             const clearBtn = document.getElementById('mobile-clear-btn');
             if (submitBtn) {
-                submitBtn.textContent = 'Выберите пакет выше';
+                submitBtn.textContent = 'Выберите пакет UC';
                 submitBtn.classList.add('is-empty');
             }
             if (clearBtn) clearBtn.style.display = 'none';
@@ -849,6 +836,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const liveCountEl = document.getElementById('live-count');
     const livePeriodEl = document.getElementById('live-period');
+    const liveCountMobileEl = document.getElementById('live-count-mobile');
+    const livePeriodMobileEl = document.getElementById('live-period-mobile');
     
     // Функция для получения статистики
     async function updateUcStats() {
@@ -874,6 +863,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (liveCountEl) {
                     liveCountEl.textContent = value;
                 }
+
+                // Мобильный счётчик — крутится синхронно с десктопным
+                if (liveCountMobileEl) {
+                    liveCountMobileEl.textContent = value;
+                }
                 
                 console.log('✅ UC Stats updated:', data.stats);
             }
@@ -891,6 +885,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (livePeriodEl) {
             livePeriodEl.textContent = periods[currentPeriod];
+        }
+        if (livePeriodMobileEl) {
+            livePeriodMobileEl.textContent = periods[currentPeriod];
         }
         
         updateUcStats();
