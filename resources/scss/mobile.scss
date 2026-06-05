@@ -302,6 +302,16 @@
     display: none;
   }
 
+  /* Сетка на планшете — растягиваем на всю ширину */
+  .uc-hero__left {
+    align-items: stretch;
+  }
+
+  .uc-packages-grid {
+    max-width: 100%;
+    margin: 0;
+  }
+
   /* Панель ID — статичная (не fixed), стандартная */
   .uc-id-form {
     position: relative;
