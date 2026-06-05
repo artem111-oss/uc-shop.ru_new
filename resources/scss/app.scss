@@ -49,9 +49,37 @@ $prefix: "uc-";
 // Utilities
 @import "../node_modules/bootstrap/scss/utilities/api";
 
+// ========== CSS VARIABLES: fluid typography & spacing ==========
+:root {
+  // Плавная типографика (clamp: мин | fluid | макс)
+  --text-sm:   clamp(0.8rem,  0.7rem + 0.5vw,  0.9rem);
+  --text-base: clamp(1rem,    0.9rem + 0.5vw,  1.1rem);
+  --text-lg:   clamp(1.1rem,  1rem   + 0.75vw, 1.3rem);
+  --text-xl:   clamp(1.25rem, 1rem   + 1.5vw,  2rem);
+  --text-2xl:  clamp(1.5rem,  1rem   + 2.5vw,  3rem);
+
+  // Плавные отступы
+  --space-xs:  clamp(0.25rem, 0.5vw,  0.5rem);
+  --space-sm:  clamp(0.5rem,  1vw,    1rem);
+  --space-md:  clamp(1rem,    2vw,    2rem);
+  --space-lg:  clamp(1.5rem,  4vw,    4rem);
+  --space-xl:  clamp(2rem,    6vw,    6rem);
+
+  // Сетка
+  --container-max: 1400px;
+  --container-padding: clamp(0.75rem, 2vw, 2rem);
+}
+
 // ========== GLOBAL STYLES ==========
 * {
   box-sizing: border-box;
+}
+
+// Базовая адаптивность медиа-элементов
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 html, body {
@@ -865,7 +893,7 @@ a {
   // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы полей ввода)
   padding: 0.8rem;
   color: white;
-  font-size: 0.95rem;
+  font-size: 1rem; /* минимум 16px — предотвращает auto-zoom на iOS Safari */
   transition: all 0.3s ease;
 
   &::placeholder {
@@ -1491,16 +1519,7 @@ footer {
   }
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+
 
 @keyframes zoomIn {
   from {
@@ -1609,152 +1628,6 @@ label {
   img {
     max-width: 100%;
     max-height: 100%;
-  }
-}
-
-// ========== MULTI-TIER PACKAGES SECTION ==========
-.uc-main-form {
-  padding: 3rem 1rem;
-  background: linear-gradient(180deg, rgba(35, 40, 46, 0.3), rgba(50, 55, 65, 0.3));
-}
-
-.uc-packages-section {
-  margin-bottom: 4rem;
-  animation: slideUp 0.8s ease-out;
-}
-
-.uc-packages-title {
-  font-size: 4rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: -0.5rem;
-  color: white;
-  letter-spacing: 0.5px;
-}
-
-.uc-packages-subtitle {
-  text-align: center;
-  color: rgba(255, 165, 0, 0.85);
-  margin-bottom: 0.5rem;
-  font-size: 1.7rem;
-  font-weight: 500;
-}
-
-.uc-packages-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 0.2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.uc-package-card {
-  background: linear-gradient(135deg, rgba(50, 150, 220, 0.15), rgba(100, 150, 255, 0.08));
-  border: 1.5px solid rgba(3, 150, 255, 0.3);
-  // ИЗМЕНЯЙ ЗДЕСЬ: border-radius (скругление углов карточек пакетов)
-  border-radius: 14px;
-  // ИЗМЕНЯЙ ЗДЕСЬ: padding (внутренние отступы карточек пакетов)
-  padding: 1.5rem 0rem;
-  text-align: center;
-  // transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); // DISABLED FOR CALCULATOR FUNCTIONALITY
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-
-  // &::before {
-  //   content: '';
-  //   position: absolute;
-  //   top: -50%;
-  //   left: -50%;
-  //   width: 200%;
-  //   height: 200%;
-  //   background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  //   opacity: 0;
-  //   transition: opacity 0.3s ease;
-  // }
-
-  // &:hover {
-  //   transform: scale(1.12) translateY(-10px);
-  //   border-color: rgba(3, 150, 255, 0.8);
-  //   background: linear-gradient(135deg, rgba(50, 150, 220, 0.25), rgba(100, 150, 255, 0.15));
-  //   box-shadow: 0 16px 40px rgba(3, 150, 255, 0.2);
-  // }
-
-  &--popular {
-    // transform: scale(1); // DISABLED FOR CALCULATOR FUNCTIONALITY
-    border: 2px solid rgba(255, 107, 107, 0.7);
-    background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 165, 0, 0.1));
-    box-shadow: 0 12px 30px rgba(255, 107, 107, 0.15);
-
-    // &:hover {
-    //   transform: scale(1.12) translateY(-10px);
-    //   box-shadow: 0 20px 50px rgba(255, 107, 107, 0.25);
-    // }
-  }
-}
-
-.uc-package-ribbon {
-    position: absolute;
-    top: -19px;
-    right: -12px;
-    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
-    color: #fff;
-    padding: 0.3rem 2.5rem;
-    font-size: 0.6rem;
-    font-weight: 700;
-    transform: rotate(0deg);
-    letter-spacing: 0.05em;
-    box-shadow: 0 4px 12px #ff6b6b4d;
-}
-
-.uc-package-uc {
-  // ИЗМЕНЯЙ ЗДЕСЬ: font-size (размер шрифта UC в пакетах)
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: white;
-  margin-bottom: 0.8rem;
-  line-height: 1.2;
-}
-
-.uc-package-price {
-  // ИЗМЕНЯЙ ЗДЕСЬ: font-size (размер шрифта цены в пакетах)
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #ffa500;
-  margin-bottom: 1rem;
-  letter-spacing: -0.5px;
-}
-
-.uc-package-btn {
-  width: 100%;
-  padding: 0.7rem 1rem;
-  background: linear-gradient(135deg, rgba(3, 150, 255, 0.3), rgba(3, 150, 255, 0.15));
-  color: #0396ff;
-  border: 1.5px solid rgba(3, 150, 255, 0.5);
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  letter-spacing: 0.5px;
-
-  &:hover {
-    background: linear-gradient(135deg, rgba(3, 150, 255, 0.5), rgba(3, 150, 255, 0.3));
-    border-color: #0396ff;
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(3, 150, 255, 0.3);
-  }
-
-  &--primary {
-    background: linear-gradient(135deg, rgba(255, 107, 107, 0.4), rgba(255, 165, 0, 0.25));
-    color: #ff6b6b;
-    border: 1.5px solid rgba(255, 107, 107, 0.6);
-
-    &:hover {
-      background: linear-gradient(135deg, rgba(255, 107, 107, 0.6), rgba(255, 165, 0, 0.4));
-      border-color: #ff6b6b;
-      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
-    }
   }
 }
 
@@ -1935,25 +1808,9 @@ label {
 }
 
 // ========== ANIMATIONS ==========
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-}
+
+
 
 @keyframes livePulse {
   0% {

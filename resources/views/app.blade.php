@@ -2,7 +2,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @include("layouts.head")
-  @vite(['resources/scss/app.scss','resources/ts/app.ts'])
     <style>
         /* Critical CSS - инлайн для быстрой отрисовки */
         .content p { line-height: 22px; }

@@ -67,7 +67,7 @@
 
   /* ── ЗАГОЛОВКИ ─────────────────────────────────────────── */
   .uc-packages-title {
-    font-size: 1.6rem;
+    font-size: 1.6rem !important; /* перебиваем desktop 4rem из app.scss */
     margin: 0;
     padding: 0;
     line-height: 1.1;
@@ -75,8 +75,8 @@
   }
 
   .uc-packages-subtitle {
-    font-size: 0.72rem;
-    margin: 4px 0 8px; /* нормальный отступ, без отрицательных значений */
+    font-size: 0.82rem !important; /* перебиваем desktop 1.7rem, читаемо на мобиле */
+    margin: 4px 0 8px;
     padding: 0;
     display: block;
     text-align: center;
@@ -84,7 +84,7 @@
 
   /* ── СЕТКА: 3 колонки ─────────────────────────────────── */
   .uc-packages-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr) !important;
     gap: 6px;
     max-width: 100%;
     padding: 0;
@@ -120,24 +120,27 @@
     line-height: 1.2;
   }
 
-  /* ── КНОПКИ +/- ──────────────────────────────────────── */
+  /* ── КНОПКИ +/- — минимальный touch target ──────────── */
   .uc-package-calc {
     gap: 4px;
     margin-top: 2px;
   }
 
   .uc-calc-btn {
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    min-height: 28px;
-    font-size: 1rem;
-    border-radius: 6px;
+    width: 44px;   /* было 28px — слишком мелко для пальца */
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .uc-calc-qty {
-    font-size: 0.8rem;
-    min-width: 14px;
+    font-size: 0.85rem;
+    min-width: 16px;
   }
 
   /* ── LIVE COUNTER: скрыт ──────────────────────────────── */
@@ -179,7 +182,7 @@
     .uc-id-form__info  { display: none; }
     .uc-id-form__cart  { display: none; }
     .uc-id-form__note  {
-      font-size: 0.6rem;
+      font-size: 0.62rem;
       margin: 4px 0 0;
       text-align: center;
       opacity: 0.6;
@@ -192,6 +195,18 @@
 
   .uc-id-form__input-wrapper {
     margin-bottom: 3px;
+  }
+
+  /* Поле ввода — достаточная высота для пальца */
+  .uc-id-form__input {
+    min-height: 44px;
+    font-size: 1rem; /* минимум 16px — отключает auto-zoom iOS */
+  }
+
+  /* Кнопка ✓ */
+  .uc-id-form__check {
+    min-width: 44px;
+    min-height: 44px;
   }
 
   /* Hint слева, счётчик справа */
@@ -226,6 +241,7 @@
   /* ── КНОПКА ОПЛАТЫ ────────────────────────────────────── */
   .uc-id-form__submit {
     width: 100%;
+    min-height: 48px; /* Google Material Design минимум для CTA */
     padding: 13px;
     font-size: 0.95rem;
     font-weight: 700;
@@ -250,7 +266,8 @@
 
   .uc-mobile-clear-btn {
     flex-shrink: 0;
-    width: 46px;
+    width: 48px;
+    min-height: 48px;
     background: rgba(255, 107, 107, 0.15);
     border: 1px solid rgba(255, 107, 107, 0.4);
     border-radius: 10px;
@@ -277,15 +294,92 @@
     width: auto;
   }
 
-  /* ── НИЖНИЕ СЕКЦИИ: скрыть ────────────────────────────── */
-  .uc-faq-reviews-section,
-  .uc-social-proof,
-  .uc-payment-methods {
-    display: none;
+  /* ── НИЖНИЕ СЕКЦИИ: адаптированы для мобиле ─────────── */
+
+  /* FAQ + Отзывы: показываем, но одноколоночно */
+  .uc-faq-reviews-section {
+    display: block;
+    padding: 1.5rem 0.75rem 1rem;
   }
 
+  .uc-faq-reviews-wrapper {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .uc-faq-column,
+  .uc-reviews-column {
+    max-height: none; /* снимаем ограничение высоты — контент должен читаться */
+    padding: 1rem;
+  }
+
+  /* Карусель отзывов на мобиле — фиксированная высота меньше */
+  .uc-reviews-carousel {
+    height: 260px;
+  }
+
+  /* Социальное доказательство */
+  .uc-social-proof {
+    display: block;
+    padding: 1.25rem 0.75rem 1.5rem;
+  }
+
+  .uc-proof-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .uc-proof-card {
+    padding: 0.875rem 0.75rem;
+
+    &__icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    &__title { font-size: 0.82rem; }
+    &__text { font-size: 0.75rem; }
+  }
+
+  /* Способы оплаты */
+  .uc-payment-methods {
+    display: block;
+    padding: 1.5rem 0.75rem;
+  }
+
+  .uc-payment-icons {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .uc-payment-icon {
+    padding: 0.6rem 0.875rem;
+    font-size: 0.82rem;
+    min-height: 44px; /* touch target */
+    display: flex;
+    align-items: center;
+  }
+
+  .uc-trust-badges {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .uc-trust-badge {
+    padding: 0.875rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+
+    &__icon { font-size: 1.5rem; min-width: unset; }
+    &__title { font-size: 0.82rem; }
+    &__desc { font-size: 0.72rem; }
+  }
+
+  /* Футер — показываем в компактном виде */
   footer {
-    display: none;
+    display: block;
+    padding: 1.5rem 0.75rem;
+    font-size: 0.8rem;
+    /* добавляем отступ снизу, чтобы не перекрывался фиксированной панелью */
+    padding-bottom: calc(1.5rem + 180px);
   }
 
 }
@@ -348,7 +442,7 @@
     display: none;
   }
 
-  /* Нижние секции — показываем */
+  /* Все нижние секции — показываем */
   .uc-faq-reviews-section,
   .uc-social-proof,
   .uc-payment-methods {
