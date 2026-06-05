@@ -482,16 +482,13 @@ a {
   // ИЗМЕНЯЙ ЗДЕСЬ: 7 колонок на десктопе = 3 ряда по 7 карточек
   grid-template-columns: repeat(7, 1fr);
   // ИЗМЕНЯЙ ЗДЕСЬ: Расстояние между карточками
-  gap: 0.3rem;
-  // ИЗМЕНЯЙ ЗДЕСЬ: Максимальная ширина блока товаров
-  max-width: 1000px;
-  // ИЗМЕНЯЙ ЗДЕСЬ: Выравнивание
-  margin: 0 auto;
+  gap: 0.5rem;
+  // Грид занимает всю ширину левой колонки
+  width: 100%;
   // Таблетный вид: 4 колонки
   @media (min-width: 769px) and (max-width: 1024px) {
     grid-template-columns: repeat(4, 1fr);
     gap: 0.4rem;
-    max-width: 100%;
   }
 }
 
@@ -501,7 +498,7 @@ a {
   // ИЗМЕНЯЙ ЗДЕСЬ: Скругление углов карточек
   border-radius: 10px;
   // ИЗМЕНЯЙ ЗДЕСЬ: Внутренние отступы карточек (верх/низ | лево/право)
-  padding: 0.65rem 0.5rem;
+  padding: 0.9rem 0.6rem;
   text-align: center;
   cursor: pointer;
   position: relative;
