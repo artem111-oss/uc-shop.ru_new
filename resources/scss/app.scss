@@ -498,7 +498,7 @@ a {
   // ИЗМЕНЯЙ ЗДЕСЬ: Скругление углов карточек
   border-radius: 10px;
   // ИЗМЕНЯЙ ЗДЕСЬ: Внутренние отступы карточек (верх/низ | лево/право)
-  padding: 0.9rem 0.6rem;
+  padding: 1.2rem 0.75rem;
   text-align: center;
   cursor: pointer;
   position: relative;
@@ -547,22 +547,22 @@ a {
 }
 
 .uc-package-uc {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: white;
-  margin-bottom: 0.3rem;
-  line-height: 1.1;
+  margin-bottom: 0.4rem;
+  line-height: 1.2;
   
 
 }
 
 .uc-package-price {
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #ffb700;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   flex-grow: 1;
-  line-height: 1.1;
+  line-height: 1.2;
   
 
 }
@@ -611,8 +611,8 @@ a {
 
 .uc-calc-btn {
   // ИЗМЕНЯЙ ЗДЕСЬ: width и height (размер кнопок калькулятора +/-)
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   
 
   padding: 0;
