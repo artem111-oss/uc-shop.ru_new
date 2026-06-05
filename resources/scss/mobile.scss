@@ -122,25 +122,28 @@
 
   /* ── КНОПКИ +/- — минимальный touch target ──────────── */
   .uc-package-calc {
-    gap: 4px;
+    gap: 2px;
     margin-top: 2px;
+    flex-wrap: nowrap;
   }
 
   .uc-calc-btn {
-    width: 44px;   /* было 28px — слишком мелко для пальца */
-    height: 44px;
-    min-width: 44px;
-    min-height: 44px;
-    font-size: 1.1rem;
-    border-radius: 8px;
+    /* clamp: 32px на 320px экране, 38px на 425px+ */
+    width: clamp(32px, 8.5vw, 38px);
+    height: clamp(32px, 8.5vw, 38px);
+    min-width: unset;
+    min-height: unset;
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
   }
 
   .uc-calc-qty {
-    font-size: 0.85rem;
-    min-width: 16px;
+    font-size: 0.8rem;
+    min-width: 12px;
   }
 
   /* ── LIVE COUNTER: скрыт ──────────────────────────────── */
@@ -423,10 +426,6 @@
 
   /* Счётчик мобильный — скрыт */
   .uc-mobile-counter {
-    display: none;
-  }
-
-  .uc-id-form__hint-row {
     display: none;
   }
 

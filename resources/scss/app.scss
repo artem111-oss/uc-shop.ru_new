@@ -445,7 +445,7 @@ a {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  align-items: center;
+  align-items: stretch; /* было center — сжимало грид до размера содержимого */
 }
 .uc-hero__right {
   position: sticky;
@@ -602,6 +602,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: nowrap; /* кнопки не переносятся */
   gap: 0.3rem;
   margin-top: auto;
   padding: 0;
@@ -688,9 +689,12 @@ a {
   display: none;
 }
 
-/* hint-row: на десктопе показывается под полем ID, на мобиле — через mobile.scss */
+/* hint-row: видим на десктопе и мобиле */
 .uc-id-form__hint-row {
-  display: none; /* скрыт по умолчанию, мобиль показывает через mobile.scss */
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 6px;
 }
 
 .uc-id-form {
@@ -932,10 +936,11 @@ a {
 }
 
 .uc-id-form__hint {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: rgba(255, 165, 0, 0.8);
-  margin: 0rem 7px -20px;
-  text-align: center;
+  margin: 0;
+  text-align: left;
+  flex: 1;
 }
 
 .uc-id-form__info {
