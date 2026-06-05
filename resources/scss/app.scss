@@ -411,10 +411,12 @@ a {
   align-items: flex-start;
   padding: 0 1.5rem;
   width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
   box-sizing: border-box;
 
   // Планшет — колонка по всей ширине (без сайдбара)
-  @media (min-width: 769px) and (max-width: 1280px) {
+  @media (min-width: 769px) and (max-width: 1366px) {
     grid-template-columns: 1fr;
     gap: 1rem;
     padding: 1rem;
@@ -431,7 +433,7 @@ a {
   max-width: 1400px;
   margin: 0 auto;
 
-  @media (min-width: 769px) and (max-width: 1280px) {
+  @media (min-width: 769px) and (max-width: 1024px) {
     padding: 1.5rem 1rem 0.5rem;
   }
 }
@@ -452,7 +454,7 @@ a {
   top: 170px;
 
   // На планшетах — статичный (sticky работает только в grid/flex родителе)
-  @media (min-width: 769px) and (max-width: 1280px) {
+  @media (min-width: 769px) and (max-width: 1366px) {
     position: relative;
     top: auto;
   }
