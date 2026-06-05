@@ -61,21 +61,21 @@
     padding-top: 4px;
     padding-left: 8px;
     padding-right: 8px;
-    margin-bottom: 0;
+    margin-bottom: -155px;
     order: 1;
   }
 
   /* ── ЗАГОЛОВКИ ─────────────────────────────────────────── */
   .uc-packages-title {
     font-size: 1.6rem !important; /* перебиваем desktop 4rem из app.scss */
-    margin: 0;
+    margin: 5px;
     padding: 0;
     line-height: 1.1;
     text-align: center;
   }
 
   .uc-packages-subtitle {
-    font-size: 0.82rem !important; /* перебиваем desktop 1.7rem, читаемо на мобиле */
+    font-size: 0.7rem !important; /* перебиваем desktop 1.7rem, читаемо на мобиле */
     margin: 4px 0 8px;
     padding: 0;
     display: block;
@@ -392,7 +392,7 @@
    Десктопный layout, но без сайдбара корзины
    ========================================================= */
 
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (min-width: 769px) and (max-width: 1280px) {
 
   /* Мобильный блок заголовков — скрыт на планшете */
   .uc-hero__titles-mobile {
@@ -416,7 +416,7 @@
     left: auto;
     right: auto;
     width: auto;
-    max-width: 600px;
+    max-width: 720px;   // было 600px — на iPad Pro лучше смотрится шире
     margin: 0 auto;
     border-radius: 12px;
     border-top: none;

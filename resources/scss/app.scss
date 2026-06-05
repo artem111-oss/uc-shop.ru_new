@@ -414,7 +414,7 @@ a {
   box-sizing: border-box;
 
   // Планшет — колонка по всей ширине (без сайдбара)
-  @media (min-width: 769px) and (max-width: 1024px) {
+  @media (min-width: 769px) and (max-width: 1280px) {
     grid-template-columns: 1fr;
     gap: 1rem;
     padding: 1rem;
@@ -431,7 +431,7 @@ a {
   max-width: 1400px;
   margin: 0 auto;
 
-  @media (min-width: 769px) and (max-width: 1024px) {
+  @media (min-width: 769px) and (max-width: 1280px) {
     padding: 1.5rem 1rem 0.5rem;
   }
 }
@@ -452,7 +452,7 @@ a {
   top: 170px;
 
   // На планшетах — статичный (sticky работает только в grid/flex родителе)
-  @media (min-width: 769px) and (max-width: 1024px) {
+  @media (min-width: 769px) and (max-width: 1280px) {
     position: relative;
     top: auto;
   }
@@ -463,16 +463,16 @@ a {
 }
 
 .uc-packages-title {
-  font-size: 2rem;
+  font-size: 6rem;
   font-weight: 700;
-  color: white;
+  color: #ffa500;
   margin: 0 0 0.5rem;
   text-align: center;
 }
 
 .uc-packages-subtitle {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.8rem;
+  color: rgb(255, 255, 255);
   margin: 0 0 1.5rem;
   text-align: center;
 }
@@ -486,9 +486,9 @@ a {
   // Грид занимает всю ширину левой колонки
   width: 100%;
   // Таблетный вид: 4 колонки
-  @media (min-width: 769px) and (max-width: 1024px) {
+  @media (min-width: 769px) and (max-width: 1280px) {
     grid-template-columns: repeat(4, 1fr);
-    gap: 0.4rem;
+    gap: 0.5rem;
   }
 }
 
