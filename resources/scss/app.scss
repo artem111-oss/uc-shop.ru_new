@@ -351,13 +351,6 @@ a {
   overflow: hidden;
   padding: 2rem 0;
   background: linear-gradient(135deg, #ffd700, #ffed4e);
-
-@media (max-width: 768px) {
-  min-height: unset;
-  overflow: visible;
-  padding: 1rem 0.5rem 0;
-  align-items: flex-start;
-}
 }
 
 .uc-hero__background {
@@ -391,14 +384,11 @@ a {
   padding: 0 2rem;
   max-width: 1400px;
   margin: 0 auto;
-  @media (max-width: 768px) {
+
+  @media (max-width: 1024px) {
     grid-template-columns: 1fr;
-    padding: 0;
-    gap: 0;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
   }
 }
 
@@ -415,21 +405,11 @@ a {
   @media (max-width: 1024px) {
     padding: 2rem 1rem 0.5rem;
   }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
 }
 
-/* Мобиль: заголовки внутри uc-hero__left, на десктопе скрыты */
+/* Мобиль: заголовки внутри uc-hero__left — скрыты на десктопе */
 .uc-hero__titles-mobile {
   display: none;
-
-  @media (max-width: 768px) {
-    display: block;
-    text-align: center;
-    width: 100%;
-  }
 }
 
 .uc-hero__left {
@@ -437,33 +417,17 @@ a {
   flex-direction: column;
   gap: 1.5rem;
   align-items: center;
-  
-  @media (max-width: 768px) {
-    width: 100% !important;
-    flex-basis: 100% !important;
-    padding-bottom: 180px;
-  }
 }
-// Или зафиксировать в определенном месте
 .uc-hero__right {
-  // ИЗМЕНЯЙ ЗДЕСЬ: sticky = прилипает при прокрутке, relative = обычное положение
   position: sticky;
-  // ИЗМЕНЯЙ ЗДЕСЬ: Отступ от верха при прокрутке
   top: 170px;
 
   @media (max-width: 1024px) {
     position: relative;
     top: auto;
   }
-  
-  @media (max-width: 768px) {
-    width: 100% !important;
-    flex-basis: 100% !important;
-    order: 2;
-  }
-  
+
   .uc-live-counter {
-    // ИЗМЕНЯЙ ЗДЕСЬ: margin-bottom (отступ снизу от live-counter до формы ID)
     margin-bottom: 0.5rem;
   }
 }
@@ -474,11 +438,6 @@ a {
   color: white;
   margin: 0 0 0.5rem;
   text-align: center;
-
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-    padding: 0 0.5rem;
-  }
 }
 
 .uc-packages-subtitle {
@@ -486,10 +445,6 @@ a {
   color: rgba(255, 255, 255, 0.7);
   margin: 0 0 1.5rem;
   text-align: center;
-  
-  @media (max-width: 768px) {
-    padding: 0 0.5rem;
-  }
 }
 
 .uc-packages-grid {
@@ -535,20 +490,7 @@ a {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   
-  @media (max-width: 768px) {
-    aspect-ratio: 1 / 1;
-    padding: clamp(6px, 1.5vw, 10px);
-    justify-content: space-between;
-    gap: clamp(2px, 0.5vw, 4px);
-    height: auto;
-    border-radius: clamp(6px, 2vw, 10px);
-    
-    &:active {
-      transform: scale(0.95);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
-      border-color: rgba(255, 255, 255, 0.4);
-    }
-  }
+
 
   // &:hover {
   //   background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
@@ -581,16 +523,7 @@ a {
   transform: rotate(45deg);
   transform-origin: right top;
   
-  @media (max-width: 768px) {
-    top: 2px;
-    right: 2px;
-    font-size: clamp(7px, 2vw, 9px);
-    padding: clamp(2px, 0.5vw, 3px) clamp(4px, 1vw, 6px);
-    border-radius: clamp(3px, 1vw, 4px);
-    transform: rotate(0deg);
-    line-height: 1.2;
-    font-weight: 600;
-  }
+
 }
 
 .uc-package-uc {
@@ -600,13 +533,7 @@ a {
   margin-bottom: 0.3rem;
   line-height: 1.1;
   
-  @media (max-width: 768px) {
-    font-size: clamp(14px, 3.5vw, 18px);
-    font-weight: 700;
-    margin-bottom: clamp(2px, 0.5vw, 4px);
-    line-height: 1.2;
-    letter-spacing: 0.3px;
-  }
+
 }
 
 .uc-package-price {
@@ -617,13 +544,7 @@ a {
   flex-grow: 1;
   line-height: 1.1;
   
-  @media (max-width: 768px) {
-    font-size: clamp(14px, 3.5vw, 18px);
-    font-weight: 700;
-    margin-bottom: clamp(2px, 0.5vw, 4px);
-    line-height: 1.2;
-    flex-grow: 0;
-  }
+
 }
 
 .uc-package-btn {
@@ -672,11 +593,7 @@ a {
   width: 30px;
   height: 30px;
   
-  @media (max-width: 768px) {
-    width: 44px; // Apple HIG touch target minimum
-    height: 44px;
-    font-size: 1.4rem;
-  }
+
   padding: 0;
   background: linear-gradient(135deg, #0396ff, #0276cc);
   border: none;
@@ -748,13 +665,9 @@ a {
   display: none;
 }
 
-/* hint-row скрыт только на мобиле (на десктопе показывается под полем ID) */
+/* hint-row: на десктопе показывается под полем ID, на мобиле — через mobile.scss */
 .uc-id-form__hint-row {
-  display: flex;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
+  display: none; /* скрыт по умолчанию, мобиль показывает через mobile.scss */
 }
 
 .uc-id-form {
@@ -769,20 +682,6 @@ a {
     margin: 0 auto;
   }
   
-  @media (max-width: 768px) {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  border-radius: 16px 16px 0 0;
-  z-index: 999;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
-  // Скрываем корзину на мобиле — она не нужна в fixed-панели
-  .uc-id-form__cart { display: none; }
-}
 }
 
 .uc-id-form__title {

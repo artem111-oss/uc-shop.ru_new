@@ -1,6 +1,7 @@
 /* =========================================================
-   MOBILE OVERRIDES — max-width: 768px
-   UX v2: 3-column grid + collapsible bottom panel
+   MOBILE — max-width: 768px
+   Подход: все мобильные стили здесь, без !important.
+   app.scss содержит только десктопные стили (без media-768).
    ========================================================= */
 
 @media (max-width: 768px) {
@@ -10,224 +11,245 @@
     overflow-x: hidden;
   }
 
-  /* ── HERO: убираем жёлтый fallback-фон ───────────────── */
+  /* ── HERO ─────────────────────────────────────────────── */
   .uc-hero {
-    min-height: unset !important;
-    padding: 0 !important;
-    background: #23282e !important;
+    min-height: unset;
+    padding: 0;
+    background: #23282e;
+    align-items: flex-start;
+    overflow: visible;
   }
 
   .uc-hero__background {
-    background: #23282e !important;
-    opacity: 1 !important;
+    background: #23282e;
+    opacity: 1;
   }
 
   .uc-hero__overlay {
-    display: none !important;
+    display: none;
+  }
+
+  /* Десктопный блок заголовков скрыт */
+  .uc-hero__titles {
+    display: none;
+  }
+
+  /* Мобильный блок заголовков виден */
+  .uc-hero__titles-mobile {
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 0;
   }
 
   /* ── WRAPPER ──────────────────────────────────────────── */
   .uc-hero__wrapper {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: unset !important;
-    padding: 0 !important;
-    gap: 0 !important;
-    max-width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: unset;
+    padding: 0;
+    gap: 0;
+    max-width: 100%;
   }
 
-  /* ── ЛЕВАЯ ЗОНА: пакеты ───────────────────────────────── */
+  /* ── ЛЕВАЯ ЗОНА ───────────────────────────────────────── */
   .uc-hero__left {
-    width: 100% !important;
-    flex-basis: auto !important;
-    /* Отступ снизу = высота нижней панели (~120px) + запас */
-    padding-bottom: 220px !important;
-    padding-top: 2px !important;
-    padding-left: 8px !important;
-    padding-right: 8px !important;
-    margin-bottom: 0 !important;
+    width: 100%;
+    flex-basis: auto;
+    align-items: stretch;
+    gap: 0;
+    /* Отступ снизу = высота фиксированной панели + запас */
+    padding-bottom: 220px;
+    padding-top: 2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-bottom: 0;
     order: 1;
   }
 
-  /* ── ЗАГОЛОВОК И ПОДЗАГОЛОВОК ───────────────────────── */
+  /* ── ЗАГОЛОВКИ (внутри uc-hero__left на мобиле) ────────── */
   .uc-packages-title {
-    font-size: 1.77rem !important;
-    margin: 0px 0 0 !important;
-    padding: 0 0px !important;
-    line-height: 1 !important;
+    font-size: 1.77rem;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    text-align: center;
   }
 
   .uc-packages-subtitle {
-    font-size: 0.75rem !important;
-    margin: 1px 0 -20px 0 !important;   // top right bottom left
-    padding: 0 0px !important;
+    font-size: 0.75rem;
+    margin: 1px 0 -20px;
+    padding: 0;
     display: block;
+    text-align: center;
   }
 
   /* ── СЕТКА: 3 колонки ─────────────────────────────────── */
   .uc-packages-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 6px !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
   }
 
   /* ── КАРТОЧКА ─────────────────────────────────────────── */
   .uc-package-card {
-    aspect-ratio: unset !important;
-    padding: 8px 4px 6px !important;
-    min-height: unset !important;
-    height: auto !important;
-    border-radius: 10px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 4px !important;
+    aspect-ratio: unset;
+    padding: 8px 4px 6px;
+    min-height: unset;
+    height: auto;
+    border-radius: 10px;
+    gap: 4px;
 
     &:active {
       transform: scale(0.95);
+      background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
+      border-color: rgba(255,255,255,0.4);
     }
   }
 
   .uc-package-uc {
-    font-size: 0.9rem !important;
-    font-weight: 700 !important;
-    margin-bottom: 0 !important;
-    line-height: 1.2 !important;
+    font-size: clamp(12px, 3.2vw, 16px);
+    margin-bottom: 0;
+    line-height: 1.2;
   }
 
   .uc-package-price {
-    font-size: 0.82rem !important;
-    font-weight: 700 !important;
-    margin-bottom: 0 !important;
-    flex-grow: 0 !important;
-    line-height: 1.2 !important;
+    font-size: clamp(12px, 3.2vw, 16px);
+    margin-bottom: 0;
+    flex-grow: 0;
+    line-height: 1.2;
   }
-
-
 
   /* ── КНОПКИ +/- ──────────────────────────────────────── */
   .uc-package-calc {
-    gap: 4px !important;
-    margin-top: 2px !important;
+    gap: 4px;
+    margin-top: 2px;
   }
 
   .uc-calc-btn {
-    width: 30px !important;
-    height: 30px !important;
-    min-width: 30px !important;
-    min-height: 30px !important;
-    font-size: 1.1rem !important;
-    border-radius: 6px !important;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    font-size: 1.1rem;
+    border-radius: 6px;
   }
 
   .uc-calc-qty {
-    font-size: 0.85rem !important;
-    min-width: 14px !important;
+    font-size: 0.85rem;
+    min-width: 14px;
   }
 
-  /* ── LIVE COUNTER: скрыть ─────────────────────────────── */
+  /* ── LIVE COUNTER: скрыт на мобиле ───────────────────── */
   .uc-live-counter {
-    display: none !important;
+    display: none;
   }
 
   /* ── ПРАВАЯ ЗОНА: вырвать из потока ──────────────────── */
   .uc-hero__right {
-    position: absolute !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: visible !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    flex-basis: 0 !important;
-    flex-shrink: 0 !important;
-    flex-grow: 0 !important;
-    min-height: 0 !important;
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+    flex-basis: 0;
+    flex-shrink: 0;
+    flex-grow: 0;
+    min-height: 0;
   }
 
-  /* ── НИЖНЯЯ ПАНЕЛЬ (uc-id-form) ──────────────────────── */
+  /* ── НИЖНЯЯ ПАНЕЛЬ (фиксированная) ───────────────────── */
   .uc-id-form {
-    padding: 10px 12px 10px !important;
-    padding-bottom: calc(10px + env(safe-area-inset-bottom)) !important;
-    border-radius: 14px 14px 0 0 !important;
-    border-top: 1px solid rgba(255, 165, 0, 0.3) !important;
-
-    /* Скрываем всё кроме поля ID и кнопки */
-    .uc-id-form__title { display: none !important; }
-    .uc-id-form__info  { display: none !important; }
-    .uc-id-form__cart  { display: none !important; }
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 16px 16px 0 0;
+    z-index: 999;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+    padding: 10px 12px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    border-radius: 14px 14px 0 0;
+    border-top: 1px solid rgba(255, 165, 0, 0.3);
+    /* Скрываем лишнее */
+    .uc-id-form__title { display: none; }
+    .uc-id-form__info  { display: none; }
+    .uc-id-form__cart  { display: none; }
     .uc-id-form__note  {
-      font-size: 0.6rem !important;
-      margin: 4px 0 0 !important;
-      text-align: center !important;
+      font-size: 0.6rem;
+      margin: 4px 0 0;
+      text-align: center;
       opacity: 0.6;
     }
   }
 
   .uc-id-form__group {
-    margin-bottom: 8px !important;
+    margin-bottom: 8px;
   }
 
   .uc-id-form__input-wrapper {
-    margin-bottom: 3px !important;
+    margin-bottom: 3px;
   }
 
-  /* Счётчик + hint в одну строку: hint слева, счётчик справа */
+  /* Hint слева, счётчик справа */
   .uc-id-form__hint-row {
-    display: flex !important;
-    align-items: flex-start !important;
-    justify-content: space-between !important;
-    gap: 6px !important;
-    margin-top: 3px !important;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 3px;
   }
 
   .uc-id-form__hint {
-    font-size: 0.68rem !important;
-    margin: 0 !important;
-    text-align: left !important;
-    flex: 1 !important;
+    font-size: 0.68rem;
+    margin: 0;
+    text-align: left;
+    flex: 1;
   }
 
+  /* Мобильный счётчик — показываем (по умолчанию display:none в app.scss) */
   .uc-mobile-counter {
-    display: inline !important; /* перебиваем display:none из app.scss */
-    font-size: 0.65rem !important;
-    color: rgba(255, 255, 255, 0.65) !important;
-    text-align: right !important;
-    flex-shrink: 0 !important;
-    padding-top: 10px !important;
+    display: inline;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.65);
+    text-align: right;
+    flex-shrink: 0;
+    padding-top: 1px;
 
     strong {
-      color: #4ade80 !important;
+      color: #4ade80;
     }
   }
 
-  /* ── КНОПКА ОПЛАТЫ — динамический текст ─────────────── */
+  /* ── КНОПКА ОПЛАТЫ ────────────────────────────────────── */
   .uc-id-form__submit {
-    width: 100% !important;
-    padding: 13px !important;
-    font-size: 0.95rem !important;
-    font-weight: 700 !important;
-    border-radius: 10px !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
+    width: 100%;
+    padding: 13px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
 
-    /* Неактивное состояние (корзина пуста) */
     &.is-empty {
-      background: rgba(255, 255, 255, 0.1) !important;
-      color: rgba(255, 255, 255, 0.4) !important;
-      cursor: default !important;
-      box-shadow: none !important;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.4);
+      cursor: default;
+      box-shadow: none;
     }
   }
 
-  /* ── РЯД КНОПОК: сабмит + очистка ─────────────────────── */
+  /* ── РЯД: сабмит + очистка ────────────────────────────── */
   .uc-mobile-submit-row {
-    display: flex !important;
-    gap: 8px !important;
-    align-items: stretch !important;
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
   }
 
   .uc-mobile-clear-btn {
@@ -249,25 +271,25 @@
     }
   }
 
-  /* ── TOAST: поднять выше фиксированной панели ─────────── */
+  /* ── TOAST: выше фиксированной панели ─────────────────── */
   .uc-toast {
-    bottom: 200px !important; /* выше панели ввода ID */
-    right: 12px !important;
-    left: 12px !important;
-    min-width: unset !important;
-    max-width: unset !important;
-    width: auto !important;
+    bottom: 200px;
+    right: 12px;
+    left: 12px;
+    min-width: unset;
+    max-width: unset;
+    width: auto;
   }
 
   /* ── НИЖНИЕ СЕКЦИИ: скрыть ────────────────────────────── */
   .uc-faq-reviews-section,
   .uc-social-proof,
   .uc-payment-methods {
-    display: none !important;
+    display: none;
   }
 
   footer {
-    display: none !important;
+    display: none;
   }
 
 }
