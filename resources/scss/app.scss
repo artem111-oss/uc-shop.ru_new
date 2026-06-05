@@ -385,7 +385,8 @@ a {
   max-width: 1400px;
   margin: 0 auto;
 
-  @media (max-width: 1024px) {
+  // Планшет — колонка по всей ширине (без сайдбара)
+  @media (min-width: 769px) and (max-width: 1024px) {
     grid-template-columns: 1fr;
     gap: 1rem;
     padding: 1rem;
@@ -402,8 +403,8 @@ a {
   max-width: 1400px;
   margin: 0 auto;
 
-  @media (max-width: 1024px) {
-    padding: 2rem 1rem 0.5rem;
+  @media (min-width: 769px) and (max-width: 1024px) {
+    padding: 1.5rem 1rem 0.5rem;
   }
 }
 
@@ -455,20 +456,13 @@ a {
   gap: 0.3rem;
   // ИЗМЕНЯЙ ЗДЕСЬ: Максимальная ширина блока товаров
   max-width: 1000px;
-  // ИЗМЕНЯЙ ЗДЕСЬ: Выравнивание (auto=центр, 0 auto 0 60px=сдвиг вправо на 60px)
+  // ИЗМЕНЯЙ ЗДЕСЬ: Выравнивание
   margin: 0 auto;
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 4px !important;
-    padding: 0 0.5rem;
-    max-width: 100%;
-    width: 100%;
-  }
-
-  @media (max-width: 480px) {
+  // Таблетный вид: 4 колонки
+  @media (min-width: 769px) and (max-width: 1024px) {
     grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
+    gap: 0.4rem;
+    max-width: 100%;
   }
 }
 

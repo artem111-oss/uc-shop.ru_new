@@ -1,7 +1,6 @@
 /* =========================================================
-   MOBILE — max-width: 768px
-   Подход: все мобильные стили здесь, без !important.
-   app.scss содержит только десктопные стили (без media-768).
+   MOBILE STYLES — только для телефонов (max-width: 768px)
+   Планшеты (769px–1024px) управляются через app.scss
    ========================================================= */
 
 @media (max-width: 768px) {
@@ -29,12 +28,12 @@
     display: none;
   }
 
-  /* Десктопный блок заголовков скрыт */
+  /* Десктопный блок заголовков — скрыт */
   .uc-hero__titles {
     display: none;
   }
 
-  /* Мобильный блок заголовков виден */
+  /* Мобильный блок заголовков — виден */
   .uc-hero__titles-mobile {
     display: block;
     text-align: center;
@@ -58,27 +57,26 @@
     flex-basis: auto;
     align-items: stretch;
     gap: 0;
-    /* Отступ снизу = высота фиксированной панели + запас */
-    padding-bottom: 220px;
-    padding-top: 2px;
+    padding-bottom: 180px; /* место под фиксированную панель */
+    padding-top: 4px;
     padding-left: 8px;
     padding-right: 8px;
     margin-bottom: 0;
     order: 1;
   }
 
-  /* ── ЗАГОЛОВКИ (внутри uc-hero__left на мобиле) ────────── */
+  /* ── ЗАГОЛОВКИ ─────────────────────────────────────────── */
   .uc-packages-title {
-    font-size: 1.77rem;
+    font-size: 1.6rem;
     margin: 0;
     padding: 0;
-    line-height: 1;
+    line-height: 1.1;
     text-align: center;
   }
 
   .uc-packages-subtitle {
-    font-size: 0.75rem;
-    margin: 1px 0 -20px;
+    font-size: 0.72rem;
+    margin: 4px 0 8px; /* нормальный отступ, без отрицательных значений */
     padding: 0;
     display: block;
     text-align: center;
@@ -110,13 +108,13 @@
   }
 
   .uc-package-uc {
-    font-size: clamp(12px, 3.2vw, 16px);
+    font-size: clamp(11px, 3vw, 15px);
     margin-bottom: 0;
     line-height: 1.2;
   }
 
   .uc-package-price {
-    font-size: clamp(12px, 3.2vw, 16px);
+    font-size: clamp(11px, 3vw, 15px);
     margin-bottom: 0;
     flex-grow: 0;
     line-height: 1.2;
@@ -129,20 +127,20 @@
   }
 
   .uc-calc-btn {
-    width: 30px;
-    height: 30px;
-    min-width: 30px;
-    min-height: 30px;
-    font-size: 1.1rem;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+    font-size: 1rem;
     border-radius: 6px;
   }
 
   .uc-calc-qty {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     min-width: 14px;
   }
 
-  /* ── LIVE COUNTER: скрыт на мобиле ───────────────────── */
+  /* ── LIVE COUNTER: скрыт ──────────────────────────────── */
   .uc-live-counter {
     display: none;
   }
@@ -161,7 +159,7 @@
     min-height: 0;
   }
 
-  /* ── НИЖНЯЯ ПАНЕЛЬ (фиксированная) ───────────────────── */
+  /* ── НИЖНЯЯ ПАНЕЛЬ: фиксированная ────────────────────── */
   .uc-id-form {
     position: fixed;
     bottom: 0;
@@ -170,14 +168,13 @@
     width: 100%;
     max-width: 100%;
     margin: 0;
-    border-radius: 16px 16px 0 0;
     z-index: 999;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
     padding: 10px 12px;
     padding-bottom: calc(10px + env(safe-area-inset-bottom));
     border-radius: 14px 14px 0 0;
     border-top: 1px solid rgba(255, 165, 0, 0.3);
-    /* Скрываем лишнее */
+
     .uc-id-form__title { display: none; }
     .uc-id-form__info  { display: none; }
     .uc-id-form__cart  { display: none; }
@@ -213,7 +210,6 @@
     flex: 1;
   }
 
-  /* Мобильный счётчик — показываем (по умолчанию display:none в app.scss) */
   .uc-mobile-counter {
     display: inline;
     font-size: 0.65rem;
@@ -271,9 +267,9 @@
     }
   }
 
-  /* ── TOAST: выше фиксированной панели ─────────────────── */
+  /* ── TOAST ─────────────────────────────────────────────── */
   .uc-toast {
-    bottom: 200px;
+    bottom: 170px;
     right: 12px;
     left: 12px;
     min-width: unset;
@@ -290,6 +286,67 @@
 
   footer {
     display: none;
+  }
+
+}
+
+/* =========================================================
+   ПЛАНШЕТ — 769px–1024px
+   Десктопный layout, но без сайдбара корзины
+   ========================================================= */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  /* Мобильный блок заголовков — скрыт на планшете */
+  .uc-hero__titles-mobile {
+    display: none;
+  }
+
+  /* Панель ID — статичная (не fixed), стандартная */
+  .uc-id-form {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    width: auto;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 12px;
+    border-top: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: auto;
+  }
+
+  /* Счётчик мобильный — скрыт */
+  .uc-mobile-counter {
+    display: none;
+  }
+
+  .uc-id-form__hint-row {
+    display: none;
+  }
+
+  /* Кнопки +/- — нормальный размер */
+  .uc-calc-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+  }
+
+  /* Мобильная кнопка сабмит — скрыта */
+  .uc-mobile-submit-row {
+    display: none;
+  }
+
+  /* Нижние секции — показываем */
+  .uc-faq-reviews-section,
+  .uc-social-proof,
+  .uc-payment-methods {
+    display: block;
+  }
+
+  footer {
+    display: block;
   }
 
 }
