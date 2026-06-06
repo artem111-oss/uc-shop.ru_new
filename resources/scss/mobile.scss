@@ -573,6 +573,47 @@
     font-size: 1.2rem;
   }
 
+  /* ── Узкий планшет (769–1100px): 7 колонок, мелкие карточки ── */
+  @media (min-width: 769px) and (max-width: 1100px) {
+    .uc-packages-grid {
+      gap: 0.3rem;
+    }
+
+    .uc-package-card {
+      padding: 6px 3px 5px;
+      border-radius: 8px;
+    }
+
+    .uc-package-uc {
+      font-size: clamp(10px, 1.1vw, 13px);
+      line-height: 1.2;
+      margin-bottom: 0;
+    }
+
+    .uc-package-price {
+      font-size: clamp(10px, 1.1vw, 13px);
+      line-height: 1.2;
+      margin-bottom: 0;
+    }
+
+    .uc-calc-btn {
+      width: 28px;
+      height: 28px;
+      font-size: 0.9rem;
+      border-radius: 5px;
+    }
+
+    .uc-calc-qty {
+      font-size: 0.72rem;
+      min-width: 10px;
+    }
+
+    .uc-package-calc {
+      gap: 2px;
+      margin-top: 2px;
+    }
+  }
+
   /* Нижние секции — показываем */
   .uc-faq-reviews-section,
   .uc-social-proof,
@@ -583,6 +624,43 @@
   footer {
     display: block;
     padding-bottom: calc(1.5rem + 180px);
+  }
+
+    /* ── iPad Pro вертикально (1024px wide, 1366px tall):
+     форма в потоке, не fixed ────────────────────────── */
+  @media (min-width: 1000px) and (max-width: 1200px) and (min-height: 1000px) {
+
+    /* Убираем fixed с формы — переводим в поток */
+    .uc-id-form {
+      position: relative;
+      bottom: auto;
+      left: auto;
+      right: auto;
+      width: 100%;
+      max-width: 100%;
+      border-radius: 12px;
+      border-top: none;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin: 0 0 1.5rem 0;
+      padding: 16px 20px;
+      padding-bottom: 16px;
+      z-index: auto;
+
+      /* Показываем скрытые элементы — как на десктопе */
+      .uc-id-form__title { display: block; }
+      .uc-id-form__info  { display: block; }
+      .uc-id-form__cart  { display: block; }
+    }
+
+    /* Убираем padding-bottom под fixed панель */
+    .uc-hero__left {
+      padding-bottom: 1rem;
+    }
+
+    /* Toast возвращаем к обычному позиционированию */
+    .uc-toast {
+      bottom: 24px;
+    }
   }
 
 }
