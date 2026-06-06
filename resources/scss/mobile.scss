@@ -387,6 +387,34 @@
 
 }
 
+  /* ── iPad Mini portrait (768×1024) ── */
+  @media (width: 768px) and (min-height: 1000px) {
+
+    .uc-packages-title {
+      font-size: 1.8rem !important;
+    }
+
+    .uc-packages-subtitle {
+      font-size: 0.9rem !important;
+    }
+
+    .uc-package-uc,
+    .uc-package-price {
+      font-size: clamp(11px, 1.5vw, 14px);
+      line-height: 1.2;
+    }
+
+    .uc-calc-btn {
+      width: 30px;
+      height: 30px;
+      font-size: 0.95rem;
+    }
+
+    .uc-calc-qty {
+      font-size: 0.78rem;
+    }
+  }
+
 /* =========================================================
    ПЛАНШЕТ — 769px–1200px
    ========================================================= */
@@ -684,6 +712,109 @@
       left: auto;
       right: 24px;
       max-width: 320px;
+    }
+    
+    /* ── ШРИФТЫ: iPad Pro portrait (1024×1366) ──────────── */
+
+    /* Заголовок — крупнее чем на узком планшете */
+    .uc-packages-title {
+      font-size: 2.2rem !important;
+    }
+
+    .uc-packages-subtitle {
+      font-size: 1rem !important;
+    }
+
+    /* Карточки — нормальный читаемый размер */
+    .uc-package-uc {
+      font-size: clamp(13px, 1.4vw, 16px);
+      line-height: 1.2;
+    }
+
+    .uc-package-price {
+      font-size: clamp(13px, 1.4vw, 16px);
+      line-height: 1.2;
+    }
+
+    /* Кнопки +/- — комфортнее для планшета */
+    .uc-calc-btn {
+      width: 34px;
+      height: 34px;
+      font-size: 1.1rem;
+    }
+
+    .uc-calc-qty {
+      font-size: 0.85rem;
+    }
+
+    /* Форма */
+    .uc-id-form__input {
+      font-size: 1rem;
+    }
+
+    .uc-id-form__submit {
+      font-size: 1.05rem;
+    }
+
+    .uc-id-form__hint {
+      font-size: 0.75rem;
+    }
+
+  }
+
+  /* ── iPad Air / iPad Pro 11" portrait (820–950px, высокий экран) ── */
+  @media (min-width: 769px) and (max-width: 950px) and (min-height: 1000px) {
+
+    .uc-packages-title {
+      font-size: 2rem !important;
+    }
+
+    .uc-packages-subtitle {
+      font-size: 0.95rem !important;
+    }
+
+    .uc-package-uc,
+    .uc-package-price {
+      font-size: clamp(12px, 1.6vw, 16px);
+      line-height: 1.2;
+    }
+
+    .uc-calc-btn {
+      width: 32px;
+      height: 32px;
+      font-size: 1rem;
+    }
+
+    .uc-calc-qty {
+      font-size: 0.8rem;
+    }
+  }
+
+    /* ── iPad Mini landscape (1024×768) ── */
+  @media (min-width: 1000px) and (max-width: 1100px) and (max-height: 800px) {
+
+    .uc-packages-title {
+      font-size: 1.9rem !important;
+    }
+
+    .uc-packages-subtitle {
+      font-size: 0.9rem !important;
+    }
+
+    .uc-package-uc,
+    .uc-package-price {
+      font-size: clamp(11px, 1.2vw, 14px);
+      line-height: 1.2;
+    }
+
+    .uc-calc-btn {
+      width: 30px;
+      height: 30px;
+      font-size: 0.95rem;
+    }
+
+    .uc-calc-qty {
+      font-size: 0.78rem;
     }
   }
 
