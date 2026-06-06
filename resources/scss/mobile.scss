@@ -626,40 +626,64 @@
     padding-bottom: calc(1.5rem + 180px);
   }
 
-    /* ── iPad Pro вертикально (1024px wide, 1366px tall):
-     форма в потоке, не fixed ────────────────────────── */
+    /* ── iPad Pro вертикально (1024×1366):
+     правая зона возвращается в поток под карточки ── */
   @media (min-width: 1000px) and (max-width: 1200px) and (min-height: 1000px) {
-
-    /* Убираем fixed с формы — переводим в поток */
-    .uc-id-form {
-      position: relative;
-      bottom: auto;
-      left: auto;
-      right: auto;
-      width: 100%;
-      max-width: 100%;
-      border-radius: 12px;
-      border-top: none;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      margin: 0 0 1.5rem 0;
-      padding: 16px 20px;
-      padding-bottom: 16px;
-      z-index: auto;
-
-      /* Показываем скрытые элементы — как на десктопе */
-      .uc-id-form__title { display: block; }
-      .uc-id-form__info  { display: block; }
-      .uc-id-form__cart  { display: block; }
-    }
 
     /* Убираем padding-bottom под fixed панель */
     .uc-hero__left {
-      padding-bottom: 1rem;
+      padding-bottom: 0;
     }
 
-    /* Toast возвращаем к обычному позиционированию */
+    /* Возвращаем правую зону в нормальный поток */
+    .uc-hero__right {
+      position: relative !important;
+      width: 100% !important;
+      height: auto !important;
+      overflow: visible !important;
+      padding: 0 !important;
+      margin: 0 !important;
+
+      /* Показываем live counter обратно если нужно */
+      .uc-live-counter {
+        display: block;
+      }
+    }
+
+    /* Форма — static, нормальная */
+    .uc-id-form {
+      position: relative !important;
+      bottom: auto !important;
+      left: auto !important;
+      right: auto !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      border-radius: 12px;
+      border-top: none;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin: 0;
+      padding: 16px 20px;
+      padding-bottom: 16px;
+      z-index: auto !important;
+
+      /* Показываем скрытые элементы */
+      .uc-id-form__title { display: block !important; }
+      .uc-id-form__info  { display: block !important; }
+      .uc-id-form__cart  { display: block !important; }
+      .uc-id-form__note  {
+        font-size: 0.7rem;
+        opacity: 0.7;
+        text-align: left;
+        margin: 6px 0 0;
+      }
+    }
+
+    /* Toast — обычное позиционирование */
     .uc-toast {
       bottom: 24px;
+      left: auto;
+      right: 24px;
+      max-width: 320px;
     }
   }
 
