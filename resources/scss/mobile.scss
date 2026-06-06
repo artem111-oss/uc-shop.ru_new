@@ -407,12 +407,20 @@
     font-size: 0.9rem !important;
   }
 
-  /* Сетка — 5 колонок (21 карточка = 4 строки + 1 одиночная) */
+  /* Сетка — 7 колонок при ширине ≥ 900px, 3 колонки при 769–899px */
+  /* 21 карточка: 7×3 = 21 (ровно), 3×7 = 21 (ровно) — без одиночек */
   .uc-packages-grid {
-    grid-template-columns: repeat(5, 1fr) !important;
+    grid-template-columns: repeat(7, 1fr) !important;
     gap: 0.5rem;
     max-width: 100%;
     margin: 0;
+  }
+
+  @media (min-width: 769px) and (max-width: 899px) {
+    .uc-packages-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 0.5rem;
+    }
   }
 
   /* Левая зона — на всю ширину */
@@ -420,9 +428,19 @@
     align-items: stretch;
   }
 
-  /* Правая зона — полностью скрыта (используем fixed-панель как на мобиле) */
+  /* Правая зона — убираем из потока, но НЕ скрываем display:none (иначе position:fixed на дочернем не работает) */
   .uc-hero__right {
-    display: none;
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+
+    /* Скрыть всё кроме формы */
+    .uc-live-counter {
+      display: none;
+    }
   }
 
   /* Нижний отступ под fixed-панель */
