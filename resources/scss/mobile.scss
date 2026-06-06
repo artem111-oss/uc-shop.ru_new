@@ -1,6 +1,6 @@
 /* =========================================================
    MOBILE STYLES — только для телефонов (max-width: 768px)
-   Планшеты (769px–1024px) управляются через app.scss
+   Планшеты (769px–1200px) управляются ниже в этом файле
    ========================================================= */
 
 @media (max-width: 768px) {
@@ -387,36 +387,37 @@
 
 }
 
-  /* ── iPad Mini portrait (768×1024) ── */
-  @media (width: 768px) and (min-height: 1000px) {
+/* ── iPad Mini portrait (767–769px, высокий экран) ── */
+/* ИСПРАВЛЕНО: было (width: 768px) — слишком точно, не срабатывает на субпиксельном рендеринге */
+@media (min-width: 767px) and (max-width: 769px) and (min-height: 1000px) {
 
-    .uc-packages-title {
-      font-size: 1.8rem !important;
-    }
-
-    .uc-packages-subtitle {
-      font-size: 0.9rem !important;
-    }
-
-    .uc-package-uc,
-    .uc-package-price {
-      font-size: clamp(11px, 1.5vw, 14px);
-      line-height: 1.2;
-    }
-
-    .uc-calc-btn {
-      width: 30px;
-      height: 30px;
-      font-size: 0.95rem;
-    }
-
-    .uc-calc-qty {
-      font-size: 0.78rem;
-    }
+  .uc-packages-title {
+    font-size: 1.8rem !important;
   }
 
+  .uc-packages-subtitle {
+    font-size: 0.9rem !important;
+  }
+
+  .uc-package-uc,
+  .uc-package-price {
+    font-size: clamp(11px, 1.5vw, 14px);
+    line-height: 1.2;
+  }
+
+  .uc-calc-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.95rem;
+  }
+
+  .uc-calc-qty {
+    font-size: 0.78rem;
+  }
+}
+
 /* =========================================================
-   ПЛАНШЕТ — 769px–1200px
+   ПЛАНШЕТ — 769px–1200px (базовые стили)
    ========================================================= */
 
 @media (min-width: 769px) and (max-width: 1200px) {
@@ -435,8 +436,8 @@
     font-size: 0.9rem !important;
   }
 
-  /* Сетка — 7 колонок при ширине ≥ 900px, 3 колонки при 769–899px */
-  /* 21 карточка: 7×3 = 21 (ровно), 3×7 = 21 (ровно) — без одиночек */
+  /* Сетка — 7 колонок (для 900px+) */
+  /* 21 карточка: 7×3 = 21 (ровно) — без одиночек */
   .uc-packages-grid {
     grid-template-columns: repeat(7, 1fr) !important;
     gap: 0.5rem;
@@ -444,19 +445,14 @@
     margin: 0;
   }
 
-  @media (min-width: 769px) and (max-width: 899px) {
-    .uc-packages-grid {
-      grid-template-columns: repeat(3, 1fr) !important;
-      gap: 0.5rem;
-    }
-  }
-
-  /* Левая зона — на всю ширину */
+  /* Левая зона — на всю ширину + нижний отступ под fixed-панель */
   .uc-hero__left {
     align-items: stretch;
+    padding-bottom: 180px;
   }
 
-  /* Правая зона — убираем из потока, но НЕ скрываем display:none (иначе position:fixed на дочернем не работает) */
+  /* Правая зона — убираем из потока, но НЕ скрываем display:none
+     (иначе position:fixed на дочернем не работает) */
   .uc-hero__right {
     position: absolute;
     width: 0;
@@ -469,11 +465,6 @@
     .uc-live-counter {
       display: none;
     }
-  }
-
-  /* Нижний отступ под fixed-панель */
-  .uc-hero__left {
-    padding-bottom: 180px;
   }
 
   /* ── НИЖНЯЯ ПАНЕЛЬ: fixed — как на мобиле ────────────── */
@@ -601,47 +592,6 @@
     font-size: 1.2rem;
   }
 
-  /* ── Узкий планшет (769–1100px): 7 колонок, мелкие карточки ── */
-  @media (min-width: 769px) and (max-width: 1100px) {
-    .uc-packages-grid {
-      gap: 0.3rem;
-    }
-
-    .uc-package-card {
-      padding: 6px 3px 5px;
-      border-radius: 8px;
-    }
-
-    .uc-package-uc {
-      font-size: clamp(10px, 1.1vw, 13px);
-      line-height: 1.2;
-      margin-bottom: 0;
-    }
-
-    .uc-package-price {
-      font-size: clamp(10px, 1.1vw, 13px);
-      line-height: 1.2;
-      margin-bottom: 0;
-    }
-
-    .uc-calc-btn {
-      width: 28px;
-      height: 28px;
-      font-size: 0.9rem;
-      border-radius: 5px;
-    }
-
-    .uc-calc-qty {
-      font-size: 0.72rem;
-      min-width: 10px;
-    }
-
-    .uc-package-calc {
-      gap: 2px;
-      margin-top: 2px;
-    }
-  }
-
   /* Нижние секции — показываем */
   .uc-faq-reviews-section,
   .uc-social-proof,
@@ -654,168 +604,238 @@
     padding-bottom: calc(1.5rem + 180px);
   }
 
-    /* ── iPad Pro вертикально (1024×1366):
-     правая зона возвращается в поток под карточки ── */
-  @media (min-width: 1000px) and (max-width: 1200px) and (min-height: 1000px) {
+}
 
-    /* Убираем padding-bottom под fixed панель */
-    .uc-hero__left {
-      padding-bottom: 0;
-    }
+/* =========================================================
+   ПЛАНШЕТ — узкий диапазон 769px–899px
+   Сетка: 3 колонки вместо 7 (21 карточка ÷ 3 = 7 рядов, ровно)
+   ИСПРАВЛЕНО: вынесено из вложенного @media
+   ========================================================= */
 
-    /* Возвращаем правую зону в нормальный поток */
-    .uc-hero__right {
-      position: relative !important;
-      width: 100% !important;
-      height: auto !important;
-      overflow: visible !important;
-      padding: 0 !important;
-      margin: 0 !important;
+@media (min-width: 769px) and (max-width: 899px) {
+  .uc-packages-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.5rem;
+  }
+}
 
-      /* Показываем live counter обратно если нужно */
-      .uc-live-counter {
-        display: block;
-      }
-    }
+/* =========================================================
+   ПЛАНШЕТ — 769px–1100px: мелкие карточки
+   ИСПРАВЛЕНО: вынесено из вложенного @media
+   ========================================================= */
 
-    /* Форма — static, нормальная */
-    .uc-id-form {
-      position: relative !important;
-      bottom: auto !important;
-      left: auto !important;
-      right: auto !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      border-radius: 12px;
-      border-top: none;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      margin: 0;
-      padding: 16px 20px;
-      padding-bottom: 16px;
-      z-index: auto !important;
-
-      /* Показываем скрытые элементы */
-      .uc-id-form__title { display: block !important; }
-      .uc-id-form__info  { display: block !important; }
-      .uc-id-form__cart  { display: block !important; }
-      .uc-id-form__note  {
-        font-size: 0.7rem;
-        opacity: 0.7;
-        text-align: left;
-        margin: 6px 0 0;
-      }
-    }
-
-    /* Toast — обычное позиционирование */
-    .uc-toast {
-      bottom: 24px;
-      left: auto;
-      right: 24px;
-      max-width: 320px;
-    }
-    
-    /* ── ШРИФТЫ: iPad Pro portrait (1024×1366) ──────────── */
-
-    /* Заголовок — крупнее чем на узком планшете */
-    .uc-packages-title {
-      font-size: 2.2rem !important;
-    }
-
-    .uc-packages-subtitle {
-      font-size: 1rem !important;
-    }
-
-    /* Карточки — нормальный читаемый размер */
-    .uc-package-uc {
-      font-size: clamp(13px, 1.4vw, 16px);
-      line-height: 1.2;
-    }
-
-    .uc-package-price {
-      font-size: clamp(13px, 1.4vw, 16px);
-      line-height: 1.2;
-    }
-
-    /* Кнопки +/- — комфортнее для планшета */
-    .uc-calc-btn {
-      width: 34px;
-      height: 34px;
-      font-size: 1.1rem;
-    }
-
-    .uc-calc-qty {
-      font-size: 0.85rem;
-    }
-
-    /* Форма */
-    .uc-id-form__input {
-      font-size: 1rem;
-    }
-
-    .uc-id-form__submit {
-      font-size: 1.05rem;
-    }
-
-    .uc-id-form__hint {
-      font-size: 0.75rem;
-    }
-
+@media (min-width: 769px) and (max-width: 1100px) {
+  .uc-packages-grid {
+    gap: 0.3rem;
   }
 
-  /* ── iPad Air / iPad Pro 11" portrait (820–950px, высокий экран) ── */
-  @media (min-width: 769px) and (max-width: 950px) and (min-height: 1000px) {
+  .uc-package-card {
+    padding: 6px 3px 5px;
+    border-radius: 8px;
+  }
 
-    .uc-packages-title {
-      font-size: 2rem !important;
-    }
+  .uc-package-uc {
+    font-size: clamp(10px, 1.1vw, 13px);
+    line-height: 1.2;
+    margin-bottom: 0;
+  }
 
-    .uc-packages-subtitle {
-      font-size: 0.95rem !important;
-    }
+  .uc-package-price {
+    font-size: clamp(10px, 1.1vw, 13px);
+    line-height: 1.2;
+    margin-bottom: 0;
+  }
 
-    .uc-package-uc,
-    .uc-package-price {
-      font-size: clamp(12px, 1.6vw, 16px);
-      line-height: 1.2;
-    }
+  .uc-calc-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+  }
 
-    .uc-calc-btn {
-      width: 32px;
-      height: 32px;
-      font-size: 1rem;
-    }
+  .uc-calc-qty {
+    font-size: 0.72rem;
+    min-width: 10px;
+  }
 
-    .uc-calc-qty {
-      font-size: 0.8rem;
+  .uc-package-calc {
+    gap: 2px;
+    margin-top: 2px;
+  }
+}
+
+/* =========================================================
+   iPad Air / iPad Pro 11" portrait (820–950px, высокий экран)
+   ИСПРАВЛЕНО: вынесено из вложенного @media
+   ========================================================= */
+
+@media (min-width: 769px) and (max-width: 950px) and (min-height: 1000px) {
+
+  .uc-packages-title {
+    font-size: 2rem !important;
+  }
+
+  .uc-packages-subtitle {
+    font-size: 0.95rem !important;
+  }
+
+  .uc-package-uc,
+  .uc-package-price {
+    font-size: clamp(12px, 1.6vw, 16px);
+    line-height: 1.2;
+  }
+
+  .uc-calc-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .uc-calc-qty {
+    font-size: 0.8rem;
+  }
+}
+
+/* =========================================================
+   iPad Mini landscape (1000–1100px, низкий экран max-height: 800px)
+   ИСПРАВЛЕНО: вынесено из вложенного @media
+   ========================================================= */
+
+@media (min-width: 1000px) and (max-width: 1100px) and (max-height: 800px) {
+
+  .uc-packages-title {
+    font-size: 1.9rem !important;
+  }
+
+  .uc-packages-subtitle {
+    font-size: 0.9rem !important;
+  }
+
+  .uc-package-uc,
+  .uc-package-price {
+    font-size: clamp(11px, 1.2vw, 14px);
+    line-height: 1.2;
+  }
+
+  .uc-calc-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.95rem;
+  }
+
+  .uc-calc-qty {
+    font-size: 0.78rem;
+  }
+}
+
+/* =========================================================
+   iPad Pro portrait (1000–1200px, высокий экран min-height: 1000px)
+   Форма возвращается в поток под карточки
+   ИСПРАВЛЕНО: вынесено из вложенного @media
+   ========================================================= */
+
+@media (min-width: 1000px) and (max-width: 1200px) and (min-height: 1000px) {
+
+  /* Убираем padding-bottom под fixed панель — форма в потоке */
+  .uc-hero__left {
+    padding-bottom: 0 !important;
+  }
+
+  /* Возвращаем правую зону в нормальный поток */
+  .uc-hero__right {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    /* Показываем live counter обратно */
+    .uc-live-counter {
+      display: block;
     }
   }
 
-    /* ── iPad Mini landscape (1024×768) ── */
-  @media (min-width: 1000px) and (max-width: 1100px) and (max-height: 800px) {
+  /* Форма — static, нормальная */
+  .uc-id-form {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 12px;
+    border-top: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    margin: 0;
+    padding: 16px 20px;
+    padding-bottom: 16px;
+    z-index: auto !important;
 
-    .uc-packages-title {
-      font-size: 1.9rem !important;
+    /* Показываем скрытые элементы */
+    .uc-id-form__title { display: block !important; }
+    .uc-id-form__info  { display: block !important; }
+    .uc-id-form__cart  { display: block !important; }
+    .uc-id-form__note  {
+      font-size: 0.7rem;
+      opacity: 0.7;
+      text-align: left;
+      margin: 6px 0 0;
     }
+  }
 
-    .uc-packages-subtitle {
-      font-size: 0.9rem !important;
-    }
+  /* Toast — обычное позиционирование */
+  .uc-toast {
+    bottom: 24px;
+    left: auto;
+    right: 24px;
+    max-width: 320px;
+  }
 
-    .uc-package-uc,
-    .uc-package-price {
-      font-size: clamp(11px, 1.2vw, 14px);
-      line-height: 1.2;
-    }
+  /* ── ШРИФТЫ: iPad Pro portrait (1024×1366) ──────────── */
 
-    .uc-calc-btn {
-      width: 30px;
-      height: 30px;
-      font-size: 0.95rem;
-    }
+  /* Заголовок — крупнее чем на узком планшете */
+  .uc-packages-title {
+    font-size: 2.2rem !important;
+  }
 
-    .uc-calc-qty {
-      font-size: 0.78rem;
-    }
+  .uc-packages-subtitle {
+    font-size: 1rem !important;
+  }
+
+  /* Карточки — нормальный читаемый размер */
+  .uc-package-uc {
+    font-size: clamp(13px, 1.4vw, 16px);
+    line-height: 1.2;
+  }
+
+  .uc-package-price {
+    font-size: clamp(13px, 1.4vw, 16px);
+    line-height: 1.2;
+  }
+
+  /* Кнопки +/- — комфортнее для планшета */
+  .uc-calc-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 1.1rem;
+  }
+
+  .uc-calc-qty {
+    font-size: 0.85rem;
+  }
+
+  /* Форма */
+  .uc-id-form__input {
+    font-size: 1rem;
+  }
+
+  .uc-id-form__submit {
+    font-size: 1.05rem;
+  }
+
+  .uc-id-form__hint {
+    font-size: 0.75rem;
   }
 
 }
