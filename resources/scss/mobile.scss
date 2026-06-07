@@ -316,23 +316,22 @@
   }
 
   .uc-reviews-column {
+    display: none; // ← скрыть на мобиле
     max-height: none;
     padding: 1rem;
+    overflow: hidden; /* ← вернуть обязательно */
   }
 
-  /* Карусель отзывов на мобиле */
   .uc-reviews-carousel {
     height: 260px;
     overflow: hidden;
     position: relative;
-    display: block; /* страховка от flex-растяжки */
+    display: block;
   }
 
   .uc-reviews-carousel__track {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    /* ← убрать position:absolute — JS считает offsetHeight неверно в absolute */
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -341,7 +340,8 @@
   }
 
   .uc-review-card {
-    flex-shrink: 0; /* карточки не сжимаются */
+    flex-shrink: 0;
+    width: 100%;
   }
 
   /* Социальное доказательство */
@@ -1126,7 +1126,7 @@
     padding-left: calc(16px + env(safe-area-inset-left));
     padding-right: calc(16px + env(safe-area-inset-right));
   }
-
+}
 /* =========================================================
    ОТЗЫВЫ — планшеты 769px–1200px
    ========================================================= */
@@ -1146,4 +1146,14 @@
   }
 
 }
+
+// ===== TABLET: iPad mini/Air/Pro portrait + landscape =====
+@media (min-width: 769px) and (max-width: 1180px) {
+  .uc-proof-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .uc-trust-badges {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
