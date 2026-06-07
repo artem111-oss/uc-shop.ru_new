@@ -108,13 +108,13 @@
   }
 
   .uc-package-uc {
-    font-size: clamp(11px, 3vw, 15px);
+    font-size: clamp(20px, 3vw, 15px);
     margin-bottom: 0;
     line-height: 1.2;
   }
 
   .uc-package-price {
-    font-size: clamp(11px, 3vw, 15px);
+    font-size: clamp(15px, 3vw, 15px);
     margin-bottom: 0;
     flex-grow: 0;
     line-height: 1.2;
@@ -122,7 +122,7 @@
 
   /* ── КНОПКИ +/- — минимальный touch target ──────────── */
   .uc-package-calc {
-    gap: 2px;
+    gap: 7px;
     margin-top: 2px;
     flex-wrap: nowrap;
   }
@@ -222,7 +222,7 @@
   }
 
   .uc-id-form__hint {
-    font-size: 0.68rem;
+    font-size: 0.56rem;
     margin: 0;
     text-align: left;
     flex: 1;
@@ -416,6 +416,20 @@
   }
 }
 
+/* ── iPad Mini landscape (1024×768) ── */
+@media (min-width: 1020px) and (max-width: 1030px) and (max-height: 780px) {
+
+  .uc-packages-title {
+    margin-top: -30px;
+    margin-bottom: 0px;
+  }
+
+  .uc-packages-subtitle {
+    margin-top: 0;
+    margin-bottom: -5px;
+  }
+}
+
 /* =========================================================
    ПЛАНШЕТ — 769px–1200px (базовые стили)
    ========================================================= */
@@ -429,11 +443,15 @@
 
   /* Заголовок — уменьшаем, на вертикальном iPad был слишком большой */
   .uc-packages-title {
-    font-size: 1.8rem !important;
+    font-size: 5.2rem !important;
+    margin-top: -30px;
+    margin-bottom: 0;
   }
 
   .uc-packages-subtitle {
-    font-size: 0.9rem !important;
+    font-size: 1.9rem !important;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   /* Сетка — 7 колонок (для 900px+) */
@@ -448,7 +466,7 @@
   /* Левая зона — на всю ширину + нижний отступ под fixed-панель */
   .uc-hero__left {
     align-items: stretch;
-    padding-bottom: 180px;
+    padding-bottom: 0;
   }
 
   /* Правая зона — убираем из потока, но НЕ скрываем display:none
@@ -673,10 +691,14 @@
 
   .uc-packages-title {
     font-size: 3.6rem !important;
+    margin-top: -30px;
+    margin-bottom: 0;
   }
 
   .uc-packages-subtitle {
     font-size: 1.5rem !important;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   .uc-package-uc,
@@ -710,7 +732,7 @@
 
   /* ── ФОРМА КАРТОЧЕК — iPad Air portrait, квадратные ── */
   .uc-package-card {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 2 / 1;
     padding: 10px 6px 8px;
     border-radius: 10px;
     display: flex;
@@ -842,7 +864,7 @@
   }
 
   .uc-package-calc {
-    gap: 3px;
+    gap: 10px;
     margin-top: 3px;
   }
 
@@ -854,7 +876,7 @@
 
   /* ── Снижаем запас под панель на низком экране ── */
   .uc-hero__left {
-    padding-bottom: 140px;
+    padding-bottom: 0;
   }
 
   .uc-id-form {
@@ -964,7 +986,7 @@
 
   /* Заголовок — крупнее чем на узком планшете */
   .uc-packages-title {
-    font-size: 4.6rem !important;
+    font-size: 4.5rem !important;
   }
 
   .uc-packages-subtitle {
@@ -1034,7 +1056,7 @@
 
   /* ── Снижаем запас под панель на низком экране ── */
   .uc-hero__left {
-    padding-bottom: 140px;
+    padding-bottom: 0;
   }
 
   .uc-id-form {
