@@ -849,8 +849,13 @@ document.addEventListener('DOMContentLoaded', function() {
             textP.className = 'uc-review-card__text';
             textP.textContent = review.text;
             
+            const authorP = document.createElement('p');
+            authorP.className = 'uc-review-card__author';
+            authorP.textContent = review.author ?? '';
+            
             card.appendChild(headerDiv);
             card.appendChild(textP);
+            card.appendChild(authorP);
             
             reviewsTrack.appendChild(card);
         });
