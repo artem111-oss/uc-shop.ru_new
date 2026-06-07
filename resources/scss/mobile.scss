@@ -316,9 +316,17 @@
     padding: 1rem;
   }
 
-  /* Карусель отзывов на мобиле — фиксированная высота меньше */
+  /* Карусель отзывов на мобиле — фиксированная высота, обрезаем лишнее */
   .uc-reviews-carousel {
     height: 260px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .uc-reviews-carousel__track {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   /* Социальное доказательство */
@@ -1103,4 +1111,24 @@
     padding-left: calc(16px + env(safe-area-inset-left));
     padding-right: calc(16px + env(safe-area-inset-right));
   }
+
+/* =========================================================
+   ОТЗЫВЫ — планшеты 769px–1200px
+   ========================================================= */
+
+@media (min-width: 769px) and (max-width: 1200px) {
+
+  .uc-reviews-carousel {
+    height: 320px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .uc-reviews-carousel__track {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+}
 }

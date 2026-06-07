@@ -842,20 +842,21 @@ document.addEventListener('DOMContentLoaded', function() {
             timeSpan.className = 'uc-review-card__time';
             timeSpan.textContent = review.time_ago;
             
+            // Никнейм — в хедере между звёздами и временем
+            const authorSpan = document.createElement('span');
+            authorSpan.className = 'uc-review-card__author';
+            authorSpan.textContent = review.author ?? '';
+
             headerDiv.appendChild(ratingSpan);
+            headerDiv.appendChild(authorSpan);
             headerDiv.appendChild(timeSpan);
-            
+
             const textP = document.createElement('p');
             textP.className = 'uc-review-card__text';
             textP.textContent = review.text;
-            
-            const authorP = document.createElement('p');
-            authorP.className = 'uc-review-card__author';
-            authorP.textContent = review.author ?? '';
-            
+
             card.appendChild(headerDiv);
             card.appendChild(textP);
-            card.appendChild(authorP);
             
             reviewsTrack.appendChild(card);
         });
