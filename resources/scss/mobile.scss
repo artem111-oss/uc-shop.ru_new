@@ -310,13 +310,18 @@
     gap: 1.5rem;
   }
 
-  .uc-faq-column,
-  .uc-reviews-column {
-    max-height: none; /* снимаем ограничение высоты — контент должен читаться */
+  .uc-faq-column {
+    max-height: none;
     padding: 1rem;
   }
 
-  /* Карусель отзывов на мобиле — фиксированная высота, обрезаем лишнее */
+  .uc-reviews-column {
+    max-height: none;
+    padding: 1rem;
+    overflow: hidden; /* обрезаем трек карусели */
+  }
+
+  /* Карусель отзывов на мобиле */
   .uc-reviews-carousel {
     height: 260px;
     overflow: hidden;
@@ -327,8 +332,9 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    will-change: transform; /* GPU-ускорение для плавного transform */
   }
-
+  
   /* Социальное доказательство */
   .uc-social-proof {
     display: block;
