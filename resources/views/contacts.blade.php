@@ -1,42 +1,86 @@
 @extends('app')
-@section('title', 'Контакты')
+@section('title', 'Контакты — UC-SHOP')
 @section('content')
-<div class="container pt-4">
-    <h1>Контакты</h1>
-    <div class="content">
-        <div class="row">
-            <div class="col-6 col-lg-6 mb-3"> 
-                <p>Email: info@uc-shop.ru</p> 
-                <p>Официальный канал UCSHOP <a href="https://t.me/ucshop" target="_blank">@ucshop</a></p> <a href="https://t.me/gdealerofficial" target="_blank">@gdealerofficial</a>
-            </p>
-            <p>Отзывы/Чат <a href="https://t.me/gdealerreviews" target="_blank">@gdealerreviews</a></p><a href="https://t.me/ucshop_otz" target="_blank">@ucshop_otz</a>
-        </p><a href="https://t.me/ucshop_forum" target="_blank">@ucshop_forum</a>
-    </p>
-    <p>Админ <a href="https://t.me/ucshop_dobro" target="_blank">@air_pubg</a></p>
-    <p>Операторы:</p> 
-    <p><a href="https://t.me/ucshop_dobro" target="_blank">@ucshop_dobro</a></p>
-</div>
-<div class="col-6 col-lg-6 mb-3">
-    <h2>Форма обратной связи</h2>
-    <form action="{{route('contact-form')}}" method="post">
-        @csrf
-        <div class="mb-3">
-            <label for="subject" class="form-label">Тема обращения</label>
-            <input type="text" class="form-control" id="subject" name="subject">
-        </div>
-        <div class="mb-3">
-            <label for="name" class="form-label">Имя</label>
-            <input type="text" class="form-control" id="name" name="name">
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email">
-        </div>
-        <div class="mb-3">
-            <label for="message" class="form-label">Ваше сообщение</label>
-            <textarea class="form-control" id="message" name="message" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Отправить</button>
-    </form>
-</div>
+
+<section class="uc-contacts-section">
+  <div class="container">
+
+    <h1 class="uc-section-title">Контакты</h1>
+    <p class="uc-section-subtitle">Мы на связи 24/7 — выбери удобный способ</p>
+
+    <div class="uc-contacts-grid">
+
+      {{-- БЛОК: Telegram-каналы --}}
+      <div class="uc-contacts-card">
+        <div class="uc-contacts-card__icon">📱</div>
+        <h2 class="uc-contacts-card__title">Telegram</h2>
+        <ul class="uc-contacts-list">
+          <li>
+            <span class="uc-contacts-list__label">Официальный канал</span>
+            <a href="https://t.me/ucshop" target="_blank" rel="noopener" class="uc-contacts-list__link">@ucshop</a>
+          </li>
+          <li>
+            <span class="uc-contacts-list__label">Отзывы и чат</span>
+            <a href="https://t.me/pubgm_uc_reviews" target="_blank" rel="noopener" class="uc-contacts-list__link">@pubgm_uc_reviews</a>
+          </li>
+          <li>
+            <span class="uc-contacts-list__label">Форум</span>
+            <a href="https://t.me/ucshop_forum" target="_blank" rel="noopener" class="uc-contacts-list__link">@ucshop_forum</a>
+          </li>
+          <li>
+            <span class="uc-contacts-list__label">Email</span>
+            <a href="mailto:info@uc-shop.ru" class="uc-contacts-list__link">info@uc-shop.ru</a>
+          </li>
+        </ul>
+      </div>
+
+      {{-- БЛОК: Поддержка --}}
+      <div class="uc-contacts-card">
+        <div class="uc-contacts-card__icon">🎧</div>
+        <h2 class="uc-contacts-card__title">Поддержка</h2>
+        <ul class="uc-contacts-list">
+          <li>
+            <span class="uc-contacts-list__label">Администратор</span>
+            <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-contacts-list__link">@ucshop_air</a>
+          </li>
+          <li>
+            <span class="uc-contacts-list__label">Оператор</span>
+            <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-contacts-list__link">@ucshop_air</a>
+          </li>
+        </ul>
+        <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-btn-contact-telegram">
+          💬 Написать в поддержку
+        </a>
+      </div>
+
+      {{-- БЛОК: Форма --}}
+      <div class="uc-contacts-card uc-contacts-card--form">
+        <div class="uc-contacts-card__icon">✉️</div>
+        <h2 class="uc-contacts-card__title">Форма обратной связи</h2>
+        <form action="{{ route('contact-form') }}" method="post" class="uc-contact-form">
+          @csrf
+          <div class="uc-contact-form__group">
+            <label for="subject" class="uc-contact-form__label">Тема обращения</label>
+            <input type="text" id="subject" name="subject" class="uc-contact-form__input" placeholder="Например: не пришли UC" required>
+          </div>
+          <div class="uc-contact-form__group">
+            <label for="name" class="uc-contact-form__label">Имя</label>
+            <input type="text" id="name" name="name" class="uc-contact-form__input" placeholder="Ваше имя" required>
+          </div>
+          <div class="uc-contact-form__group">
+            <label for="email" class="uc-contact-form__label">Email</label>
+            <input type="email" id="email" name="email" class="uc-contact-form__input" placeholder="your@email.com" required>
+          </div>
+          <div class="uc-contact-form__group">
+            <label for="message" class="uc-contact-form__label">Сообщение</label>
+            <textarea id="message" name="message" class="uc-contact-form__input uc-contact-form__textarea" rows="4" placeholder="Опишите проблему..." required></textarea>
+          </div>
+          <button type="submit" class="uc-contact-form__submit">Отправить</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 @endsection

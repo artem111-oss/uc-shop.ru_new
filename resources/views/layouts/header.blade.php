@@ -15,8 +15,9 @@
         <a href="/contacts" class="uc-menu-link">📞 КОНТАКТЫ</a>
       </div>
 
-        <!-- Telegram кнопка -->
-        <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-btn-telegram" 
+      <!-- Правые кнопки -->
+      <div class="uc-navbar__actions">
+        <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-btn-telegram"
            aria-label="Поддержка в Telegram" title="Написать в поддержку">
           <span class="uc-btn-telegram__icon">💬</span>
           <span class="uc-btn-telegram__text">ПОДДЕРЖКА</span>

@@ -44,7 +44,7 @@
             ← Попробовать еще раз
           </a>
 
-          <a href="https://t.me/gdealerofficial" target="_blank" rel="noopener" class="uc-btn uc-btn--secondary">
+          <a href="https://t.me/pubgm_uc_reviews" target="_blank" rel="noopener" class="uc-btn uc-btn--secondary">
             📱 Помощь в поддержке
           </a>
         </div>
