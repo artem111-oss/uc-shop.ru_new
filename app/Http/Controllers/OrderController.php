@@ -532,21 +532,31 @@ class OrderController extends Controller
                 'order_id'          => $order->id,
                 'external_order_id' => $response->json()['data']['order_id'] ?? null,
             ]);
+
+            $this->sendToTelegram(
+                "✅ <b>Заказ выполнен</b>\n\n" .
+                "🆔 Заказ: <b>#" . $order->id . "</b>\n" .
+                "🎮 PUBG ID: <b>" . $order->uid . "</b>\n" .
+                "📦 Товар: <b>" . $productName . "</b>\n" .
+                "💰 Сумма: <b>" . number_format($order->price, 0, ',', ' ') . " ₽</b>\n" .
+                "⏱ Время: " . now()->format('d.m.Y H:i:s')
+            );
         } else {
-            Log::error('executeOrder: ошибка API Ragner', [
+            Log::error('executeOrder: Ragner вернул ошибку', [
                 'order_id' => $order->id,
                 'status'   => $response->status(),
-                'response' => substr($response->body(), 0, 500),
+                'response' => substr($response->body(), 0, 300),
             ]);
         }
-    }
+    } // закрывает executeOrder
 
     public function sendToTelegram(string $message): void
     {
         try {
-            app(\App\Helpers\Telegram::class)->sendMessage($message);
+            $chatId = config('services.telegram.chat_id');
+            app(\App\Helpers\Telegram::class)->sendMessage($chatId, $message);
         } catch (\Exception $e) {
             Log::error('Telegram send error', ['error' => $e->getMessage()]);
         }
     }
-}
+} // закрывает класс
