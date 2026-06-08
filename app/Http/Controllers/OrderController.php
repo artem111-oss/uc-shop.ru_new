@@ -129,8 +129,8 @@ class OrderController extends Controller
                 'custom'                 => (string)$order->uid,
                 'payer_pays_commission'  => 0,
                 'ttl'                    => 900,
-                'success_url'            => $pally['success_url'],
-                'fail_url'               => $pally['fail_url'],
+                'success_url'            => $pally['success_url'] . '?order_id=' . $order->id,
+                'fail_url'               => $pally['fail_url'] . '?order_id=' . $order->id,
                 'payment_method'         => 'SBP',
             ];
 

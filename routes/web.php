@@ -73,10 +73,10 @@ Route::post('/order/payment', [OrderController::class, 'createPayment'])
     ->name('order.payment')
     ->middleware('throttle:100,1'); // 100 req/min для высокой нагрузки
 
-Route::get('/payment/success', [OrderController::class, 'paymentSuccess'])
+Route::match(['get', 'post'], '/payment/success', [OrderController::class, 'paymentSuccess'])
     ->name('payment.success');
 
-Route::get('/payment/failed', [OrderController::class, 'paymentFail'])
+Route::match(['get', 'post'], '/payment/failed', [OrderController::class, 'paymentFail'])
     ->name('payment.failed');
 
 // Legacy webhook route (используйте /api/payment/webhook)

@@ -4496,3 +4496,4 @@ Stack trace:
 2026/06/05 06:35:04 [notice] 1#1: start worker process 29
 2026/06/05 06:35:04 [notice] 1#1: start worker process 30
 2026/06/05 06:35:04 [notice] 1#1: start worker process 31
+2026/06/08 00:38:51 [warn] 30#30: *8648 an upstream response is buffered to a temporary file /var/cache/nginx/fastcgi_temp/1/00/0000000001 while reading upstream, client: 172.18.0.1, server: localhost, request: "GET /payment/success HTTP/1.1", upstream: "fastcgi://172.18.0.5:9000", host: "localhost:86"
