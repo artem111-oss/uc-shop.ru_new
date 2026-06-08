@@ -31,23 +31,33 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function report(Throwable $e)
+    public function report(Throwable $e): void
     {
-        
         parent::report($e);
+
+        // Не спамить в Telegram мусорными запросами
+        $ignored = [
+            \Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class,
+            \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+            \Illuminate\Auth\AuthenticationException::class,
+            \Illuminate\Validation\ValidationException::class,
+        ];
+
+        foreach ($ignored as $class) {
+            if ($e instanceof $class) {
+                return;
+            }
+        }
 
         try {
             $data = [
                 'description' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
+                'file'        => $e->getFile(),
+                'line'        => $e->getLine(),
             ];
 
-          
             $message = view('report', $data)->render();
-
-        
-            $chatId = config('services.telegram.chat_id');
+            $chatId  = config('services.telegram.chat_id');
 
             $this->telegram->sendMessage($chatId, $message);
         } catch (Throwable $ex) {
