@@ -7,16 +7,27 @@ use Illuminate\Support\Facades\Cache;
 class ReviewsController extends Controller
 {
     private array $authors = [
-        'Арсен_PM', 'killer_rus', 'TigerX99', 'ProPlayer_47', 'Denis_UFA',
-        'nightwolf_pm', 'AlexKing', 'Стас228', 'FoxHunter', 'vlad_pubg',
-        'Максим_К', 'dark_sniper', 'R1CHBOY', 'ПабГ_Фанат', 'Коля_топ',
-        'zero_cool99', 'MikeStrike', 'Серёга_UZ', 'bestshot_ru', 'GameOver77',
+    'Арсен_PM', 'killer_rus', 'TigerX99', 'ProPlayer_47', 'Denis_UFA',
+    'nightwolf_pm', 'AlexKing', 'Стас228', 'FoxHunter', 'vlad_pubg',
+    'Максим_К', 'dark_sniper', 'R1CHBOY', 'ПабГ_Фанат', 'Коля_топ',
+    'zero_cool99', 'MikeStrike', 'Серёга_UZ', 'bestshot_ru', 'GameOver77',
+    'Димас_pro', 'shadow_kill', 'NightRaider', 'Кирилл228', 'AimGod_rf',
+    'Руслан_KZ', 'blaze_one', 'TopFragger', 'Женёк_ufa', 'snipe_king',
+    'Артём_PG', 'coldblood99', 'X_Hunter_X', 'ВаняПабг', 'FastFingers',
+    'Тимур_pro', 'reaper_rus', 'M416_King', 'Илья_777', 'ghost_mode',
+    'Pavel_pm', 'ironwall_rf', 'QuickScope', 'Борис_играет', 'ace_shot',
+    'Никита_top', 'stealthx99', 'RushBOnly', 'Паша_UFA', 'dropzone_ru',
+    'Егор_kill', 'headshot_hz', 'SkyDiver_1', 'Лёха_pubg', 'omega_fire',
+    'Степан_pm', 'noscope_bro', 'CarryKing', 'Данил_pro', 'viper_shot',
+    'Ромка_228', 'flashpoint9', 'UltraFrags', 'Глеб_играет', 'rapid_fire',
+    'Тёма_rus', 'coldsnipe_r', 'WildHunter', 'Женя_пабг', 'zone_ctrl',
     ];
 
     private array $products = [
-        '60 UC', '180 UC', '300 UC', '600 UC', '1500 UC', '1800 UC',
-        '3000 UC', '6000 UC', '8100 UC', 'UC на Royal Pass', 'UC для скина',
-        'UC другу в подарок', 'UC на эпик скин', 'пакет на сезон',
+        '60 UC', '180 UC', '325 UC', '385 UC', '660 UC', '720 UC', '985 UC', 
+        '1320 UC', '1800 UC', '1920 UC', '2460 UC', '3850 UC', '5650 UC', '8100 UC',
+        '9900 UC', '12010 UC', '16200 UC', 'UC на Royal Pass', 'UC для скина',
+        'UC другу в подарок', 'UC на новую рулетку', 'большой пакет',
     ];
 
     private array $payments = [
@@ -26,7 +37,7 @@ class ReviewsController extends Controller
 
     private array $speeds = [
         'за 20 секунд', 'за 30 секунд', 'за 40 секунд', 'за минуту',
-        'буквально за полминуты', 'пока я ещё в меню сидел',
+        'буквально за полминуты', 'пока я ещё на сайте сидел',
         'быстрее чем ожидал', 'моментально',
     ];
 

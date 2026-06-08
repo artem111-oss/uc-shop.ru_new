@@ -87,7 +87,7 @@
   </section>
 
   <!-- ===== FAQ + ОТЗЫВЫ (ОБЪЕДИНЕННЫЙ БЛОК) ===== -->
-  <section class="uc-faq-reviews-section">
+  <section class="uc-faq-reviews-section" id="faq-section">
     <div class="container">
       <div class="uc-faq-reviews-wrapper">
         <!-- FAQ СЛЕВА -->

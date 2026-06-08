@@ -10,24 +10,16 @@
 
       <!-- Меню для Desktop -->
       <div class="uc-navbar__menu uc-navbar__menu--desktop">
-        <a href="/how-to-purchase" class="uc-menu-link">📚 КАК КУПИТЬ</a>
-        <a href="https://t.me/gdealerreviews" target="_blank" rel="noopener" class="uc-menu-link">⭐ ОТЗЫВЫ</a>
+        <a href="/#faq-section" class="uc-menu-link">📚 КАК КУПИТЬ</a>
+        <a href="https://t.me/pubgm_uc_reviews" target="_blank" rel="noopener" class="uc-menu-link">⭐ ОТЗЫВЫ</a>
         <a href="/contacts" class="uc-menu-link">📞 КОНТАКТЫ</a>
       </div>
 
-      <!-- Правые кнопки (Support & Telegram) -->
-      <div class="uc-navbar__actions">
-        <!-- Кнопка поддержки -->
-        <button class="uc-btn-support" id="support-btn" aria-label="Поддержка" title="Нажмите для помощи">
-          <span class="uc-btn-support__icon">💬</span>
-          <span class="uc-btn-support__text">ПОДДЕРЖКА</span>
-        </button>
-
         <!-- Telegram кнопка -->
-        <a href="https://t.me/ucshop" target="_blank" rel="noopener" class="uc-btn-telegram" 
-           aria-label="Telegram" title="Перейти в Telegram">
-          <span class="uc-btn-telegram__icon">📱</span>
-          <span class="uc-btn-telegram__text">Telegram</span>
+        <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-btn-telegram" 
+           aria-label="Поддержка в Telegram" title="Написать в поддержку">
+          <span class="uc-btn-telegram__icon">💬</span>
+          <span class="uc-btn-telegram__text">ПОДДЕРЖКА</span>
         </a>
 
         <!-- Бургер-меню для Mobile -->
@@ -41,8 +33,8 @@
 
     <!-- Mobile меню (скрыто по умолчанию) -->
     <div class="uc-mobile-menu" id="mobile-menu">
-      <a href="/how-to-purchase" class="uc-mobile-menu__link">📚 КАК КУПИТЬ</a>
-      <a href="https://t.me/gdealerreviews" target="_blank" rel="noopener" class="uc-mobile-menu__link">⭐ ОТЗЫВЫ</a>
+      <a href="/#faq-section" class="uc-mobile-menu__link">📚 КАК КУПИТЬ</a>
+      <a href="https://t.me/pubgm_uc_reviews" target="_blank" rel="noopener" class="uc-mobile-menu__link">⭐ ОТЗЫВЫ</a>
       <a href="/contacts" class="uc-mobile-menu__link">📞 КОНТАКТЫ</a>
       <hr class="uc-mobile-menu__divider">
       <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-mobile-menu__link uc-mobile-menu__link--secondary">
@@ -56,7 +48,6 @@
     document.addEventListener('DOMContentLoaded', function() {
       const burgerToggle = document.getElementById('burger-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
-      const supportBtn = document.getElementById('support-btn');
 
       if (burgerToggle && mobileMenu) {
         burgerToggle.addEventListener('click', function(e) {
@@ -75,14 +66,6 @@
         });
       }
 
-      // Обработка кнопки поддержки (позже можно подключить чат)
-      if (supportBtn) {
-        supportBtn.addEventListener('click', function() {
-          // Placeholder для интеграции с чатом
-          alert('Поддержка 24/7 временно недоступна. Напишите нам в Telegram!');
-          // TODO: Интегрировать ChatWidget.vue
-        });
-      }
     });
   </script>
 
