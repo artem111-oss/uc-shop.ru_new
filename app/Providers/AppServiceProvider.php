@@ -44,7 +44,6 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        DB::connection()->enableQueryLog();
     }
 
     private function configureCache(): void
