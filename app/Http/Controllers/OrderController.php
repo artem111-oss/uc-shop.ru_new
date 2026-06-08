@@ -267,35 +267,29 @@ class OrderController extends Controller
         if ($orderId) {
             $order = Order::find($orderId);
             if ($order) {
-                return view('order', [
+                return view('payment.success', [
                     'order'   => $order,
                     'product' => Product::find($order->product_id),
-                    'isPaid'  => true,
-                    'isFailed' => false,
                 ]);
             }
         }
 
-        return view('payment-success');
+        return view('payment.success', ['order' => null, 'product' => null]);
     }
 
     public function paymentFail(Request $request)
     {
         $orderId = $request->query('order_id');
 
+        $order = null;
         if ($orderId) {
             $order = Order::find($orderId);
-            if ($order) {
-                return view('order', [
-                    'order'    => $order,
-                    'product'  => Product::find($order->product_id),
-                    'isPaid'   => false,
-                    'isFailed' => true,
-                ]);
-            }
         }
 
-        return view('payment-fail');
+        return view('payment.failed', [
+            'order'   => $order,
+            'product' => $order ? Product::find($order->product_id) : null,
+        ]);
     }
 
     public function handlePallyCallback(Request $request)

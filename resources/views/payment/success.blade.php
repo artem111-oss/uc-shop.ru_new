@@ -16,6 +16,7 @@
       <h1 class="uc-result-title">Оплата прошла!</h1>
       <p class="uc-result-subtitle">UC отправляются на твой аккаунт</p>
 
+      @if($order)
       <div class="uc-result-details">
         <div class="uc-result-row">
           <span class="uc-result-row__label">Номер заказа</span>
@@ -46,6 +47,7 @@
           <span class="uc-result-row__value">{{ $order->created_at->format('d.m.Y H:i') }}</span>
         </div>
       </div>
+      @endif
 
       <div class="uc-result-infobox">
         <strong>⚡ Мгновенная доставка:</strong> UC зачисляются в течение 30–60 секунд. Убедись, что игра открыта.
@@ -56,6 +58,7 @@
         <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-result-btn uc-result-btn--outline">💬 Поддержка</a>
       </div>
 
+      @if($order)
       <div class="uc-result-faq">
         <p class="uc-result-faq__title">Что делать если UC не пришли?</p>
         <ul>
@@ -67,6 +70,7 @@
 
       @if($order->email)
       <p class="uc-result-receipt">Чек отправлен на <strong>{{ $order->email }}</strong></p>
+      @endif
       @endif
 
     </div>
