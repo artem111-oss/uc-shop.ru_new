@@ -111,38 +111,6 @@ class OrderController extends Controller
     ]);
 }
 
-    public function orderUser(Request $request, string $id, string $uid)
-    {
-        $order = Order::where('id', $id)
-            ->select('id', 'product_id', 'price', 'uid', 'status_id')
-            ->first();
-
-        if (!$order) {
-            return redirect()->route('home');
-        }
-
-        // Защита: uid в URL должен совпадать с uid заказа
-        if ($order->uid !== $uid) {
-            Log::warning('Unauthorized order access attempt', [
-                'order_id' => $id,
-                'provided_uid' => $uid,
-            ]);
-            return redirect()->route('home');
-        }
-
-        $product = Product::find((int)$order->product_id);
-
-        $isPaid = $request->input('paid') === '1' || $order->status_id === 3;
-        $isFailed = $request->input('failed') === '1';
-
-        return view('order', [
-            'order'    => $order,
-            'product'  => $product,
-            'isPaid'   => $isPaid,
-            'isFailed' => $isFailed,
-        ]);
-    }
-
     public function createPayment(Request $request)
     {
         $orderId  = $request->input('order_id');
@@ -528,7 +496,7 @@ class OrderController extends Controller
             'EVO (Glacier)'      => 156,
         ];
 
-                // === МУЛЬТИ-ТОВАР ИЗ uc_amount ===
+        // === МУЛЬТИ-ТОВАР ИЗ uc_amount ===
         $itemsToSend = [];
 
         if (!empty($order->uc_amount)) {
@@ -575,37 +543,54 @@ class OrderController extends Controller
         $apiKey      = config('services.ragner.key');
         $validateUrl = 'https://ragnergiftcard.com/api/v1/validate-player';
 
-        // Валидируем один раз по первому товару
-        Log::info('executeOrder: validate-player', [
-            'order_id'   => $order->id,
-            'product_id' => $itemsToSend[0]['product_id'],
-            'pubg_id'    => $pubgId,
-        ]);
-
-        $validateResp = Http::withHeaders([
-            'X-API-KEY'    => $apiKey,
-            'Accept'       => 'application/json',
-            'Content-Type' => 'application/json',
-        ])->timeout(15)->post($validateUrl, [
-            'product_id' => $itemsToSend[0]['product_id'],
-            'player_id'  => $pubgId,
-        ]);
-
-        if (!$validateResp->successful()) {
-            Log::error('executeOrder: validate-player failed', [
-                'order_id' => $order->id,
-                'status'   => $validateResp->status(),
-                'response' => $validateResp->body(),
-            ]);
-            return;
-        }
-
-        Log::info('executeOrder: validate-player OK, отправляем заказ', ['order_id' => $order->id]);
-
-        $allSuccess     = true;
+        $validatedProductIds = [];
+        $allSuccess = true;
         $lastExternalId = null;
 
         foreach ($itemsToSend as $idx => $item) {
+            if (!in_array($item['product_id'], $validatedProductIds, true)) {
+                Log::info('executeOrder: validate-player', [
+                    'order_id'   => $order->id,
+                    'product_id' => $item['product_id'],
+                    'pubg_id'    => $pubgId,
+                    'item_index' => $idx,
+                    'product_name' => $item['name'],
+                ]);
+
+                $validateResp = Http::withHeaders([
+                    'X-API-KEY'    => $apiKey,
+                    'Accept'       => 'application/json',
+                    'Content-Type' => 'application/json',
+                ])->timeout(15)->post($validateUrl, [
+                    'product_id' => $item['product_id'],
+                    'player_id'  => $pubgId,
+                ]);
+
+        if (!$validateResp->successful()) {
+            $allSuccess = false;
+
+            Log::error('executeOrder: validate-player failed', [
+                'order_id'     => $order->id,
+                'item_index'   => $idx,
+                'product_name' => $item['name'],
+                'product_id'   => $item['product_id'],
+                'status'       => $validateResp->status(),
+                'response'     => substr($validateResp->body(), 0, 300),
+            ]);
+
+            continue;
+        }
+
+        $validatedProductIds[] = $item['product_id'];
+
+            Log::info('executeOrder: validate-player OK', [
+                'order_id'     => $order->id,
+                'item_index'   => $idx,
+                'product_name' => $item['name'],
+                'product_id'   => $item['product_id'],
+            ]);
+        }
+
             $response = Http::withHeaders([
                 'X-API-KEY'    => $apiKey,
                 'Accept'       => 'application/json',
@@ -625,7 +610,7 @@ class OrderController extends Controller
                     'external_order_id' => $lastExternalId,
                 ]);
             } else {
-                $allSuccess = false;
+        $allSuccess = false;
                 Log::error('executeOrder: Ragner вернул ошибку', [
                     'order_id'     => $order->id,
                     'item_index'   => $idx,
@@ -635,15 +620,27 @@ class OrderController extends Controller
                 ]);
             }
 
-            // Небольшая пауза между отправками
             if ($idx < count($itemsToSend) - 1) {
-                usleep(300000); // 0.3 сек
+                usleep(300000);
             }
         }
 
         if ($allSuccess) {
-            $order->status_id = 3;
-            $order->save();
+            DB::table('orders')
+                ->where('id', $order->id)
+                ->update([
+                    'status_id' => 3,
+                    'updated_at' => now(),
+                ]);
+
+            Log::info('executeOrder: заказ полностью выполнен', [
+                'order_id' => $order->id,
+                'external_order_id' => $lastExternalId,
+            ]);
+        } else {
+            Log::warning('executeOrder: заказ выполнен частично или с ошибками', [
+                'order_id' => $order->id,
+            ]);
         }
 
         $productSummary = implode(', ', array_unique(array_column($itemsToSend, 'name')));

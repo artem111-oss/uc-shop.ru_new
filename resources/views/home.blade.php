@@ -322,138 +322,94 @@
 
     // Checkout function
     window.proceedToCheckout = async function() {
-      const btn = document.querySelector('.uc-id-form__submit');
-      const gameIdInput = document.querySelector('.uc-id-form__input');
-      
-      // Validation
-      if (Object.keys(window.cart).length === 0) {
+    const btn = document.querySelector('.uc-id-form__submit');
+    const gameIdInput = document.querySelector('.uc-id-form__input');
+
+    if (Object.keys(window.cart).length === 0) {
         showToast('Корзина пуста! Выберите товары', 'error');
         return;
-      }
-      
-      const gameId = gameIdInput.value.trim();
-      if (!validatePlayerId(gameId)) {
+    }
+
+    const gameId = gameIdInput.value.trim();
+    if (!validatePlayerId(gameId)) {
         gameIdInput.focus();
         return;
-      }
-      
-      // Disable button and show loading
-      btn.disabled = true;
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '<span class="uc-spinner"></span> Обработка...';
-      
-      try {
-        // Get CSRF token
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}';
-        
-        // Calculate total amount and collect products
-        let totalAmount = 0;
-        let cartItems = []; // Полная информация о корзине
-        
-        Object.keys(window.cart).forEach(uc => {
-          const qty = window.cart[uc];
-          
-          // data-uc теперь строка "60 UC" — ищем по ней напрямую
-          const packageCard = document.querySelector(`[data-uc="${uc}"]`);
-          if (packageCard) {
-            const price = parseInt(packageCard.dataset.price);
-            const productId = parseInt(packageCard.dataset.productId);
-            const ucAmount = parseInt(uc);   // "60 UC" → 60
-            
-            totalAmount += price * qty;
-            
-            cartItems.push({
-              uc: ucAmount,
-              product_id: productId,
-              quantity: qty,
-              price: price
-            });
-          }
-        });
-        
-        console.log('Total amount:', totalAmount, 'Cart items:', cartItems);
-        
-        // Step 1: Create orders for each item in cart
-        const createdOrderIds = [];
+    }
 
-        for (const item of cartItems) {
-          const orderResponse = await fetch('/order/add', {
+    btn.disabled = true;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="uc-spinner"></span> Обработка...';
+
+    try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}';
+
+        // Собираем cart для одного запроса
+        const cartItems = [];
+        Object.keys(window.cart).forEach(uc => {
+            const qty = window.cart[uc];
+            const packageCard = document.querySelector(`[data-uc="${uc}"]`);
+            if (packageCard) {
+                cartItems.push({
+                    product_id: parseInt(packageCard.dataset.productId),
+                    quantity: qty,
+                    price: parseInt(packageCard.dataset.price)
+                });
+            }
+        });
+
+        // Шаг 1: ОДИН запрос с cart[] — бэкенд сам считает сумму и создаёт один заказ
+        const orderResponse = await fetch('/order/add', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'X-CSRF-TOKEN': csrfToken
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
             },
             body: JSON.stringify({
-              product_id: item.product_id,
-              qty: item.quantity,
-              uid: gameId
+                uid: gameId,
+                cart: cartItems
             })
-          });
-
-          if (!orderResponse.ok) {
-            const error = await orderResponse.json();
-            throw new Error(error.message || 'Ошибка создания заказа');
-          }
-
-          const orderData = await orderResponse.json();
-          if (!orderData.success || !orderData.id) {
-            throw new Error('Ошибка при создании заказа');
-          }
-
-          createdOrderIds.push(orderData.id);
-        }
-
-        // Save Player ID for future use
-        savePlayerId(gameId);
-
-        // Step 2: Initialize Payment for all orders combined
-        const paymentResponse = await fetch('/order/payment', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-          },
-          body: JSON.stringify({
-            order_id: createdOrderIds[0],
-            order_ids: createdOrderIds,
-            amount: totalAmount,
-            game_id: gameId
-          })
         });
 
-        if (!paymentResponse.ok) {
-          const errorText = await paymentResponse.text();
-          try {
-            const error = JSON.parse(errorText);
-            throw new Error(error.message || 'Ошибка инициализации платежа');
-          } catch (e) {
-            throw new Error('Ошибка инициализации платежа: ' + paymentResponse.status);
-          }
+        const orderData = await orderResponse.json();
+
+        if (!orderResponse.ok || !orderData.success || !orderData.id) {
+            throw new Error(orderData.message || 'Ошибка создания заказа');
         }
+
+        savePlayerId(gameId);
+
+        // Шаг 2: оплата для одного заказа
+        const paymentResponse = await fetch('/order/payment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                order_id: orderData.id
+            })
+        });
 
         const paymentData = await paymentResponse.json();
 
-        if (!paymentData.link) {
-          throw new Error(paymentData.error || 'Ошибка инициализации платежа');
+        if (!paymentResponse.ok || !paymentData.link) {
+            throw new Error(paymentData.error || 'Ошибка инициализации платежа');
         }
 
-        // Step 3: Redirect to payment page
         showToast('Переход к оплате...', 'success');
         setTimeout(() => {
-          window.location.href = paymentData.link;
+            window.location.href = paymentData.link;
         }, 500);
-        
-      } catch (error) {
+
+    } catch (error) {
         console.error('Checkout error:', error);
         showToast(error.message || 'Произошла ошибка. Попробуйте снова', 'error');
-        
-        // Restore button
         btn.disabled = false;
         btn.innerHTML = originalText;
-      }
-    };
+    }
+};
 
     // FAQ Аккордион логика
     document.addEventListener('DOMContentLoaded', function() {

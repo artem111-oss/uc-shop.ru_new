@@ -13,82 +13,81 @@ class StatsController extends Controller
      * Получить статистику отправленных UC
      */
     public function getUcStats()
-    {
-        try {
-            // Текущее время
-            $now = Carbon::now();
-            
-            // За последний час (используем completed_at для корректной фильтрации)
-            $hourAgo = $now->copy()->subHour();
-            $ucLastHour = $this->calculateUcAmount(
-                Order::where('payment_status', 'completed')
-                    ->where(function($q) use ($hourAgo) {
-                        $q->where('completed_at', '>=', $hourAgo)
-                          ->orWhere(function($q2) use ($hourAgo) {
-                              $q2->whereNull('completed_at')
-                                 ->where('updated_at', '>=', $hourAgo);
-                          });
-                    })
-                    ->get()
-            );
-            
-            // За последнюю неделю
-            $weekAgo = $now->copy()->subWeek();
-            $ucLastWeek = $this->calculateUcAmount(
-                Order::where('payment_status', 'completed')
-                    ->where(function($q) use ($weekAgo) {
-                        $q->where('completed_at', '>=', $weekAgo)
-                          ->orWhere(function($q2) use ($weekAgo) {
-                              $q2->whereNull('completed_at')
-                                 ->where('updated_at', '>=', $weekAgo);
-                          });
-                    })
-                    ->get()
-            );
-            
-            // За последний месяц
-            $monthAgo = $now->copy()->subMonth();
-            $ucLastMonth = $this->calculateUcAmount(
-                Order::where('payment_status', 'completed')
-                    ->where(function($q) use ($monthAgo) {
-                        $q->where('completed_at', '>=', $monthAgo)
-                          ->orWhere(function($q2) use ($monthAgo) {
-                              $q2->whereNull('completed_at')
-                                 ->where('updated_at', '>=', $monthAgo);
-                          });
-                    })
-                    ->get()
-            );
-            
-            // Всего за все время
-            $ucTotal = $this->calculateUcAmount(
-                Order::where('payment_status', 'completed')->get()
-            );
-            
-            return response()->json([
-                'success' => true,
-                'stats' => [
-                    'hour' => $ucLastHour,
-                    'week' => $ucLastWeek,
-                    'month' => $ucLastMonth,
-                    'total' => $ucTotal,
-                ],
-                'formatted' => [
-                    'hour' => $this->formatNumber($ucLastHour),
-                    'week' => $this->formatNumber($ucLastWeek),
-                    'month' => $this->formatNumber($ucLastMonth),
-                    'total' => $this->formatNumber($ucTotal),
-                ]
-            ]);
-            
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Failed to fetch stats',
-                'message' => $e->getMessage()
-            ], 500);
-        }
+{
+    try {
+        $now = Carbon::now();
+
+        $baseQuery = Order::where(function ($q) {
+            $q->where('payment_status', 'completed')
+              ->orWhere('status_id', 3);
+        });
+
+        $hourAgo = $now->copy()->subHour();
+        $ucLastHour = $this->calculateUcAmount(
+            (clone $baseQuery)
+                ->where(function ($q) use ($hourAgo) {
+                    $q->where('completed_at', '>=', $hourAgo)
+                      ->orWhere(function ($q2) use ($hourAgo) {
+                          $q2->whereNull('completed_at')
+                             ->where('updated_at', '>=', $hourAgo);
+                      });
+                })
+                ->get()
+        );
+
+        $weekAgo = $now->copy()->subWeek();
+        $ucLastWeek = $this->calculateUcAmount(
+            (clone $baseQuery)
+                ->where(function ($q) use ($weekAgo) {
+                    $q->where('completed_at', '>=', $weekAgo)
+                      ->orWhere(function ($q2) use ($weekAgo) {
+                          $q2->whereNull('completed_at')
+                             ->where('updated_at', '>=', $weekAgo);
+                      });
+                })
+                ->get()
+        );
+
+        $monthAgo = $now->copy()->subMonth();
+        $ucLastMonth = $this->calculateUcAmount(
+            (clone $baseQuery)
+                ->where(function ($q) use ($monthAgo) {
+                    $q->where('completed_at', '>=', $monthAgo)
+                      ->orWhere(function ($q2) use ($monthAgo) {
+                          $q2->whereNull('completed_at')
+                             ->where('updated_at', '>=', $monthAgo);
+                      });
+                })
+                ->get()
+        );
+
+        $ucTotal = $this->calculateUcAmount(
+            (clone $baseQuery)->get()
+        );
+
+        return response()->json([
+            'success' => true,
+            'stats' => [
+                'hour' => $ucLastHour,
+                'week' => $ucLastWeek,
+                'month' => $ucLastMonth,
+                'total' => $ucTotal,
+            ],
+            'formatted' => [
+                'hour' => $this->formatNumber($ucLastHour),
+                'week' => $this->formatNumber($ucLastWeek),
+                'month' => $this->formatNumber($ucLastMonth),
+                'total' => $this->formatNumber($ucTotal),
+            ]
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => 'Failed to fetch stats',
+            'message' => $e->getMessage()
+        ], 500);
     }
+}
     
     /**
      * Подсчитать общее количество UC из заказов
