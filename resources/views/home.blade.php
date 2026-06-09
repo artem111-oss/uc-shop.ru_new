@@ -618,76 +618,63 @@ document.addEventListener('DOMContentLoaded', () => {
 {{-- UC Stats Live Counter --}}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    let currentPeriod = 0; // 0 = hour, 1 = week, 2 = month, 3 = all time
-    const periods = ['час', 'неделю', 'месяц', 'всё время'];
+    let currentPeriod = 0;
+    const periods    = ['час', 'неделю', 'месяц', 'всё время'];
     const periodKeys = ['hour', 'week', 'month', 'total'];
-    
-    const liveCountEl = document.getElementById('live-count');
-    const livePeriodEl = document.getElementById('live-period');
+
+    const liveCountEl       = document.getElementById('live-count');
+    const livePeriodEl      = document.getElementById('live-period');
     const liveCountMobileEl = document.getElementById('live-count-mobile');
     const livePeriodMobileEl = document.getElementById('live-period-mobile');
-    
-    // Функция для получения статистики
-    async function updateUcStats() {
-        try {
-            const response = await fetch('/api/stats/uc', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to fetch stats');
-            }
-            
-            const data = await response.json();
-            
-            if (data.success && data.formatted) {
-                // Обновляем счетчик с текущим периодом
-                const periodKey = periodKeys[currentPeriod];
-                const value = data.formatted[periodKey];
-                
-                if (liveCountEl) {
-                    liveCountEl.textContent = value;
-                }
 
-                // Мобильный счётчик — крутится синхронно с десктопным
-                if (liveCountMobileEl) {
-                    liveCountMobileEl.textContent = value;
-                }
-                
-                console.log('✅ UC Stats updated:', data.stats);
-            }
-        } catch (error) {
-            console.error('❌ Failed to update UC stats:', error);
-            if (liveCountEl && liveCountEl.textContent === '...') {
-                liveCountEl.textContent = '0';
-            }
-        }
+    let cachedStats = null; // кэш на фронте — не дёргаем API при каждой ротации
+
+    function setDisplay(value, period) {
+        if (liveCountEl)        liveCountEl.textContent  = value;
+        if (livePeriodEl)       livePeriodEl.textContent = period;
+        if (liveCountMobileEl)  liveCountMobileEl.textContent  = value;
+        if (livePeriodMobileEl) livePeriodMobileEl.textContent = period;
     }
-    
-    // Функция для смены периода (час → неделя → месяц → всё время → час)
+
     function rotatePeriod() {
         currentPeriod = (currentPeriod + 1) % 4;
-        
-        if (livePeriodEl) {
-            livePeriodEl.textContent = periods[currentPeriod];
+        if (cachedStats) {
+            // крутим уже загруженные данные — никакого fetch
+            setDisplay(cachedStats[periodKeys[currentPeriod]], periods[currentPeriod]);
         }
-        if (livePeriodMobileEl) {
-            livePeriodMobileEl.textContent = periods[currentPeriod];
-        }
-        
-        updateUcStats();
     }
-    
-    // Первоначальное обновление
-    updateUcStats();
-    
-    // Обновление каждые 7 секунд с ротацией периода
+
+    async function fetchStats() {
+        try {
+            const response = await fetch('/api/stats/uc', {
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (!response.ok) throw new Error('bad response');
+
+            const data = await response.json();
+
+            if (data.success && data.formatted) {
+                cachedStats = data.formatted;
+                setDisplay(cachedStats[periodKeys[currentPeriod]], periods[currentPeriod]);
+            }
+        } catch (e) {
+            // если данных ещё нет — ставим прочерк, не "0"
+            if (!cachedStats) {
+                if (liveCountEl)       liveCountEl.textContent = '—';
+                if (liveCountMobileEl) liveCountMobileEl.textContent = '—';
+            }
+        }
+    }
+
+    // Первый запрос
+    fetchStats();
+
+    // Ротация каждые 7 сек — только меняет период из кэша
     setInterval(rotatePeriod, 7000);
-    
-    console.log('✅ UC Stats counter initialized');
+
+    // Обновляем данные с сервера каждые 90 сек
+    setInterval(fetchStats, 90000);
 });
 
 // ===== DYNAMIC REVIEWS LOADING & CAROUSEL =====
