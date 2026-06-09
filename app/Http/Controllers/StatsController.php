@@ -3,155 +3,136 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class StatsController extends Controller
 {
-    /**
-     * Получить статистику отправленных UC
-     */
     public function getUcStats()
-{
-    try {
-        $now = Carbon::now();
+    {
+        try {
+            $now = Carbon::now();
 
-        $baseQuery = Order::where(function ($q) {
-            $q->where('payment_status', 'completed')
-              ->orWhere('status_id', 3);
-        });
+            $baseQuery = Order::where(function ($q) {
+                $q->where('payment_status', 'completed')
+                  ->orWhere('status_id', 3);
+            });
 
-        $hourAgo = $now->copy()->subHour();
-        $ucLastHour = $this->calculateUcAmount(
-            (clone $baseQuery)
-                ->where(function ($q) use ($hourAgo) {
+            $hourAgo  = $now->copy()->subHour();
+            $weekAgo  = $now->copy()->subWeek();
+            $monthAgo = $now->copy()->subMonth();
+
+            $sqlHour = $this->calculateUcAmount(
+                (clone $baseQuery)->where(function ($q) use ($hourAgo) {
                     $q->where('completed_at', '>=', $hourAgo)
                       ->orWhere(function ($q2) use ($hourAgo) {
-                          $q2->whereNull('completed_at')
-                             ->where('updated_at', '>=', $hourAgo);
+                          $q2->whereNull('completed_at')->where('updated_at', '>=', $hourAgo);
                       });
-                })
-                ->get()
-        );
+                })->get()
+            );
 
-        $weekAgo = $now->copy()->subWeek();
-        $ucLastWeek = $this->calculateUcAmount(
-            (clone $baseQuery)
-                ->where(function ($q) use ($weekAgo) {
+            $sqlWeek = $this->calculateUcAmount(
+                (clone $baseQuery)->where(function ($q) use ($weekAgo) {
                     $q->where('completed_at', '>=', $weekAgo)
                       ->orWhere(function ($q2) use ($weekAgo) {
-                          $q2->whereNull('completed_at')
-                             ->where('updated_at', '>=', $weekAgo);
+                          $q2->whereNull('completed_at')->where('updated_at', '>=', $weekAgo);
                       });
-                })
-                ->get()
-        );
+                })->get()
+            );
 
-        $monthAgo = $now->copy()->subMonth();
-        $ucLastMonth = $this->calculateUcAmount(
-            (clone $baseQuery)
-                ->where(function ($q) use ($monthAgo) {
+            $sqlMonth = $this->calculateUcAmount(
+                (clone $baseQuery)->where(function ($q) use ($monthAgo) {
                     $q->where('completed_at', '>=', $monthAgo)
                       ->orWhere(function ($q2) use ($monthAgo) {
-                          $q2->whereNull('completed_at')
-                             ->where('updated_at', '>=', $monthAgo);
+                          $q2->whereNull('completed_at')->where('updated_at', '>=', $monthAgo);
                       });
-                })
-                ->get()
-        );
+                })->get()
+            );
 
-        $ucTotal = $this->calculateUcAmount(
-            (clone $baseQuery)->get()
-        );
+            $sqlTotal = $this->calculateUcAmount((clone $baseQuery)->get());
 
-        return response()->json([
-            'success' => true,
-            'stats' => [
-                'hour' => $ucLastHour,
-                'week' => $ucLastWeek,
-                'month' => $ucLastMonth,
-                'total' => $ucTotal,
-            ],
-            'formatted' => [
-                'hour' => $this->formatNumber($ucLastHour),
-                'week' => $this->formatNumber($ucLastWeek),
-                'month' => $this->formatNumber($ucLastMonth),
-                'total' => $this->formatNumber($ucTotal),
-            ]
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'error' => 'Failed to fetch stats',
-            'message' => $e->getMessage()
-        ], 500);
+            $mongo = $this->fetchMongoStats();
+
+            $ucLastHour  = $sqlHour  + ($mongo['hour']  ?? 0);
+            $ucLastWeek  = $sqlWeek  + ($mongo['week']  ?? 0);
+            $ucLastMonth = $sqlMonth + ($mongo['month'] ?? 0);
+            $ucTotal     = $sqlTotal + ($mongo['total'] ?? 0);
+
+            return response()->json([
+                'success' => true,
+                'stats' => [
+                    'hour'  => $ucLastHour,
+                    'week'  => $ucLastWeek,
+                    'month' => $ucLastMonth,
+                    'total' => $ucTotal,
+                ],
+                'formatted' => [
+                    'hour'  => $this->formatNumber($ucLastHour),
+                    'week'  => $this->formatNumber($ucLastWeek),
+                    'month' => $this->formatNumber($ucLastMonth),
+                    'total' => $this->formatNumber($ucTotal),
+                ],
+            ]);
+
+        } catch (\Throwable $e) {
+            Log::error('UC stats error', ['message' => $e->getMessage()]);
+            return response()->json(['success' => false, 'error' => 'Failed to fetch stats'], 500);
+        }
     }
-}
-    
-    /**
-     * Подсчитать общее количество UC из заказов
-     */
-    private function calculateUcAmount($orders)
+
+    private function fetchMongoStats(): array
+    {
+        $fallback = ['hour' => 0, 'week' => 0, 'month' => 0, 'total' => 0];
+
+        try {
+            $response = Http::timeout(3)->get('http://80.64.24.183:5055/stats');
+
+            if ($response->successful()) {
+                return $response->json('stats', $fallback);
+            }
+
+            Log::warning('UC Stats: mongo API bad response', ['status' => $response->status()]);
+        } catch (\Throwable $e) {
+            Log::warning('UC Stats: mongo API unavailable', ['message' => $e->getMessage()]);
+        }
+
+        return $fallback;
+    }
+
+    private function calculateUcAmount($orders): int
     {
         $totalUc = 0;
-        
+
         foreach ($orders as $order) {
             if (empty($order->uc_amount)) {
                 continue;
             }
-            
-            // Парсим строку uc_amount
-            // Форматы: "60 UC", "60 UC x2", "60 UC, 180 UC", "60 UC x2, 180 UC x3"
+
             $parts = explode(',', $order->uc_amount);
-            
+
             foreach ($parts as $part) {
                 $part = trim($part);
-                
-                // Парсим "60 UC" или "60 UC x2"
                 if (preg_match('/(\d+)\s*UC(?:\s*x(\d+))?/i', $part, $matches)) {
                     $ucAmount = (int) $matches[1];
                     $quantity = isset($matches[2]) ? (int) $matches[2] : 1;
-                    
                     $totalUc += $ucAmount * $quantity;
                 }
             }
         }
-        
+
         return $totalUc;
     }
-    
-    /**
-     * Форматировать число с разделителями тысяч
-     * Округление применяется только после 10000 UC
-     */
-    private function formatNumber($number)
+
+    private function formatNumber(int $number): string
     {
         if ($number >= 1000000) {
-            // Для миллионов: 1M, 1.2M и т.д.
-            $millions = $number / 1000000;
-            if ($millions == floor($millions)) {
-                return ((int) $millions) . 'M';
-            }
-            return number_format($millions, 1, '.', '') . 'M';
-        } elseif ($number >= 10000) {
-            // После 10000: 10K, 10.1K, 15.2K и т.д.
-            $thousands = $number / 1000;
-            $formatted = round($thousands, 1);
-            if ($formatted == floor($formatted)) {
-                return ((int) $formatted) . 'K';
-            }
-            return number_format($formatted, 1, '.', '') . 'K';
+            $v = $number / 1000000;
+            return ($v == floor($v) ? (int)$v : number_format($v, 1, '.', '')) . 'M';
         } elseif ($number >= 1000) {
-            // От 1000 до 9999: 1K, 8.9K и т.д.
-            $thousands = $number / 1000;
-            if ($thousands == floor($thousands)) {
-                return ((int) $thousands) . 'K';
-            }
-            return number_format($thousands, 1, '.', '') . 'K';
+            $v = round($number / 1000, 1);
+            return ($v == floor($v) ? (int)$v : number_format($v, 1, '.', '')) . 'K';
         }
-        
-        // До 1000: показываем точное число без округления
         return (string) $number;
     }
 }
