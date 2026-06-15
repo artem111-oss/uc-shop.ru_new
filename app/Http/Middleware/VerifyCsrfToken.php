@@ -15,5 +15,7 @@ class VerifyCsrfToken extends Middleware
     'webhook/payment',
     'payment/success',
     'payment/failed',
+    'payment/pallypostback',
+    'webhook/payment',
     ];
 }

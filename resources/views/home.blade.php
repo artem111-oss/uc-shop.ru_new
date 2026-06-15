@@ -1,5 +1,5 @@
 @extends('app')
-@section('title', 'Купить UC в PUBG Mobile - Быстро и Безопасно⚡')
+@section('title', 'Купить UC PUBG Mobile — мгновенная доставка')
 @section('description', 'Купи UC PUBG Mobile за 1 минуту. 50,000+ успешных покупок | 🔒 Безопасно | ⚡ Мгновенная выдача | 💳 Любой способ оплаты')
 @section('content')
   <!-- ===== HERO SECTION WITH PACKAGES =====  -->
@@ -9,7 +9,7 @@
     <div class="container-fluid">
       <!-- ЗАГОЛОВКИ: отдельный блок, центрируется независимо от grid -->
       <div class="uc-hero__titles">
-        <h2 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UC SHOP</h2>
+        <h1 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UCSHOP</h1>
         <p class="uc-packages-subtitle">ДОСТАВКА ЗА 30 СЕКУНД • ЛУЧШИЕ ЦЕНЫ • 100% БЕЗОПАСНО</p>
       </div>
       <div class="uc-hero__wrapper">
@@ -17,7 +17,7 @@
         <div class="uc-hero__left">
           <!-- Заголовки для мобильной версии (desktop скрыты через CSS) -->
           <div class="uc-hero__titles-mobile">
-            <h2 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UC SHOP</h2>
+            <h1 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UCSHOP</h1>
             <p class="uc-packages-subtitle">ДОСТАВКА ЗА 30 СЕКУНД • ЛУЧШИЕ ЦЕНЫ • 100% БЕЗОПАСНО</p>
           </div>
           <!-- ALL PACKAGES IN 2 ROWS -->
@@ -460,6 +460,43 @@
 
     });
   </script>
+  
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "UC для PUBG Mobile",
+  "itemListElement": [
+    @foreach($products->where('type_id', 1)->sortBy('price') as $i => $product)
+    {
+      "@type": "ListItem",
+      "position": {{ $loop->iteration }},
+      "item": {
+        "@type": "Product",
+        "name": "{{ $product['name'] }}",
+        "image": "https://uc-shop.ru/images/og-preview.jpg",
+        "description": "Пакет {{ $product['name'] }} UC для PUBG Mobile. Мгновенная автоматическая доставка после оплаты.",
+        "brand": {
+          "@type": "Brand",
+          "name": "PUBG Mobile"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "{{ $product['price'] }}",
+          "priceCurrency": "RUB",
+          "availability": "https://schema.org/InStock",
+          "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "applicableCountry": "RU",
+            "returnPolicyCategory": "https://schema.org/NoReturnsAccepted"
+          }
+        }
+      }
+    }{{ $loop->last ? '' : ',' }}
+    @endforeach
+  ]
+}
+</script>
   
 @endsection
 

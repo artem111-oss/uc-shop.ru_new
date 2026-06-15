@@ -643,16 +643,28 @@ class OrderController extends Controller
             ]);
         }
 
-        $productSummary = implode(', ', array_unique(array_column($itemsToSend, 'name')));
+                $productSummary = implode(', ', array_unique(array_column($itemsToSend, 'name')));
 
-        $this->sendToTelegram(
-            "✅ <b>Заказ выполнен</b>\n\n" .
-            "🆔 Заказ: <b>#" . $order->id . "</b>\n" .
-            "🎮 PUBG ID: <b>" . $order->uid . "</b>\n" .
-            "📦 Товар: <b>" . $productSummary . "</b>\n" .
-            "💰 Сумма: <b>" . number_format($order->price, 0, ',', ' ') . " ₽</b>\n" .
-            "⏱ Время: " . now()->format('d.m.Y H:i:s')
-        );
+        if ($allSuccess) {
+            $this->sendToTelegram(
+                "✅ <b>Заказ выполнен</b>\n\n" .
+                "🆔 Заказ: <b>#" . $order->id . "</b>\n" .
+                "🎮 PUBG ID: <b>" . $order->uid . "</b>\n" .
+                "📦 Товар: <b>" . $productSummary . "</b>\n" .
+                "💰 Сумма: <b>" . number_format($order->price, 0, ',', ' ') . " ₽</b>\n" .
+                "⏱ Время: " . now()->format('d.m.Y H:i:s')
+            );
+        } else {
+            $this->sendToTelegram(
+                "❌ <b>Заказ НЕ выполнен</b>\n\n" .
+                "🆔 Заказ: <b>#" . $order->id . "</b>\n" .
+                "🎮 PUBG ID: <b>" . $order->uid . "</b>\n" .
+                "📦 Товар: <b>" . $productSummary . "</b>\n" .
+                "💰 Сумма: <b>" . number_format($order->price, 0, ',', ' ') . " ₽</b>\n" .
+                "⏱ Время: " . now()->format('d.m.Y H:i:s') . "\n\n" .
+                "⚠️ <b>Причина:</b> ошибка выдачи через Ragner. Проверь логи и баланс."
+            );
+        }
     } // закрывает executeOrder
 
     public function sendToTelegram(string $message): void
@@ -664,4 +676,14 @@ class OrderController extends Controller
             Log::error('Telegram send error', ['error' => $e->getMessage()]);
         }
     }
+    public function orderUser(Request $request, $id, $uid)
+{
+    $order = Order::where('id', $id)->where('uid', $uid)->firstOrFail();
+    $product = Product::find($order->product_id);
+
+    return view('order.show', [
+        'order'   => $order,
+        'product' => $product,
+    ]);
+}
 } // закрывает класс

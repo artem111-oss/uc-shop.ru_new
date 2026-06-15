@@ -17,3 +17,19 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
+
+Artisan::command('sitemap:generate', function () {
+    Sitemap::create()
+        ->add(Url::create('/')
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+            ->setPriority(1.0))
+        ->add(Url::create('/contacts')
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+            ->setPriority(0.5))
+        ->writeToFile(public_path('sitemap.xml'));
+
+    $this->info('Sitemap обновлён.');
+})->purpose('Генерация sitemap.xml');
