@@ -10,7 +10,7 @@ class Telegram
 
   protected $http;
   protected $bot;
-  const url = 'https://api.telegram.org/bot';
+  const url = 'https://api.telegram.org/bot'; // fallback only
 
   public function __construct(Http $http, $bot = null)
   {
@@ -19,13 +19,19 @@ class Telegram
   }
 
   public function sendMessage($chat_id, $message)
-  {
-    return $this->http::post(self::url . $this->bot . '/sendMessage', [
-      'chat_id' => $chat_id,
-      'text' => $message,
-      'parse_mode' => 'html'
-    ]);
-  }
+{
+    $options = [];
+    if (config('services.telegram.proxy')) {
+        $options['proxy'] = config('services.telegram.proxy');
+    }
+
+    return $this->http::withOptions($options)
+        ->post(self::url . $this->bot . '/sendMessage', [
+            'chat_id'    => $chat_id,
+            'text'       => $message,
+            'parse_mode' => 'html'
+        ]);
+}
 
   public function sendDocument($chat_id, $file, $reply_id)
   {
@@ -36,12 +42,18 @@ class Telegram
   }
 
   public function sendButtons($chat_id, $message, $buttons)
-  {
-    return $this->http::post(self::url . $this->bot . '/sendMessage', [
-      'chat_id' => $chat_id,
-      'text' => $message,
-      'parse_mode' => 'html',
-      'reply_markup' => $buttons
-    ]);
-  }
+{
+    $options = [];
+    if (config('services.telegram.proxy')) {
+        $options['proxy'] = config('services.telegram.proxy');
+    }
+
+    return $this->http::withOptions($options)
+        ->post(self::url . $this->bot . '/sendMessage', [
+            'chat_id'      => $chat_id,
+            'text'         => $message,
+            'parse_mode'   => 'html',
+            'reply_markup' => $buttons
+        ]);
+}
 }

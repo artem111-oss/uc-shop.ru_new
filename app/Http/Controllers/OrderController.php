@@ -681,7 +681,7 @@ class OrderController extends Controller
     $order = Order::where('id', $id)->where('uid', $uid)->firstOrFail();
     $product = Product::find($order->product_id);
 
-    return view('order.show', [
+    return view('order', [
         'order'   => $order,
         'product' => $product,
     ]);
