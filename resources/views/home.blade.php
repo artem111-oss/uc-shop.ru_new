@@ -9,7 +9,7 @@
     <div class="container-fluid">
       <!-- ЗАГОЛОВКИ: отдельный блок, центрируется независимо от grid -->
       <div class="uc-hero__titles">
-        <h1 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UCSHOP</h1>
+        <h1 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UC SHOP</h1>
         <p class="uc-packages-subtitle">ДОСТАВКА ЗА 30 СЕКУНД • ЛУЧШИЕ ЦЕНЫ • 100% БЕЗОПАСНО</p>
       </div>
       <div class="uc-hero__wrapper">
@@ -17,7 +17,7 @@
         <div class="uc-hero__left">
           <!-- Заголовки для мобильной версии (desktop скрыты через CSS) -->
           <div class="uc-hero__titles-mobile">
-            <h1 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UCSHOP</h1>
+            <h1 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UC SHOP</h1>
             <p class="uc-packages-subtitle">ДОСТАВКА ЗА 30 СЕКУНД • ЛУЧШИЕ ЦЕНЫ • 100% БЕЗОПАСНО</p>
           </div>
           <!-- ALL PACKAGES IN 2 ROWS -->
@@ -140,7 +140,7 @@
                 <p>1. Проверьте, что оплата прошла успешно<br>
                    2. Перезагрузите игру<br>
                    3. Проверьте историю транзакций в профиле<br>
-                   4. Если проблема осталась — напишите в Telegram @ucshop_dobro с номером заказа</p>
+                   4. Если проблема осталась — напишите в Telegram @ucshop_air с номером заказа</p>
               </div>
             </div>
 
