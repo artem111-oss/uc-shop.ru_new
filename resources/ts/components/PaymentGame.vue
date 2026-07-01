@@ -114,6 +114,7 @@
 <script lang="ts" setup>
 
 import {ref, computed, onMounted} from 'vue'
+declare function ym(id: number, action: string, goal?: string, params?: object): void;
 import {useForm,} from 'vee-validate';
 import * as Yup from 'yup';
 import {localize} from '@vee-validate/i18n';
@@ -205,11 +206,16 @@ const orderPrice = computed(() => {
 // Выбор продукта
 const selectProduct = (id) => {
   selectedProduct.value = products[id]
+  ym(110321078, 'reachGoal', 'amount_selected', {
+    product_name: products[id].name,
+    product_price: products[id].price
+  });
 }
 
 const onSubmit = handleSubmit((values, i) => {
   console.log(i)
   console.log(JSON.stringify(values, null, 2));
+  ym(110321078, 'reachGoal', 'id_entered');
   go()
 });
 
@@ -242,6 +248,10 @@ const go = async () => {
 
     const order = await createOrder()
     console.log(order)
+    ym(110321078, 'reachGoal', 'pay_click', {
+      product_name: selectedProduct.value.name,
+      order_price: selectedProduct.value.price
+    });
     location.href = '/order/' + order.id + '/' + uid.value.value
 
   }
