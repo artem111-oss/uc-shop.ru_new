@@ -378,6 +378,7 @@
         }
 
         savePlayerId(gameId);
+        ym(110321078, 'reachGoal', 'id_entered', { game_id_length: gameId.length });
 
         // Шаг 2: оплата для одного заказа
         const paymentResponse = await fetch('/order/payment', {
@@ -397,7 +398,13 @@
         if (!paymentResponse.ok || !paymentData.link) {
             throw new Error(paymentData.error || 'Ошибка инициализации платежа');
         }
-
+        ym(110321078, 'reachGoal', 'pay_click', {
+            order_id: orderData.id,
+            total_price: Object.keys(window.cart).reduce((sum, uc) => {
+                const card = document.querySelector(`[data-uc="${uc}"]`);
+                return sum + (card ? parseInt(card.dataset.price) * window.cart[uc] : 0);
+            }, 0)
+        });
         showToast('Переход к оплате...', 'success');
         setTimeout(() => {
             window.location.href = paymentData.link;
@@ -568,7 +575,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (clearBtn) clearBtn.style.display = 'none';
             }
         }
-
+        if (delta > 0) {
+            ym(110321078, 'reachGoal', 'amount_selected', { uc: uc, price: price });
+        }
         console.log('✅ updateCart:', window.cart);
     };
     
