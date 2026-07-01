@@ -2,6 +2,32 @@
 @section('title', 'Платеж принят - UC-SHOP')
 @section('description', 'Ваш платеж принят. UC отправляются на ваш аккаунт.')
 @section('content')
+
+{{-- Яндекс.Метрика: Электронная коммерция + цель order_success --}}
+<script>
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    "ecommerce": {
+      "purchase": {
+        "actionField": {
+          "id": "{{ $order->id }}",
+          "revenue": "{{ $order->price }}"
+        },
+        "products": [{
+          "id": "{{ $order->id }}",
+          "name": "{{ $product ? $product->name : 'UC PUBG Mobile' }}",
+          "price": "{{ $order->price }}",
+          "quantity": 1
+        }]
+      }
+    }
+  });
+  ym(110321078, 'reachGoal', 'order_success', {
+    order_price: {{ $order->price }},
+    order_id: "{{ $order->id }}"
+  });
+</script>
+
   <div class="uc-payment-status uc-payment-status--success">
     <div class="container">
       <div class="uc-status-card">

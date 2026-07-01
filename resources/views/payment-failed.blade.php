@@ -2,6 +2,11 @@
 @section('title', 'Платеж отклонен - UC-SHOP')
 @section('description', 'Платеж был отклонен. Пожалуйста, попробуйте еще раз.')
 @section('content')
+
+<script>
+  ym(110321078, 'reachGoal', 'order_failed');
+</script>
+
   <div class="uc-payment-status uc-payment-status--failed">
     <div class="container">
       <div class="uc-status-card">
