@@ -77,4 +77,13 @@
   </div>
 </section>
 
+@push('scripts')
+<script>
+  ym(110321078, 'reachGoal', 'order_success'@if($order), {
+    order_id: {{ $order->id }},
+    order_price: {{ $order->price }}
+  }@endif);
+</script>
+@endpush
+
 @endsection
