@@ -57,7 +57,7 @@
       <div class="uc-contacts-card uc-contacts-card--form">
         <div class="uc-contacts-card__icon">✉️</div>
         <h2 class="uc-contacts-card__title">Форма обратной связи</h2>
-        <form action="{{ route('contact-form') }}" method="post" class="uc-contact-form">
+        <form action="{{ route('contact-submit') }}" method="post" class="uc-contact-form">
           @csrf
           <div class="uc-contact-form__group">
             <label for="subject" class="uc-contact-form__label">Тема обращения</label>

@@ -237,7 +237,7 @@ const handleSubmit = async (): Promise<void> => {
   isLoading.value = true
 
   try {
-    // Step 1: Create order on backend
+    // Шаг 1: создать заказ с cart (мульти-формат)
     const createOrderResponse = await fetch('/api/orders/create', {
       method: 'POST',
       headers: {
@@ -245,30 +245,38 @@ const handleSubmit = async (): Promise<void> => {
         'X-CSRF-TOKEN': getCsrfToken()
       },
       body: JSON.stringify({
-        game_id: gameId.value,
+        uid: gameId.value,
         email: email.value || null,
-        product_id: selectedProduct.value!.id
+        cart: [
+          {
+            product_id: selectedProduct.value!.id,
+            quantity: 1
+          }
+        ]
       })
     })
 
     if (!createOrderResponse.ok) {
-      throw new Error('Ошибка при создании заказа')
+      const errData = await createOrderResponse.json().catch(() => ({}))
+      throw new Error(errData.message || 'Ошибка при создании заказа')
     }
 
     const orderData = await createOrderResponse.json()
+    if (!orderData.success) {
+      throw new Error(orderData.message || 'Ошибка при создании заказа')
+    }
+
     const orderId = orderData.id
 
-    // Step 2: Initialize payment with Platima
-    const paymentResponse = await fetch('/api/payment/init', {
+    // Шаг 2: инициировать платёж через Pally (createPayment в OrderController)
+    const paymentResponse = await fetch('/api/orders/payment', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': getCsrfToken()
       },
       body: JSON.stringify({
-        order_id: orderId,
-        amount: selectedProduct.value!.price,
-        game_id: gameId.value
+        order_id: orderId
       })
     })
 
@@ -282,14 +290,13 @@ const handleSubmit = async (): Promise<void> => {
       throw new Error('Не получена ссылка для оплаты')
     }
 
-    // Step 3: Redirect to Platima payment page
     submitSuccess.value = '✅ Перенаправление на оплату...'
     window.location.href = paymentData.link
 
   } catch (error: unknown) {
     isLoading.value = false
     const errorMessage = error instanceof Error ? error.message : 'Неизвестная ошибка'
-    submitError.value = `❌ ${errorMessage}. Попробуйте еще раз или свяжитесь с поддержкой.`
+    submitError.value = `❌ ${errorMessage}. Попробуйте ещё раз или свяжитесь с поддержкой.`
     console.error('Payment error:', error)
   }
 }
