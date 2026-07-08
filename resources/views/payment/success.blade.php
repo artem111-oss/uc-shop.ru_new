@@ -66,6 +66,7 @@
         @else
             <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-result-btn uc-result-btn--outline">💬 Поддержка</a>
         @endif
+      </div>
 
       @if($order)
       <div class="uc-result-faq">
