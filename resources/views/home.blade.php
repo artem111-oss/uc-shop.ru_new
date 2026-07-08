@@ -806,6 +806,39 @@
     font-size: 11px;
   }
 }
+
+.uc-package-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 140px;
+}
+
+.uc-package-card .uc-package-card__name,
+.uc-package-card__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.6em;
+    line-height: 1.3;
+    font-size: 15px;
+}
+
+.uc-package-card .uc-package-card__price {
+    margin-top: auto;
+}
+
+@media (max-width: 768px) {
+    .uc-package-card {
+        min-height: 120px;
+    }
+    .uc-package-card .uc-package-card__name,
+    .uc-package-card__title {
+        font-size: 14px;
+    }
+}
 </style>
   
 <div class="uc-lightbox" id="ferrari-lightbox" onclick="closeFerrariLightbox(event)">
