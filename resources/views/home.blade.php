@@ -1064,8 +1064,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var target = document.getElementById('tab-' + this.dataset.tab);
             if (target) target.classList.remove('uc-tab-panel--hidden');
-
-            if (window.clearCart) window.clearCart();
         });
     });
 });
