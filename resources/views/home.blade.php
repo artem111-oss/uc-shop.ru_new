@@ -28,7 +28,7 @@
 
           <!-- UC -->
           <div class="uc-packages-grid" id="tab-uc">
-            @foreach($products->where('type_id', 1)->sortBy('price') as $product)
+            @foreach($products->where('delivery_mode', 'auto')->sortBy('price') as $product)
               <div class="uc-package-card"
                    data-product-id="{{ $product['id'] }}"
                    data-uc="{{ $product['name'] }}"
@@ -51,7 +51,7 @@
               <p>🏎 <strong>Ferrari x PUBG Mobile</strong> — эксклюзивные скины</p>
               <p class="uc-tab-banner__sub">Ручная передача в течение 72 ч. После оплаты напиши нам в Telegram.</p>
             </div>
-            @foreach($products->where('type_id', 2)->sortBy('price') as $product)
+            @foreach($products->where('delivery_mode', 'manual')->sortBy('price') as $product)
               <div class="uc-package-card uc-package-card--manual"
                    data-product-id="{{ $product['id'] }}"
                    data-uc="{{ $product['name'] }}"
@@ -506,7 +506,7 @@
   "@type": "ItemList",
   "name": "UC для PUBG Mobile",
   "itemListElement": [
-    @foreach($products->where('type_id', 1)->sortBy('price') as $i => $product)
+    @foreach($products->where('delivery_mode', 'auto')->sortBy('price') as $i => $product)
     {
       "@type": "ListItem",
       "position": {{ $loop->iteration }},
