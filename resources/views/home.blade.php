@@ -46,11 +46,13 @@
           </div>
 
           <!-- СКИНЫ -->
+          <div class="uc-packages-grid uc-tab-panel--hidden" id="tab-skins">
             <div class="uc-tab-banner">
               <p>🏎 <strong>Ferrari x PUBG Mobile</strong> — эксклюзивные скины</p>
               <p class="uc-tab-banner__sub">Ручная передача в течение 72 ч. После оплаты напиши нам в Telegram, какой скин выбрали.</p>
             </div>
-            @foreach($products->where('delivery_mode', 'manual')->sortBy('price') as $product)
+
+
               <div class="uc-package-card uc-package-card--manual"
                    data-product-id="{{ $product['id'] }}"
                    data-uc="{{ $product['name'] }}"
