@@ -17,6 +17,8 @@ $products = Product::where('status', 1)->get()->map(function ($p) {
         'price'         => $p->price,
         'type_id'       => $p->type_id,
         'delivery_mode' => $p->delivery_mode ?? 'auto',
+        'product_kind'  => $p->product_kind ?? 'uc',
+        'api_title'     => $p->api_title,
     ];
 });
 
