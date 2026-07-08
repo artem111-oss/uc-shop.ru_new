@@ -46,34 +46,49 @@
           </div>
 
           <!-- СКИНЫ -->
-          <div class="uc-packages-grid uc-tab-panel--hidden" id="tab-skins">
             <div class="uc-tab-banner">
               <p>🏎 <strong>Ferrari x PUBG Mobile</strong> — эксклюзивные скины</p>
               <p class="uc-tab-banner__sub">Ручная передача в течение 72 ч. После оплаты напиши нам в Telegram, какой скин выбрали.</p>
-
-                            <div class="uc-catalog-card">
-                <div class="uc-catalog-card__head">
-                  <span class="uc-catalog-card__label">🏎 Каталог доступных скинов</span>
-                  <span class="uc-catalog-card__zoom-hint">🔍 Нажмите, чтобы увеличить</span>
+            </div>
+            @foreach($products->where('delivery_mode', 'manual')->sortBy('price') as $product)
+              <div class="uc-package-card uc-package-card--manual"
+                   data-product-id="{{ $product['id'] }}"
+                   data-uc="{{ $product['name'] }}"
+                   data-price="{{ $product['price'] }}"
+                   data-delivery="manual"
+                   data-max-qty="1">
+                <div class="uc-package-uc">{{ $product['name'] }}</div>
+                <div class="uc-package-price">₽ {{ number_format($product['price'], 0, '.', '.') }}</div>
+                <div class="uc-package-calc">
+                  <button class="uc-calc-btn uc-calc-btn--minus">−</button>
+                  <span class="uc-calc-qty">0</span>
+                  <button class="uc-calc-btn uc-calc-btn--plus">+</button>
                 </div>
-
-                <button type="button" class="uc-catalog-card__trigger" onclick="openFerrariLightbox()">
-                  <img
-                    src="{{ asset('images/ferrari-skins.jpg') }}"
-                    alt="Каталог скинов Ferrari x PUBG Mobile"
-                    class="uc-ferrari-catalog"
-                    loading="lazy"
-                    width="1280"
-                    height="720"
-                  >
-                  <span class="uc-catalog-card__zoom-icon">＋</span>
-                </button>
               </div>
+            @endforeach
+
+            <div class="uc-catalog-card">
+              <div class="uc-catalog-card__head">
+                <span class="uc-catalog-card__label">🏎 Каталог доступных скинов</span>
+                <span class="uc-catalog-card__zoom-hint">🔍 Нажмите, чтобы увеличить</span>
+              </div>
+
+              <button type="button" class="uc-catalog-card__trigger" onclick="openFerrariLightbox()">
+                <img
+                  src="{{ asset('images/ferrari-skins.jpg') }}"
+                  alt="Каталог скинов Ferrari x PUBG Mobile"
+                  class="uc-ferrari-catalog"
+                  loading="lazy"
+                  width="1280"
+                  height="720"
+                >
+              </button>
 
               <p class="uc-tab-banner__sub uc-tab-banner__sub--tight">
                 Выберите скин из каталога выше, укажите его название в сообщении в Telegram после оплаты — мы выдадим именно его.
               </p>
             </div>
+          </div>
             @foreach($products->where('delivery_mode', 'manual')->sortBy('price') as $product)
               <div class="uc-package-card uc-package-card--manual"
                    data-product-id="{{ $product['id'] }}"
@@ -614,23 +629,6 @@
   transform: scale(1.02);
 }
 
-.uc-catalog-card__zoom-icon {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(255, 193, 7, 0.92);
-  color: #1a1a1a;
-  font-size: 20px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
 .uc-lightbox {
   position: fixed;
   inset: 0;
@@ -676,14 +674,6 @@
 
   .uc-catalog-card__head {
     margin-bottom: 6px;
-  }
-
-  .uc-catalog-card__zoom-icon {
-    width: 30px;
-    height: 30px;
-    font-size: 17px;
-    right: 8px;
-    bottom: 8px;
   }
 
   .uc-lightbox__close {
