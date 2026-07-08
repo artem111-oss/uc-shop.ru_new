@@ -49,7 +49,20 @@
           <div class="uc-packages-grid uc-tab-panel--hidden" id="tab-skins">
             <div class="uc-tab-banner">
               <p>🏎 <strong>Ferrari x PUBG Mobile</strong> — эксклюзивные скины</p>
-              <p class="uc-tab-banner__sub">Ручная передача в течение 72 ч. После оплаты напиши нам в Telegram.</p>
+              <p class="uc-tab-banner__sub">Ручная передача в течение 72 ч. После оплаты напиши нам в Telegram, какой скин выбрали.</p>
+
+              <img
+                src="{{ asset('images/ferrari-skins.jpg') }}"
+                alt="Каталог скинов Ferrari x PUBG Mobile"
+                class="uc-ferrari-catalog"
+                loading="lazy"
+                width="1280"
+                height="720"
+              >
+
+              <p class="uc-tab-banner__sub uc-tab-banner__sub--tight">
+                Выберите скин из каталога выше, укажите его название в сообщении в Telegram после оплаты — мы выдадим именно его.
+              </p>
             </div>
             @foreach($products->where('delivery_mode', 'manual')->sortBy('price') as $product)
               <div class="uc-package-card uc-package-card--manual"
@@ -598,6 +611,27 @@
   color: rgba(255, 255, 255, 0.56) !important;
   font-size: 12px;
   line-height: 1.45;
+}
+
+.uc-ferrari-catalog {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin: 10px 0 8px;
+  border: 1px solid rgba(255, 193, 7, 0.18);
+}
+
+.uc-tab-banner__sub--tight {
+  margin-top: 6px !important;
+}
+
+@media (max-width: 768px) {
+  .uc-ferrari-catalog {
+    margin: 8px 0 6px;
+    border-radius: 8px;
+  }
 }
 
 .uc-package-card--manual {
