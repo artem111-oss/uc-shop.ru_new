@@ -51,14 +51,24 @@
               <p>🏎 <strong>Ferrari x PUBG Mobile</strong> — эксклюзивные скины</p>
               <p class="uc-tab-banner__sub">Ручная передача в течение 72 ч. После оплаты напиши нам в Telegram, какой скин выбрали.</p>
 
-              <img
-                src="{{ asset('images/ferrari-skins.jpg') }}"
-                alt="Каталог скинов Ferrari x PUBG Mobile"
-                class="uc-ferrari-catalog"
-                loading="lazy"
-                width="1280"
-                height="720"
-              >
+                            <div class="uc-catalog-card">
+                <div class="uc-catalog-card__head">
+                  <span class="uc-catalog-card__label">🏎 Каталог доступных скинов</span>
+                  <span class="uc-catalog-card__zoom-hint">🔍 Нажмите, чтобы увеличить</span>
+                </div>
+
+                <button type="button" class="uc-catalog-card__trigger" onclick="openFerrariLightbox()">
+                  <img
+                    src="{{ asset('images/ferrari-skins.jpg') }}"
+                    alt="Каталог скинов Ferrari x PUBG Mobile"
+                    class="uc-ferrari-catalog"
+                    loading="lazy"
+                    width="1280"
+                    height="720"
+                  >
+                  <span class="uc-catalog-card__zoom-icon">＋</span>
+                </button>
+              </div>
 
               <p class="uc-tab-banner__sub uc-tab-banner__sub--tight">
                 Выберите скин из каталога выше, укажите его название в сообщении в Telegram после оплаты — мы выдадим именно его.
@@ -551,6 +561,137 @@
 </script>
   
 <style>
+.uc-catalog-card {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 193, 7, 0.22);
+  border-radius: 14px;
+  padding: 10px 10px 12px;
+  margin: 12px 0 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.uc-catalog-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.uc-catalog-card__label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffc107;
+}
+
+.uc-catalog-card__zoom-hint {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.uc-catalog-card__trigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: zoom-in;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.uc-ferrari-catalog {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  transition: transform 0.25s ease;
+}
+
+.uc-catalog-card__trigger:hover .uc-ferrari-catalog {
+  transform: scale(1.02);
+}
+
+.uc-catalog-card__zoom-icon {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 193, 7, 0.92);
+  color: #1a1a1a;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.uc-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 9999;
+}
+
+.uc-lightbox--open {
+  display: flex;
+}
+
+.uc-lightbox__img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.uc-lightbox__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .uc-catalog-card {
+    padding: 8px 8px 10px;
+    margin: 10px 0 4px;
+    border-radius: 12px;
+  }
+
+  .uc-catalog-card__head {
+    margin-bottom: 6px;
+  }
+
+  .uc-catalog-card__zoom-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 17px;
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .uc-lightbox__close {
+    top: 10px;
+    right: 10px;
+  }
+}
+
 .uc-tabs {
   display: flex;
   gap: 8px;
@@ -670,9 +811,27 @@
 }
 </style>
   
+<div class="uc-lightbox" id="ferrari-lightbox" onclick="closeFerrariLightbox(event)">
+  <button type="button" class="uc-lightbox__close" onclick="closeFerrariLightbox(event)">✕</button>
+  <img src="{{ asset('images/ferrari-skins.jpg') }}" alt="Каталог скинов Ferrari x PUBG Mobile" class="uc-lightbox__img">
+</div>
+  
 @endsection
 
 @push('scripts')
+
+<script>
+window.openFerrariLightbox = function () {
+  document.getElementById('ferrari-lightbox').classList.add('uc-lightbox--open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeFerrariLightbox = function (e) {
+  document.getElementById('ferrari-lightbox').classList.remove('uc-lightbox--open');
+  document.body.style.overflow = '';
+};
+</script>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     window.cart = {};
