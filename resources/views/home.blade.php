@@ -52,7 +52,7 @@
               <p class="uc-tab-banner__sub">Ручная передача в течение 72 ч. После оплаты напиши нам в Telegram, какой скин выбрали.</p>
             </div>
 
-
+            @foreach($products->where('delivery_mode', 'manual')->sortBy('price') as $product)
               <div class="uc-package-card uc-package-card--manual"
                    data-product-id="{{ $product['id'] }}"
                    data-uc="{{ $product['name'] }}"
@@ -90,23 +90,6 @@
                 Выберите скин из каталога выше, укажите его название в сообщении в Telegram после оплаты — мы выдадим именно его.
               </p>
             </div>
-          </div>
-            @foreach($products->where('delivery_mode', 'manual')->sortBy('price') as $product)
-              <div class="uc-package-card uc-package-card--manual"
-                   data-product-id="{{ $product['id'] }}"
-                   data-uc="{{ $product['name'] }}"
-                   data-price="{{ $product['price'] }}"
-                   data-delivery="manual"
-                   data-max-qty="1">
-                <div class="uc-package-uc">{{ $product['name'] }}</div>
-                <div class="uc-package-price">₽ {{ number_format($product['price'], 0, '.', '.') }}</div>
-                <div class="uc-package-calc">
-                  <button class="uc-calc-btn uc-calc-btn--minus">−</button>
-                  <span class="uc-calc-qty">0</span>
-                  <button class="uc-calc-btn uc-calc-btn--plus">+</button>
-                </div>
-              </div>
-            @endforeach
           </div>
         </div><!-- /uc-hero__left -->
 
