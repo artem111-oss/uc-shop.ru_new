@@ -49,7 +49,7 @@
           <div class="uc-packages-grid uc-tab-panel--hidden" id="tab-skins">
             <div class="uc-tab-banner">
               <p>🏎 <strong>Ferrari x PUBG Mobile</strong> — эксклюзивные скины</p>
-              <p class="uc-tab-banner__sub">Ручная передача в течение 72 ч. После оплаты напиши нам в Telegram, какой скин выбрали.</p>
+              <p class="uc-tab-banner__sub">Ручная передача в течение 72 ч. После оплаты напиши нам в Telegram, какой скин выбрал.</p>
             </div>
 
             @foreach($products->where('delivery_mode', 'manual')->sortBy('price') as $product)
@@ -87,7 +87,7 @@
               </button>
 
               <p class="uc-tab-banner__sub uc-tab-banner__sub--tight">
-                Выберите скин из каталога выше, укажите его название в сообщении в Telegram после оплаты — мы выдадим именно его.
+                Выбери скин из каталога выше, укажи его название в сообщении в Telegram после оплаты — мы выдадим именно его.
               </p>
             </div>
           </div>
@@ -562,6 +562,7 @@
   
 <style>
 .uc-catalog-card {
+  grid-column: 1 / -1;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 193, 7, 0.22);
   border-radius: 14px;
