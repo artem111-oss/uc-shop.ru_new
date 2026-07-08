@@ -543,11 +543,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let totalUc = 0, totalPrice = 0;
         document.querySelectorAll('.uc-package-card').forEach(c => {
-            const cUc = c.dataset.uc;          // строка "60 UC"
+            const cUc = c.dataset.uc;
             const cPrice = parseInt(c.dataset.price);
-            const cUcNum = parseInt(cUc);      // число для суммирования UC
+            const cUcNum = parseInt(cUc);
             const qty = window.cart[cUc] || 0;
-            totalUc += cUcNum * qty;
+
+            if (!isNaN(cUcNum)) {
+                totalUc += cUcNum * qty;
+            }
+
             totalPrice += cPrice * qty;
         });
         

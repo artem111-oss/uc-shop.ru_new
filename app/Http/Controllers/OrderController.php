@@ -443,6 +443,19 @@ class OrderController extends Controller
         }
 
         $product = Product::find($order->product_id);
+        
+            // ✅ ДОБАВИТЬ ЭТИ 8 СТРОК:
+    if ($product && $product->delivery_mode === 'manual') {
+        Log::info('executeOrder: ручная выдача, пропускаем авто', [
+            'order_id'   => $order->id,
+            'product_id' => $order->product_id,
+            'product'    => $product->name,
+        ]);
+        DB::table('orders')->where('id', $order->id)->update(['status_id' => 3]);
+        $this->sendToTelegram("✋ РУЧНАЯ ВЫДАЧА\n\nЗаказ: #{$order->id}\nТовар: {$product->name}\nИгровой ID: {$order->uid}\nСумма: {$order->price}₽\n\nНужно передать скин вручную!");
+        return;
+    }
+    // ✅ КОНЕЦ ДОБАВЛЕНИЯ
 
         if (!$product || empty($product->name)) {
             Log::error('executeOrder: товар не найден', [

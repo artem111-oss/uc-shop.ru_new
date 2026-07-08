@@ -49,14 +49,23 @@
       </div>
       @endif
 
-      <div class="uc-result-infobox">
-        <strong>⚡ Мгновенная доставка:</strong> UC зачисляются в течение 30–60 секунд. Убедись, что игра открыта.
+      @if($product && $product->delivery_mode === 'manual')
+      <div class="uc-result-infobox" style="border-color: rgba(255,165,0,0.4); background: rgba(255,165,0,0.06);">
+          <strong>⚠️ Ручная передача:</strong> Этот товар передаётся вручную. Напишите нам в Telegram, укажите номер заказа <strong>#{{ $order->id }}</strong> — мы добавим тебя в друзья и передадим скин. Передача займёт до 72 часов с момента добавления в друзья (требование игры).
       </div>
+      @else
+      <div class="uc-result-infobox">
+          <strong>⚡ Мгновенная доставка:</strong> UC зачисляются в течение 30–60 секунд. Убедись, что игра открыта.
+      </div>
+      @endif
 
       <div class="uc-result-actions">
         <a href="/" class="uc-result-btn uc-result-btn--primary">← На главную</a>
-        <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-result-btn uc-result-btn--outline">💬 Поддержка</a>
-      </div>
+        @if($product && $product->delivery_mode === 'manual')
+            <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-result-btn uc-result-btn--outline">✍️ Написать для получения скина</a>
+        @else
+            <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-result-btn uc-result-btn--outline">💬 Поддержка</a>
+        @endif
 
       @if($order)
       <div class="uc-result-faq">

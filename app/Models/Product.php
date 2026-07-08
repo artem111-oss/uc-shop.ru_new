@@ -8,6 +8,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends MainModel
 {
-  use HasFactory;
+    use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'price',
+        'delivery_mode',
+        'manual_notice',
+    ];
+
+    protected $casts = [
+        'price' => 'integer',
+    ];
+
+    public function isManual(): bool
+    {
+        return $this->delivery_mode === 'manual';
+    }
 }
