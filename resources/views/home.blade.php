@@ -66,9 +66,10 @@
                 <button class="uc-cart-clear-btn" onclick="clearCart()" title="Очистить корзину">Очистить</button>
               </div>
               <div class="uc-id-form__cart-summary">
-                <span id="cart-total-uc"><strong>0</strong> <strong>UC</strong></span>
-                <p><strong>К оплате:</strong> <span id="cart-total-price">0 ₽</span></p>
-              </div>
+               <span id="cart-total-uc"><strong>0</strong> <strong>UC</strong></span>
+               <span id="cart-total-items" style="display:none;"></span>
+               <p><strong>К оплате:</strong> <span id="cart-total-price">0 ₽</span></p>
+             </div>
             </div>
 
             <div class="uc-mobile-submit-row">
@@ -541,7 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const qtyEl = card?.querySelector('.uc-calc-qty');
         if (qtyEl) qtyEl.textContent = window.cart[uc] || 0;
         
-        let totalUc = 0, totalPrice = 0;
+        let totalUc = 0, totalPrice = 0, totalItems = 0;
         document.querySelectorAll('.uc-package-card').forEach(c => {
             const cUc = c.dataset.uc;
             const cPrice = parseInt(c.dataset.price);
@@ -550,35 +551,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!isNaN(cUcNum)) {
                 totalUc += cUcNum * qty;
+            } else {
+                totalItems += qty;
             }
 
             totalPrice += cPrice * qty;
         });
         
         const totalUcEl = document.getElementById('cart-total-uc');
+        const totalItemsEl = document.getElementById('cart-total-items');
         const totalPriceEl = document.getElementById('cart-total-price');
-        if (totalUcEl) totalUcEl.innerHTML = `<strong>${totalUc.toLocaleString('ru-RU')}</strong> <strong>UC</strong>`;
-        if (totalPriceEl) totalPriceEl.textContent = totalPrice.toLocaleString('ru-RU') + ' ₽';
+
+        if (totalUcEl) {
+            if (totalUc > 0) {
+                totalUcEl.style.display = '';
+                totalUcEl.innerHTML = `<strong>${totalUc.toLocaleString('ru-RU')}</strong> <strong>UC</strong>`;
+            } else {
+                totalUcEl.style.display = 'none';
+            }
+        }
+
+        if (totalItemsEl) {
+            if (totalItems > 0) {
+                totalItemsEl.style.display = '';
+                totalItemsEl.innerHTML = `<strong>${totalItems}</strong> <strong>${totalItems === 1 ? 'товар' : 'товара'}</strong>`;
+            } else {
+                totalItemsEl.style.display = 'none';
+            }
+        }
+
+        if (totalPriceEl) {
+            totalPriceEl.textContent = totalPrice.toLocaleString('ru-RU') + ' ₽';
+        }
 
         // Обновляем кнопку (мобиле и десктоп)
         const submitBtn = document.getElementById('mobile-submit-btn');
         const clearBtn = document.getElementById('mobile-clear-btn');
         if (submitBtn) {
-            if (totalUc > 0) {
-                if (window.innerWidth <= 768) {
-                    submitBtn.textContent = `Получить ${totalUc.toLocaleString('ru-RU')} UC за ${totalPrice.toLocaleString('ru-RU')} ₽ →`;
-                    if (clearBtn) clearBtn.style.display = 'flex'; // ← только на мобиле
-                } else {
-                    submitBtn.textContent = 'Получить UC за 30 секунд →';
-                    if (clearBtn) clearBtn.style.display = 'none'; // ← на десктопе крестик скрыт
-                }
-                submitBtn.classList.remove('is-empty');
+    const hasAnything = totalPrice > 0;
+    if (hasAnything) {
+        if (window.innerWidth <= 768) {
+            if (totalUc > 0 && totalItems === 0) {
+                submitBtn.textContent = `Получить ${totalUc.toLocaleString('ru-RU')} UC за ${totalPrice.toLocaleString('ru-RU')} ₽ →`;
+            } else if (totalItems > 0 && totalUc === 0) {
+                submitBtn.textContent = `Оформить ${totalItems} ${totalItems === 1 ? 'товар' : 'товара'} за ${totalPrice.toLocaleString('ru-RU')} ₽ →`;
             } else {
-                submitBtn.textContent = 'Выберите пакет UC';
-                submitBtn.classList.add('is-empty');
-                if (clearBtn) clearBtn.style.display = 'none';
+                submitBtn.textContent = `Оформить заказ за ${totalPrice.toLocaleString('ru-RU')} ₽ →`;
             }
+            if (clearBtn) clearBtn.style.display = 'flex';
+        } else {
+            submitBtn.textContent = 'Получить UC за 30 секунд →';
+            if (clearBtn) clearBtn.style.display = 'none';
         }
+        submitBtn.classList.remove('is-empty');
+    } else {
+        submitBtn.textContent = 'Выберите пакет UC';
+        submitBtn.classList.add('is-empty');
+        if (clearBtn) clearBtn.style.display = 'none';
+    }
+}
         if (delta > 0) {
             ym(110321078, 'reachGoal', 'amount_selected', { uc: uc, price: price });
         }
@@ -593,9 +624,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         const totalUcEl = document.getElementById('cart-total-uc');
+        const totalItemsEl = document.getElementById('cart-total-items');
         const totalPriceEl = document.getElementById('cart-total-price');
-        if (totalUcEl) totalUcEl.innerHTML = '<strong>0</strong> <strong>UC</strong>';
-        if (totalPriceEl) totalPriceEl.textContent = '0 ₽';
+
+        if (totalUcEl) {
+            totalUcEl.style.display = '';
+            totalUcEl.innerHTML = '<strong>0</strong> <strong>UC</strong>';
+        }
+        if (totalItemsEl) {
+            totalItemsEl.style.display = 'none';
+            totalItemsEl.innerHTML = '';
+        }
+        if (totalPriceEl) {
+            totalPriceEl.textContent = '0 ₽';
+        }
         
         const submitBtn = document.getElementById('mobile-submit-btn');
         const clearBtn = document.getElementById('mobile-clear-btn');
