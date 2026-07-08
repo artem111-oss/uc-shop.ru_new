@@ -10,14 +10,15 @@ class ProductController extends Controller
 {
   public function index(): View
   {
-      $products = Product::where('status', 1)->get()->map(function ($p) {
-          return [
-              'id'      => $p->id,
-              'name'    => $p->name,
-              'price'   => $p->price,
-              'type_id' => $p->type_id,
-          ];
-      });
+$products = Product::where('status', 1)->get()->map(function ($p) {
+    return [
+        'id'            => $p->id,
+        'name'          => $p->name,
+        'price'         => $p->price,
+        'type_id'       => $p->type_id,
+        'delivery_mode' => $p->delivery_mode ?? 'auto',
+    ];
+});
 
       return view('home', [
           'products' => $products,
