@@ -5,6 +5,34 @@
 
 @media (max-width: 768px) {
 
+  /* ── ВКЛАДКИ ────────────────────────────────────────── */
+  .uc-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    padding: 0 0 2px 0;
+  }
+
+  .uc-tab {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Баннер-описание вкладки */
+  .uc-tab-banner {
+    padding: 8px 10px;
+    margin-bottom: 2px;
+    border-radius: 8px;
+    font-size: 0.72rem;
+    line-height: 1.4;
+  }
+
   /* ── BODY ─────────────────────────────────────────────── */
   body {
     overflow-x: hidden;
@@ -458,6 +486,31 @@
    ========================================================= */
 
 @media (min-width: 769px) and (max-width: 1200px) {
+
+  /* ── ВКЛАДКИ (планшет) ──────────────────────────────── */
+  .uc-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .uc-tab {
+    padding: 7px 15px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+  }
+
+  .uc-tab-banner {
+    padding: 10px 14px;
+    margin-bottom: 4px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+  }
 
   /* Мобильный блок заголовков — скрыт на планшете */
   .uc-hero__titles-mobile {

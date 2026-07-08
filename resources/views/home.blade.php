@@ -20,13 +20,44 @@
             <h1 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UC SHOP</h1>
             <p class="uc-packages-subtitle">ДОСТАВКА ЗА 30 СЕКУНД • ЛУЧШИЕ ЦЕНЫ • 100% БЕЗОПАСНО</p>
           </div>
-          <!-- ALL PACKAGES IN 2 ROWS -->
-          <div class="uc-packages-grid">
+          <!-- ВКЛАДКИ -->
+          <div class="uc-tabs">
+            <button class="uc-tab uc-tab--active" data-tab="uc">⚡ UC</button>
+            <button class="uc-tab" data-tab="skins">🏎 Скины Ferrari</button>
+          </div>
+
+          <!-- UC -->
+          <div class="uc-packages-grid" id="tab-uc">
             @foreach($products->where('type_id', 1)->sortBy('price') as $product)
               <div class="uc-package-card"
                    data-product-id="{{ $product['id'] }}"
-                   data-uc="{{ $product['uc'] ?? $product['name'] }}"
-                   data-price="{{ $product['price'] }}">
+                   data-uc="{{ $product['name'] }}"
+                   data-price="{{ $product['price'] }}"
+                   data-delivery="auto">
+                <div class="uc-package-uc">{{ $product['name'] }}</div>
+                <div class="uc-package-price">₽ {{ number_format($product['price'], 0, '.', '.') }}</div>
+                <div class="uc-package-calc">
+                  <button class="uc-calc-btn uc-calc-btn--minus">−</button>
+                  <span class="uc-calc-qty">0</span>
+                  <button class="uc-calc-btn uc-calc-btn--plus">+</button>
+                </div>
+              </div>
+            @endforeach
+          </div>
+
+          <!-- СКИНЫ -->
+          <div class="uc-packages-grid uc-tab-panel--hidden" id="tab-skins">
+            <div class="uc-tab-banner">
+              <p>🏎 <strong>Ferrari x PUBG Mobile</strong> — эксклюзивные скины</p>
+              <p class="uc-tab-banner__sub">Ручная передача в течение 72 ч. После оплаты напиши нам в Telegram.</p>
+            </div>
+            @foreach($products->where('type_id', 2)->sortBy('price') as $product)
+              <div class="uc-package-card uc-package-card--manual"
+                   data-product-id="{{ $product['id'] }}"
+                   data-uc="{{ $product['name'] }}"
+                   data-price="{{ $product['price'] }}"
+                   data-delivery="manual"
+                   data-max-qty="1">
                 <div class="uc-package-uc">{{ $product['name'] }}</div>
                 <div class="uc-package-price">₽ {{ number_format($product['price'], 0, '.', '.') }}</div>
                 <div class="uc-package-calc">
@@ -917,6 +948,27 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(loadReviews, 120000);
     
     console.log('✅ Dynamic reviews & carousel initialized');
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.uc-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            document.querySelectorAll('.uc-tab').forEach(function (t) {
+                t.classList.remove('uc-tab--active');
+            });
+            this.classList.add('uc-tab--active');
+
+            document.querySelectorAll('.uc-packages-grid').forEach(function (grid) {
+                grid.classList.add('uc-tab-panel--hidden');
+            });
+
+            var target = document.getElementById('tab-' + this.dataset.tab);
+            if (target) target.classList.remove('uc-tab-panel--hidden');
+
+            if (window.clearCart) window.clearCart();
+        });
+    });
 });
 </script>
 @endpush

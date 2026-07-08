@@ -67,3 +67,68 @@ body, html {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 }
+
+/* ── TABS: desktop + base styles ───────────────────────── */
+.uc-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.uc-tab {
+  padding: 7px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+}
+
+.uc-tab:hover {
+  border-color: rgba(255, 193, 7, 0.6);
+  color: #fff;
+}
+
+.uc-tab--active {
+  background: rgba(255, 193, 7, 0.15);
+  border-color: #ffc107;
+  color: #ffc107;
+}
+
+.uc-tab-panel--hidden {
+  display: none !important;
+}
+
+.uc-tab-banner {
+  grid-column: 1 / -1;
+  background: rgba(255, 193, 7, 0.07);
+  border: 1px solid rgba(255, 193, 7, 0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 4px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.uc-tab-banner strong {
+  color: #fff;
+}
+
+.uc-tab-banner__sub {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+}
+
+.uc-package-card--manual {
+  border-color: rgba(255, 193, 7, 0.25);
+}
