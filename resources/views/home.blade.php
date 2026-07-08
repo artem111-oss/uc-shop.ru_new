@@ -20,15 +20,17 @@
             <h1 class="uc-packages-title">ОФИЦИАЛЬНЫЙ UC SHOP</h1>
             <p class="uc-packages-subtitle">ДОСТАВКА ЗА 30 СЕКУНД • ЛУЧШИЕ ЦЕНЫ • 100% БЕЗОПАСНО</p>
           </div>
+          
           <!-- ВКЛАДКИ -->
           <div class="uc-tabs">
             <button class="uc-tab uc-tab--active" data-tab="uc">⚡ UC</button>
             <button class="uc-tab" data-tab="skins">🏎 Скины Ferrari</button>
+            <button class="uc-tab" data-tab="sets">📦 Наборы и подписки</button>
           </div>
 
           <!-- UC -->
           <div class="uc-packages-grid" id="tab-uc">
-            @foreach($products->where('delivery_mode', 'auto')->sortBy('price') as $product)
+            @foreach($products->where('delivery_mode', 'auto')->where('product_kind', 'uc')->sortBy('price') as $product)
               <div class="uc-package-card"
                    data-product-id="{{ $product['id'] }}"
                    data-uc="{{ $product['name'] }}"
@@ -90,6 +92,25 @@
                 Выбери скин из каталога выше, укажи его название в сообщении в Telegram после оплаты — мы выдадим именно его.
               </p>
             </div>
+          </div>
+
+          <!-- НАБОРЫ И ПОДПИСКИ -->
+          <div class="uc-packages-grid uc-tab-panel--hidden" id="tab-sets">
+            @foreach($products->whereIn('product_kind', ['set', 'subscription'])->sortBy('price') as $product)
+              <div class="uc-package-card"
+                   data-product-id="{{ $product['id'] }}"
+                   data-uc="{{ $product['name'] }}"
+                   data-price="{{ $product['price'] }}"
+                   data-delivery="auto">
+                <div class="uc-package-uc">{{ $product['name'] }}</div>
+                <div class="uc-package-price">₽ {{ number_format($product['price'], 0, '.', '.') }}</div>
+                <div class="uc-package-calc">
+                  <button class="uc-calc-btn uc-calc-btn--minus">−</button>
+                  <span class="uc-calc-qty">0</span>
+                  <button class="uc-calc-btn uc-calc-btn--plus">+</button>
+                </div>
+              </div>
+            @endforeach
           </div>
         </div><!-- /uc-hero__left -->
 

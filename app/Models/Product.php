@@ -11,10 +11,12 @@ class Product extends MainModel
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'price',
-        'delivery_mode',
-        'manual_notice',
+    'name',
+    'price',
+    'delivery_mode',
+    'product_kind',
+    'manual_notice',
+    'api_title',
     ];
 
     protected $casts = [

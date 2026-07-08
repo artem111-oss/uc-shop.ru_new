@@ -14,56 +14,103 @@ use Illuminate\Support\Facades\DB;
 class OrderController extends Controller
 {
     public function create(OrderRequest $request)
-{
-    $uid  = (string) $request->input('uid');
-    $cart = $request->input('cart');
+    {
+        $uid  = (string) $request->input('uid');
+        $cart = $request->input('cart');
 
-    // === МУЛЬТИ-КОРЗИНА ===
-    if (is_array($cart) && count($cart) > 0) {
-        $totalAmount    = 0;
-        $ucAmountParts  = [];
-        $mainProductId  = null;
+        // === МУЛЬТИ-КОРЗИНА ===
+        if (is_array($cart) && count($cart) > 0) {
+            $totalAmount    = 0;
+            $ucAmountParts  = [];
+            $mainProductId  = null;
 
-        foreach ($cart as $item) {
-            $product  = Product::find((int) $item['product_id']);
-            if (!$product) {
-                Log::error('Order create: product not found in cart', ['product_id' => $item['product_id']]);
-                return response()->json(['success' => false, 'message' => 'Product not found: ' . $item['product_id']], 404);
+            foreach ($cart as $item) {
+                $product = Product::find((int) $item['product_id']);
+                if (!$product) {
+                    Log::error('Order create: product not found in cart', ['product_id' => $item['product_id']]);
+                    return response()->json(['success' => false, 'message' => 'Product not found: ' . $item['product_id']], 404);
+                }
+
+                $qty   = max(1, (int) ($item['quantity'] ?? 1));
+                $price = isset($item['price']) ? (float) $item['price'] : (float) $product->price;
+
+                $totalAmount += $price * $qty;
+
+                if ($mainProductId === null) {
+                    $mainProductId = $product->id;
+                }
+
+                if ($product->product_kind === 'uc') {
+                    preg_match('/(\d+)/', $product->name, $m);
+                    $ucVal = $m[1] ?? trim($product->name);
+                    $ucAmountParts[] = $qty > 1 ? "{$ucVal} UC x{$qty}" : "{$ucVal} UC";
+                } else {
+                    $ucAmountParts[] = $qty > 1 ? "{$product->name} x{$qty}" : $product->name;
+                }
             }
 
-            $qty   = max(1, (int) ($item['quantity'] ?? 1));
-            $price = isset($item['price']) ? (float) $item['price'] : (float) $product->price;
+            $order = new Order();
+            $order->client_id   = 1;
+            $order->status_id   = 1;
+            $order->price       = $totalAmount;
+            $order->qty         = 1;
+            $order->product_id  = $mainProductId;
+            $order->type_id     = 1;
+            $order->user_id     = 1;
+            $order->uid         = $uid;
+            $order->game_id     = $uid;
+            $order->email       = $request->input('email');
+            $order->uc_amount   = implode(', ', $ucAmountParts);
+            $order->save();
 
-            $totalAmount += $price * $qty;
+            Log::info('Order created', [
+                'order_id'   => $order->id,
+                'uid'        => $order->uid,
+                'product_id' => $order->product_id,
+            ]);
 
-            if ($mainProductId === null) {
-                $mainProductId = $product->id;
-            }
-
-            // Строим uc_amount: "60 UC x2" или "180 UC"
-            preg_match('/(\d+)/', $product->name, $m);
-            $ucVal         = $m[1] ?? trim($product->name);
-            $ucAmountParts[] = $qty > 1 ? "{$ucVal} UC x{$qty}" : "{$ucVal} UC";
+            return response()->json([
+                'success' => true,
+                'id'      => $order->id,
+                'uid'     => $order->uid,
+            ]);
         }
+
+        // === ОДИНОЧНЫЙ ТОВАР (обратная совместимость) ===
+        $product = Product::find((int) $request->input('product_id'));
+        if (!$product) {
+            Log::error('Order create: product not found', ['product_id' => $request->input('product_id')]);
+            return response()->json(['success' => false, 'message' => 'Product not found'], 404);
+        }
+
+        $qty = max(1, (int) $request->input('qty', 1));
 
         $order = new Order();
         $order->client_id   = 1;
         $order->status_id   = 1;
-        $order->price       = $totalAmount;
-        $order->qty         = 1; // общий маркер, реальное кол-во в uc_amount
-        $order->product_id  = $mainProductId;
+        $order->price       = $product->price * $qty;
+        $order->qty         = $qty;
+        $order->product_id  = $product->id;
         $order->type_id     = 1;
         $order->user_id     = 1;
         $order->uid         = $uid;
         $order->game_id     = $uid;
         $order->email       = $request->input('email');
-        $order->uc_amount   = implode(', ', $ucAmountParts); // "60 UC x2, 180 UC"
+
+        if ($product->product_kind === 'uc') {
+            preg_match('/(\d+)/', $product->name, $m);
+            $ucVal = $m[1] ?? trim($product->name);
+            $order->uc_amount = $qty > 1 ? "{$ucVal} UC x{$qty}" : "{$ucVal} UC";
+        } else {
+            $order->uc_amount = $qty > 1 ? "{$product->name} x{$qty}" : $product->name;
+        }
+
         $order->save();
 
         Log::info('Order created', [
             'order_id'   => $order->id,
             'uid'        => $order->uid,
-            'product_id' => $order->product_id,
+            'product_id' => $product->id,
         ]);
 
         return response()->json([
@@ -72,44 +119,6 @@ class OrderController extends Controller
             'uid'     => $order->uid,
         ]);
     }
-
-    // === ОДИНОЧНЫЙ ТОВАР (обратная совместимость) ===
-    $product = Product::find((int) $request->input('product_id'));
-    if (!$product) {
-        Log::error('Order create: product not found', ['product_id' => $request->input('product_id')]);
-        return response()->json(['success' => false, 'message' => 'Product not found'], 404);
-    }
-
-    $qty = max(1, (int) $request->input('qty', 1));
-    preg_match('/(\d+)/', $product->name, $m);
-    $ucVal = $m[1] ?? trim($product->name);
-
-    $order = new Order();
-    $order->client_id   = 1;
-    $order->status_id   = 1;
-    $order->price       = $product->price * $qty;
-    $order->qty         = $qty;
-    $order->product_id  = $product->id;
-    $order->type_id     = 1;
-    $order->user_id     = 1;
-    $order->uid         = $uid;
-    $order->game_id     = $uid;
-    $order->email       = $request->input('email');
-    $order->uc_amount   = $qty > 1 ? "{$ucVal} UC x{$qty}" : "{$ucVal} UC";
-    $order->save();
-
-    Log::info('Order created', [
-        'order_id'   => $order->id,
-        'uid'        => $order->uid,
-        'product_id' => $product->id,
-    ]);
-
-    return response()->json([
-        'success' => true,
-        'id'      => $order->id,
-        'uid'     => $order->uid,
-    ]);
-}
 
     public function createPayment(Request $request)
     {
@@ -443,107 +452,111 @@ class OrderController extends Controller
         }
 
         $product = Product::find($order->product_id);
-        
-            // ✅ ДОБАВИТЬ ЭТИ 8 СТРОК:
-    if ($product && $product->delivery_mode === 'manual') {
-        Log::info('executeOrder: ручная выдача, пропускаем авто', [
-            'order_id'   => $order->id,
-            'product_id' => $order->product_id,
-            'product'    => $product->name,
-        ]);
-        DB::table('orders')->where('id', $order->id)->update(['status_id' => 3]);
-        $this->sendToTelegram("✋ РУЧНАЯ ВЫДАЧА\n\nЗаказ: #{$order->id}\nТовар: {$product->name}\nИгровой ID: {$order->uid}\nСумма: {$order->price}₽\n\nНужно передать скин вручную!");
-        return;
-    }
-    // ✅ КОНЕЦ ДОБАВЛЕНИЯ
 
-        if (!$product || empty($product->name)) {
-            Log::error('executeOrder: товар не найден', [
-                'order_id'   => $order->id,
+        if ($product && $product->delivery_mode === 'manual') {
+            Log::info('executeOrder: ручная выдача, пропускаем авто', [
+                'order_id' => $order->id,
                 'product_id' => $order->product_id,
+                'product' => $product->name,
             ]);
+            DB::table('orders')->where('id', $order->id)->update(['status_id' => 3]);
+            $this->sendToTelegram("✋ РУЧНАЯ ВЫДАЧА\n\nЗаказ: #{$order->id}\nТовар: {$product->name}\nИгровой ID: {$order->uid}\nСумма: {$order->price}₽\n\nНужно передать скин вручную!");
             return;
         }
 
-        // Актуальный маппинг product name -> Ragner product_id
-        $products = [
-            '60 UC'    => 50,
-            '120 UC'   => 55,
-            '180 UC'   => 56,
-            '325 UC'   => 53,
-            '385 UC'   => 57,
-            '660 UC'   => 58,
-            '720 UC'   => 59,
-            '985 UC'   => 60,
-            '1320 UC'  => 61,
-            '1800 UC'  => 62,
-            '1920 UC'  => 63,
-            '2460 UC'  => 64,
-            '3850 UC'  => 65,
-            '5650 UC'  => 66,
-            '8100 UC'  => 67,
-            '9900 UC'  => 68,
-            '12010 UC' => 69,
-            '16200 UC' => 70,
-            '24300 UC' => 71,
-            '32400 UC' => 72,
-            '40500 UC' => 73,
-            '81000 UC' => 74,
+        if ($product && $product->api_title === 'BUNDLE_UPGRADE_X3') {
+            Log::info('executeOrder: бандл Подъём х3, отправляем 3 отдельных заказа', ['order_id' => $order->id]);
+            $itemsToSend = [
+                ['name' => 'First Purchase Pack', 'product_id' => 112],
+                ['name' => 'Upgradable Firearm Materials Pack', 'product_id' => 113],
+                ['name' => 'Mythic Emblem Pack', 'product_id' => 114],
+            ];
+        } elseif (!$product || empty($product->name)) {
+            Log::error('executeOrder: товар не найден', [
+                'order_id' => $order->id,
+                'product_id' => $order->product_id,
+            ]);
+            return;
+        } else {
+            // Актуальный маппинг product name -> Ragner product_id
+            $products = [
+                '60 UC'    => 50,
+                '120 UC'   => 55,
+                '180 UC'   => 56,
+                '325 UC'   => 53,
+                '385 UC'   => 57,
+                '660 UC'   => 58,
+                '720 UC'   => 59,
+                '985 UC'   => 60,
+                '1320 UC'  => 61,
+                '1800 UC'  => 62,
+                '1920 UC'  => 63,
+                '2460 UC'  => 64,
+                '3850 UC'  => 65,
+                '5650 UC'  => 66,
+                '8100 UC'  => 67,
+                '9900 UC'  => 68,
+                '12010 UC' => 69,
+                '16200 UC' => 70,
+                '24300 UC' => 71,
+                '32400 UC' => 72,
+                '40500 UC' => 73,
+                '81000 UC' => 74,
 
-            'Prime 1 Month'                     => 104,
-            'Prime 3 Month'                     => 105,
-            'Prime 6 Month'                     => 106,
-            'Prime 12 Month'                    => 107,
-            'Prime Plus 1 Month'                => 108,
-            'Prime Plus 3 Month'                => 109,
-            'Prime Plus 6 Month'                => 110,
-            'Prime Plus 12 Month'               => 111,
-            'First Purchase Pack'               => 112,
-            'Upgradable Firearm Materials Pack' => 113,
-            'Mythic Emblem Pack'                => 114,
-            'Weekly Mythic Emblem Value Pack'   => 115,
-            'Weekly Deal Pack 2'                => 116,
-            'Weekly Deal Pack 1'                => 117,
+                'Prime 1 Month'                     => 104,
+                'Prime 3 Month'                     => 105,
+                'Prime 6 Month'                     => 106,
+                'Prime 12 Month'                    => 107,
+                'Prime Plus 1 Month'                => 108,
+                'Prime Plus 3 Month'                => 109,
+                'Prime Plus 6 Month'                => 110,
+                'Prime Plus 12 Month'               => 111,
+                'First Purchase Pack'               => 112,
+                'Upgradable Firearm Materials Pack' => 113,
+                'Mythic Emblem Pack'                => 114,
+                'Weekly Mythic Emblem Value Pack'   => 115,
+                'Weekly Deal Pack 2'                => 116,
+                'Weekly Deal Pack 1'                => 117,
 
-            'EVO (Radiant Gold)' => 155,
-            'EVO (Glacier)'      => 156,
-        ];
+                'EVO (Radiant Gold)' => 155,
+                'EVO (Glacier)'      => 156,
+            ];
 
-        // === МУЛЬТИ-ТОВАР ИЗ uc_amount ===
-        $itemsToSend = [];
+            // === МУЛЬТИ-ТОВАР ИЗ uc_amount ===
+            $itemsToSend = [];
 
-        if (!empty($order->uc_amount)) {
-            // Парсим "60 UC x2, 180 UC" -> [{name:"60 UC", qty:2}, {name:"180 UC", qty:1}]
-            foreach (explode(',', $order->uc_amount) as $part) {
-                $part = trim($part);
-                if (preg_match('/(\d+)\s*UC(?:\s*x(\d+))?/i', $part, $pm)) {
-                    $ucVal    = (int) $pm[1];
-                    $qty      = isset($pm[2]) && $pm[2] > 0 ? (int) $pm[2] : 1;
-                    $lookupName = $ucVal . ' UC';
-                    if (isset($products[$lookupName])) {
-                        for ($i = 0; $i < $qty; $i++) {
-                            $itemsToSend[] = ['name' => $lookupName, 'product_id' => $products[$lookupName]];
+            if (!empty($order->uc_amount)) {
+                foreach (explode(',', $order->uc_amount) as $part) {
+                    $part = trim($part);
+                    if (preg_match('/(\d+)\s*UC(?:\s*x(\d+))?/i', $part, $pm)) {
+                        $ucVal = (int) $pm[1];
+                        $qty = isset($pm[2]) && $pm[2] > 0 ? (int) $pm[2] : 1;
+                        $lookupName = $ucVal . ' UC';
+                        if (isset($products[$lookupName])) {
+                            for ($i = 0; $i < $qty; $i++) {
+                                $itemsToSend[] = ['name' => $lookupName, 'product_id' => $products[$lookupName]];
+                            }
+                        } else {
+                            Log::error('executeOrder: товар не найден в маппинге', ['uc_amount_part' => $part]);
                         }
-                    } else {
-                        Log::error('executeOrder: товар не найден в маппинге', ['uc_amount_part' => $part]);
                     }
                 }
             }
-        }
 
-        // Fallback — одиночный товар из product_id
-        if (empty($itemsToSend)) {
-            $productName = trim($product->name);
-            if (!isset($products[$productName])) {
-                Log::error('executeOrder: товар не найден в маппинге', [
-                    'order_id'     => $order->id,
-                    'product_name' => $productName,
-                ]);
-                return;
-            }
-            $qty = $order->qty ?? 1;
-            for ($i = 0; $i < $qty; $i++) {
-                $itemsToSend[] = ['name' => $productName, 'product_id' => $products[$productName]];
+            // Fallback — одиночный товар из product_id
+            if (empty($itemsToSend)) {
+                $productName = trim($product->api_title ?: $product->name);
+                if (!isset($products[$productName])) {
+                    Log::error('executeOrder: товар не найден в маппинге', [
+                        'order_id' => $order->id,
+                        'product_name' => $productName,
+                    ]);
+                    return;
+                }
+                $qty = $order->qty ?? 1;
+                for ($i = 0; $i < $qty; $i++) {
+                    $itemsToSend[] = ['name' => $productName, 'product_id' => $products[$productName]];
+                }
             }
         }
 
@@ -553,9 +566,8 @@ class OrderController extends Controller
             return;
         }
 
-        $apiKey      = config('services.ragner.key');
+        $apiKey = config('services.ragner.key');
         $validateUrl = 'https://ragnergiftcard.com/api/v1/validate-player';
-
         $validatedProductIds = [];
         $allSuccess = true;
         $lastExternalId = null;
@@ -563,73 +575,70 @@ class OrderController extends Controller
         foreach ($itemsToSend as $idx => $item) {
             if (!in_array($item['product_id'], $validatedProductIds, true)) {
                 Log::info('executeOrder: validate-player', [
-                    'order_id'   => $order->id,
+                    'order_id' => $order->id,
                     'product_id' => $item['product_id'],
-                    'pubg_id'    => $pubgId,
+                    'pubg_id' => $pubgId,
                     'item_index' => $idx,
                     'product_name' => $item['name'],
                 ]);
 
                 $validateResp = Http::withHeaders([
-                    'X-API-KEY'    => $apiKey,
-                    'Accept'       => 'application/json',
+                    'X-API-KEY' => $apiKey,
+                    'Accept' => 'application/json',
                     'Content-Type' => 'application/json',
                 ])->timeout(15)->post($validateUrl, [
                     'product_id' => $item['product_id'],
-                    'player_id'  => $pubgId,
+                    'player_id' => $pubgId,
                 ]);
 
-        if (!$validateResp->successful()) {
-            $allSuccess = false;
+                if (!$validateResp->successful()) {
+                    $allSuccess = false;
+                    Log::error('executeOrder: validate-player failed', [
+                        'order_id' => $order->id,
+                        'item_index' => $idx,
+                        'product_name' => $item['name'],
+                        'product_id' => $item['product_id'],
+                        'status' => $validateResp->status(),
+                        'response' => substr($validateResp->body(), 0, 300),
+                    ]);
+                    continue;
+                }
 
-            Log::error('executeOrder: validate-player failed', [
-                'order_id'     => $order->id,
-                'item_index'   => $idx,
-                'product_name' => $item['name'],
-                'product_id'   => $item['product_id'],
-                'status'       => $validateResp->status(),
-                'response'     => substr($validateResp->body(), 0, 300),
-            ]);
-
-            continue;
-        }
-
-        $validatedProductIds[] = $item['product_id'];
-
-            Log::info('executeOrder: validate-player OK', [
-                'order_id'     => $order->id,
-                'item_index'   => $idx,
-                'product_name' => $item['name'],
-                'product_id'   => $item['product_id'],
-            ]);
-        }
+                $validatedProductIds[] = $item['product_id'];
+                Log::info('executeOrder: validate-player OK', [
+                    'order_id' => $order->id,
+                    'item_index' => $idx,
+                    'product_name' => $item['name'],
+                    'product_id' => $item['product_id'],
+                ]);
+            }
 
             $response = Http::withHeaders([
-                'X-API-KEY'    => $apiKey,
-                'Accept'       => 'application/json',
+                'X-API-KEY' => $apiKey,
+                'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ])->timeout(30)->post('https://ragnergiftcard.com/api/v1/order', [
                 'product_id' => $item['product_id'],
-                'qty'        => 1,
-                'player_id'  => $pubgId,
+                'qty' => 1,
+                'player_id' => $pubgId,
             ]);
 
             if ($response->successful()) {
                 $lastExternalId = $response->json()['data']['order_id'] ?? null;
                 Log::info('executeOrder: заказ выполнен', [
-                    'order_id'          => $order->id,
-                    'item_index'        => $idx,
-                    'product_name'      => $item['name'],
+                    'order_id' => $order->id,
+                    'item_index' => $idx,
+                    'product_name' => $item['name'],
                     'external_order_id' => $lastExternalId,
                 ]);
             } else {
-        $allSuccess = false;
+                $allSuccess = false;
                 Log::error('executeOrder: Ragner вернул ошибку', [
-                    'order_id'     => $order->id,
-                    'item_index'   => $idx,
+                    'order_id' => $order->id,
+                    'item_index' => $idx,
                     'product_name' => $item['name'],
-                    'status'       => $response->status(),
-                    'response'     => substr($response->body(), 0, 300),
+                    'status' => $response->status(),
+                    'response' => substr($response->body(), 0, 300),
                 ]);
             }
 
@@ -639,46 +648,41 @@ class OrderController extends Controller
         }
 
         if ($allSuccess) {
-            DB::table('orders')
-                ->where('id', $order->id)
-                ->update([
-                    'status_id' => 3,
-                    'updated_at' => now(),
-                ]);
-
+            DB::table('orders')->where('id', $order->id)->update([
+                'status_id' => 3,
+                'updated_at' => now(),
+            ]);
             Log::info('executeOrder: заказ полностью выполнен', [
                 'order_id' => $order->id,
                 'external_order_id' => $lastExternalId,
             ]);
         } else {
-            Log::warning('executeOrder: заказ выполнен частично или с ошибками', [
-                'order_id' => $order->id,
-            ]);
+            Log::warning('executeOrder: заказ выполнен частично или с ошибками', ['order_id' => $order->id]);
         }
 
-                $productSummary = implode(', ', array_unique(array_column($itemsToSend, 'name')));
+        $productSummary = implode(', ', array_unique(array_column($itemsToSend, 'name')));
 
         if ($allSuccess) {
             $this->sendToTelegram(
-                "✅ <b>Заказ выполнен</b>\n\n" .
-                "🆔 Заказ: <b>#" . $order->id . "</b>\n" .
-                "🎮 PUBG ID: <b>" . $order->uid . "</b>\n" .
-                "📦 Товар: <b>" . $productSummary . "</b>\n" .
-                "💰 Сумма: <b>" . number_format($order->price, 0, ',', ' ') . " ₽</b>\n" .
+                "✅ **Заказ выполнен**\n\n" .
+                "🆔 Заказ: **#" . $order->id . "**\n" .
+                "🎮 PUBG ID: **" . $order->uid . "**\n" .
+                "📦 Товар: **" . $productSummary . "**\n" .
+                "💰 Сумма: **" . number_format($order->price, 0, ',', ' ') . " ₽**\n" .
                 "⏱ Время: " . now()->format('d.m.Y H:i:s')
             );
         } else {
             $this->sendToTelegram(
-                "❌ <b>Заказ НЕ выполнен</b>\n\n" .
-                "🆔 Заказ: <b>#" . $order->id . "</b>\n" .
-                "🎮 PUBG ID: <b>" . $order->uid . "</b>\n" .
-                "📦 Товар: <b>" . $productSummary . "</b>\n" .
-                "💰 Сумма: <b>" . number_format($order->price, 0, ',', ' ') . " ₽</b>\n" .
+                "❌ **Заказ НЕ выполнен**\n\n" .
+                "🆔 Заказ: **#" . $order->id . "**\n" .
+                "🎮 PUBG ID: **" . $order->uid . "**\n" .
+                "📦 Товар: **" . $productSummary . "**\n" .
+                "💰 Сумма: **" . number_format($order->price, 0, ',', ' ') . " ₽**\n" .
                 "⏱ Время: " . now()->format('d.m.Y H:i:s') . "\n\n" .
-                "⚠️ <b>Причина:</b> ошибка выдачи через Ragner. Проверь логи и баланс."
+                "⚠️ **Причина:** ошибка выдачи через Ragner. Проверь логи и баланс."
             );
         }
-    } // закрывает executeOrder
+    }
 
     public function sendToTelegram(string $message): void
     {
