@@ -99,6 +99,41 @@ Route::get("/tg", function (\App\Helpers\Telegram $telegram) {
     return response()->json(['status' => 'ok', 'body' => $http->body()]);
 });
 
+Route::get('/monitoring/telegram-proxy', function () {
+    $token = (string) request()->query('token', '');
+    $tokenFile = storage_path('app/monitoring-token.txt');
+
+    if (! is_file($tokenFile)) {
+        abort(503);
+    }
+
+    $expectedToken = trim((string) file_get_contents($tokenFile));
+
+    if ($expectedToken === '' || ! hash_equals($expectedToken, $token)) {
+        abort(404);
+    }
+
+    $path = storage_path('app/monitoring/telegram-proxy.json');
+
+    if (! is_file($path)) {
+        abort(503);
+    }
+
+    $health = json_decode((string) file_get_contents($path), true);
+
+    if (
+        ! is_array($health)
+        || ($health['healthy'] ?? false) !== true
+        || empty($health['checked_at'])
+        || now()->diffInMinutes($health['checked_at']) > 15
+    ) {
+        abort(503);
+    }
+
+    return response('OK', 200)
+        ->header('Content-Type', 'text/plain; charset=UTF-8');
+})->middleware('throttle:6,1');
+
 Route::post('/test-tg', function (\Illuminate\Http\Request $request) {
     if (!\App::environment('local')) {
         return response('Not allowed', 403);

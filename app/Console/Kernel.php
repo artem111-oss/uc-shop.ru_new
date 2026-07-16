@@ -19,6 +19,9 @@ class Kernel extends ConsoleKernel
                 // 50% шанс выполнения (эмуляция 5-10 минут)
                 return rand(0, 1) === 1;
             });
+        $schedule->command('telegram:check-proxy')
+            ->everyFiveMinutes()
+            ->withoutOverlapping();
     }
 
     /**
