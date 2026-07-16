@@ -6,23 +6,32 @@
 @media (max-width: 768px) {
 
   /* ── ВКЛАДКИ ────────────────────────────────────────── */
-  .uc-tabs {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 8px;
-    flex-wrap: wrap;
-    padding: 0 0 2px 0;
-  }
+.uc-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0 0 4px 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 
-  .uc-tab {
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    min-height: 36px;
-    display: flex;
-    align-items: center;
+  &::-webkit-scrollbar {
+    display: none;
   }
+}
+
+.uc-tab {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 
   /* Баннер-описание вкладки */
   .uc-tab-banner {
@@ -488,22 +497,32 @@
 @media (min-width: 769px) and (max-width: 1200px) {
 
   /* ── ВКЛАДКИ (планшет) ──────────────────────────────── */
-  .uc-tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-  }
+.uc-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0 0 4px 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 
-  .uc-tab {
-    padding: 7px 15px;
-    border-radius: 8px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    min-height: 38px;
-    display: flex;
-    align-items: center;
+  &::-webkit-scrollbar {
+    display: none;
   }
+}
+
+.uc-tab {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 
   .uc-tab-banner {
     padding: 10px 14px;

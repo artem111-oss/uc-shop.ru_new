@@ -267,6 +267,7 @@
     .uc-action-buttons {
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 1rem;
       margin: 2rem 0;
       animation: slideUp 0.6s ease-out 0.7s forwards;
@@ -274,8 +275,9 @@
     }
 
     .uc-btn {
-      flex: 1;
-      min-width: 200px;
+      flex: 0 1 auto;
+      min-width: 220px;
+      max-width: 280px;
       padding: 0.85rem 1.5rem;
       border-radius: 8px;
       font-weight: 600;
