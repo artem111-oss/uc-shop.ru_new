@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    private function resolveOrderUserId(Request $request): int
+    private function resolveOrderUserId(Request $request): ?int
     {
-        return (int) ($request->user()?->id ?? 1);
+        return $request->user()?->id;
     }
     public function create(OrderRequest $request)
     {

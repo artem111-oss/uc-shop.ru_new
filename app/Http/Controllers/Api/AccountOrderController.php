@@ -11,9 +11,17 @@ class AccountOrderController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
+        $pendingExpiryMinutes = 30;
+    
         $orders = Order::query()
             ->where('user_id', $request->user()->id)
-            ->where('user_id', '!=', 1)
+            ->where(function ($query) use ($pendingExpiryMinutes) {
+                $query->where('status_id', '!=', 1)
+                    ->orWhere(function ($q) use ($pendingExpiryMinutes) {
+                        $q->where('status_id', 1)
+                            ->where('created_at', '>=', now()->subMinutes($pendingExpiryMinutes));
+                    });
+            })
             ->with('product:id,name')
             ->latest('id')
             ->paginate(20);
@@ -33,9 +41,17 @@ class AccountOrderController extends Controller
 
     public function show(Request $request, int $orderId): JsonResponse
     {
+        $pendingExpiryMinutes = 30;
+    
         $order = Order::query()
             ->where('user_id', $request->user()->id)
-            ->where('user_id', '!=', 1)
+            ->where(function ($query) use ($pendingExpiryMinutes) {
+                $query->where('status_id', '!=', 1)
+                    ->orWhere(function ($q) use ($pendingExpiryMinutes) {
+                        $q->where('status_id', 1)
+                            ->where('created_at', '>=', now()->subMinutes($pendingExpiryMinutes));
+                    });
+            })
             ->with('product:id,name')
             ->find($orderId);
         

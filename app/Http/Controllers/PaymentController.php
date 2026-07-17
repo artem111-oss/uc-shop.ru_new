@@ -75,7 +75,7 @@ class PaymentController extends Controller
                 'payment_status' => 'pending',
                 'status_id' => 1,
                 'type_id' => 1,
-                'user_id' => auth()->id() ?? 1,
+                'user_id' => auth()->id(),
                 'client_id' => 1,
             ]);
 
