@@ -14,6 +14,10 @@
         <a href="https://t.me/pubgm_uc_reviews" target="_blank" rel="noopener" class="uc-menu-link">⭐ ОТЗЫВЫ</a>
         <a href="/contacts" class="uc-menu-link">📞 КОНТАКТЫ</a>
       </div>
+     
+      <a href="/account" class="uc-menu-link" aria-label="Личный кабинет">
+        👤 КАБИНЕТ
+      </a>
 
       <!-- Правые кнопки -->
       <div class="uc-navbar__actions">
@@ -34,6 +38,7 @@
 
     <!-- Mobile меню (скрыто по умолчанию) -->
     <div class="uc-mobile-menu" id="mobile-menu">
+      <a href="/account" class="uc-mobile-menu__link">👤 КАБИНЕТ</a>
       <a href="/#faq-section" class="uc-mobile-menu__link">📚 КАК КУПИТЬ</a>
       <a href="https://t.me/pubgm_uc_reviews" target="_blank" rel="noopener" class="uc-mobile-menu__link">⭐ ОТЗЫВЫ</a>
       <a href="/contacts" class="uc-mobile-menu__link">📞 КОНТАКТЫ</a>

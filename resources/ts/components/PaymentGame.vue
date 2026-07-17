@@ -118,6 +118,7 @@ declare function ym(id: number, action: string, goal?: string, params?: object):
 import {useForm,} from 'vee-validate';
 import * as Yup from 'yup';
 import {localize} from '@vee-validate/i18n';
+import {authorizationHeader} from '../services/auth';
 
 const prods = document.getElementById('payment-game').getAttribute('products')
 //const products = defineProps(prods)
@@ -235,8 +236,8 @@ const go = async () => {
         credentials: "same-origin", // include, *same-origin, omit
         headers: {
           "Content-Type": "application/json",
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').attributes.content.nodeValue
-          // 'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').attributes.content.nodeValue,
+          ...authorizationHeader(),
         },
         redirect: "follow", // manual, *follow, error
         referrerPolicy: "no-referrer", // no-referrer, *client

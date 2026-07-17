@@ -64,7 +64,7 @@ Route::post('/contacts/submit', [ContactController::class, 'submit'])
 // ===== Order Routes (Legacy) =====
 Route::post("/order/add", [OrderController::class, "create"])
     ->name('order-create')
-    ->middleware('throttle:100,1'); // 100 req/min для высокой нагрузки
+    ->middleware(['throttle:100,1', 'optional.sanctum']);
 
 Route::get("/order/{id}/{uid}", [OrderController::class, "orderUser"])
     ->name('order.view');
