@@ -418,6 +418,7 @@
 
     try {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}';
+        const customerToken = localStorage.getItem('uc_shop_customer_token');
 
         // Собираем cart для одного запроса
         const cartItems = [];
@@ -439,7 +440,8 @@
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
+                'X-CSRF-TOKEN': csrfToken,
+                ...(customerToken ? { 'Authorization': 'Bearer ' + customerToken } : {})
             },
             body: JSON.stringify({
                 uid: gameId,

@@ -15,7 +15,7 @@ class OrderController extends Controller
 {
     private function resolveOrderUserId(Request $request): int
     {
-        return (int) ($request->user('sanctum')?->id ?? 1);
+        return (int) ($request->user()?->id ?? 1);
     }
     public function create(OrderRequest $request)
     {

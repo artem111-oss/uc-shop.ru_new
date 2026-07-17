@@ -229,23 +229,30 @@ const go = async () => {
 
   if (true) {
     const createOrder = async function () {
-      return fetch('/order/add', {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json",
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').attributes.content.nodeValue,
-          ...authorizationHeader(),
-        },
-        redirect: "follow", // manual, *follow, error
-        referrerPolicy: "no-referrer", // no-referrer, *client
-        body: JSON.stringify(data)
-      }).then((response) => {
-        return response.json();
-      })
-    }
+  const headers = {
+    "Content-Type": "application/json",
+    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '',
+    ...authorizationHeader(),
+  };
+
+  console.info('UC SHOP checkout auth diagnostic', {
+    hasToken: Boolean(localStorage.getItem('uc_shop_customer_token')),
+    hasAuthorizationHeader: Boolean(headers.Authorization),
+  });
+
+  return fetch('/order/add', {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers,
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    body: JSON.stringify(data)
+  }).then((response) => {
+    return response.json();
+  })
+}
 
     const order = await createOrder()
     console.log(order)
