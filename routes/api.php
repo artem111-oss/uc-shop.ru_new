@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AccountOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,4 +78,15 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])
 
         Route::post('/logout', [AuthController::class, 'logout'])
             ->name('api.auth.logout');
+    });
+
+Route::middleware(['auth:sanctum', 'throttle:60,1'])
+    ->prefix('account')
+    ->group(function (): void {
+        Route::get('/orders', [AccountOrderController::class, 'index'])
+            ->name('api.account.orders.index');
+
+        Route::get('/orders/{orderId}', [AccountOrderController::class, 'show'])
+            ->whereNumber('orderId')
+            ->name('api.account.orders.show');
     });
