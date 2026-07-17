@@ -4,9 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+
 
 class User extends Authenticatable
 {
@@ -21,6 +23,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'notify_email',
+        'notify_telegram',
     ];
 
     /**
@@ -41,5 +45,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'notify_email' => 'boolean',
+        'notify_telegram' => 'boolean',
     ];
+
+    public function pubgAccounts(): HasMany
+    {
+        return $this->hasMany(PubgAccount::class);
+    }
+    
+    public function telegramLinks(): HasMany
+    {
+        return $this->hasMany(TelegramLink::class);
+    }
 }

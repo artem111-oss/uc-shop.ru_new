@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AccountOrderController;
+use App\Http\Controllers\Api\PubgAccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,4 +90,18 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])
         Route::get('/orders/{orderId}', [AccountOrderController::class, 'show'])
             ->whereNumber('orderId')
             ->name('api.account.orders.show');
+
+        Route::get('/pubg-accounts', [PubgAccountController::class, 'index'])
+            ->name('api.account.pubg-accounts.index');
+
+        Route::post('/pubg-accounts', [PubgAccountController::class, 'store'])
+            ->name('api.account.pubg-accounts.store');
+
+        Route::patch('/pubg-accounts/{id}', [PubgAccountController::class, 'update'])
+            ->whereNumber('id')
+            ->name('api.account.pubg-accounts.update');
+
+        Route::delete('/pubg-accounts/{id}', [PubgAccountController::class, 'destroy'])
+            ->whereNumber('id')
+            ->name('api.account.pubg-accounts.destroy');
     });
