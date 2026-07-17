@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    private function resolveOrderUserId(Request $request): int
+    {
+        return (int) ($request->user('sanctum')?->id ?? 1);
+    }
     public function create(OrderRequest $request)
     {
         $uid  = (string) $request->input('uid');
@@ -56,7 +60,7 @@ class OrderController extends Controller
             $order->qty         = 1;
             $order->product_id  = $mainProductId;
             $order->type_id     = 1;
-            $order->user_id     = 1;
+            $order->user_id     = $this->resolveOrderUserId($request);
             $order->uid         = $uid;
             $order->game_id     = $uid;
             $order->email       = $request->input('email');
@@ -92,7 +96,7 @@ class OrderController extends Controller
         $order->qty         = $qty;
         $order->product_id  = $product->id;
         $order->type_id     = 1;
-        $order->user_id     = 1;
+        $order->user_id     = $this->resolveOrderUserId($request);
         $order->uid         = $uid;
         $order->game_id     = $uid;
         $order->email       = $request->input('email');
