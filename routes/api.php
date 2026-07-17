@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,3 +58,23 @@ Route::get('/stats/uc', [\App\Http\Controllers\StatsController::class, 'getUcSta
  */
 Route::get('/reviews', [\App\Http\Controllers\ReviewsController::class, 'getReviews'])
     ->name('api.reviews');
+
+Route::middleware('throttle:5,1')
+    ->prefix('auth')
+    ->group(function (): void {
+        Route::post('/request-code', [AuthController::class, 'requestCode'])
+            ->name('api.auth.request-code');
+
+        Route::post('/verify-code', [AuthController::class, 'verifyCode'])
+            ->name('api.auth.verify-code');
+    });
+
+Route::middleware(['auth:sanctum', 'throttle:60,1'])
+    ->prefix('auth')
+    ->group(function (): void {
+        Route::get('/me', [AuthController::class, 'me'])
+            ->name('api.auth.me');
+
+        Route::post('/logout', [AuthController::class, 'logout'])
+            ->name('api.auth.logout');
+    });
