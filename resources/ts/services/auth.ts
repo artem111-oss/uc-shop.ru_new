@@ -2,6 +2,8 @@ export interface AuthUser {
   id: number;
   name: string;
   email: string;
+  notify_email?: boolean;
+  notify_telegram?: boolean;
 }
 
 export interface OrderSummary {
@@ -30,6 +32,20 @@ export interface OrdersResponse {
     per_page: number;
     total: number;
   };
+}
+
+export interface PubgAccount {
+  id: number;
+  pubg_id: string;
+  nickname: string | null;
+  is_primary: boolean;
+  created_at: string | null;
+}
+
+export interface TelegramLinkStatus {
+  bot: string;
+  telegram_username: string | null;
+  linked_at: string | null;
 }
 
 const TOKEN_KEY = 'uc_shop_customer_token';
@@ -157,4 +173,106 @@ export function isAuthenticated(): boolean {
 
 export function authorizationHeader(): Record<string, string> {
   return authHeaders();
+}
+
+async function authorizedFetch(url: string, options: RequestInit = {}): Promise<Response> {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      Accept: 'application/json',
+      ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+      ...authHeaders(),
+      ...(options.headers || {}),
+    },
+  });
+
+  if (response.status === 401) {
+    clearToken();
+  }
+
+  return response;
+}
+
+async function parseOrThrow(response: Response, fallbackMessage: string): Promise<any> {
+  const body = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(body.message || fallbackMessage);
+  }
+
+  return body;
+}
+
+export async function fetchPubgAccounts(): Promise<PubgAccount[]> {
+  const response = await authorizedFetch('/api/account/pubg-accounts');
+  const body = await parseOrThrow(response, 'Не удалось загрузить игровые аккаунты.');
+  return body.data as PubgAccount[];
+}
+
+export async function createPubgAccount(pubgId: string, nickname: string): Promise<PubgAccount> {
+  const response = await authorizedFetch('/api/account/pubg-accounts', {
+    method: 'POST',
+    body: JSON.stringify({ pubg_id: pubgId, nickname: nickname || null }),
+  });
+  const body = await parseOrThrow(response, 'Не удалось добавить PUBG ID.');
+  return body.data as PubgAccount;
+}
+
+export async function updatePubgAccount(
+  id: number,
+  data: { nickname?: string | null; is_primary?: boolean }
+): Promise<PubgAccount> {
+  const response = await authorizedFetch(`/api/account/pubg-accounts/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  const body = await parseOrThrow(response, 'Не удалось обновить PUBG ID.');
+  return body.data as PubgAccount;
+}
+
+export async function deletePubgAccount(id: number): Promise<void> {
+  const response = await authorizedFetch(`/api/account/pubg-accounts/${id}`, {
+    method: 'DELETE',
+  });
+  await parseOrThrow(response, 'Не удалось удалить PUBG ID.');
+}
+
+export async function fetchNotificationPrefs(): Promise<{ notify_email: boolean; notify_telegram: boolean }> {
+  const response = await authorizedFetch('/api/auth/me');
+  const body = await parseOrThrow(response, 'Не удалось загрузить настройки уведомлений.');
+  return {
+    notify_email: !!body.user?.notify_email,
+    notify_telegram: !!body.user?.notify_telegram,
+  };
+}
+
+export async function updateNotificationPrefs(
+  data: { notify_email?: boolean; notify_telegram?: boolean }
+): Promise<void> {
+  const response = await authorizedFetch('/api/account/notifications', {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  await parseOrThrow(response, 'Не удалось сохранить настройки уведомлений.');
+}
+
+export async function fetchTelegramStatus(): Promise<TelegramLinkStatus[]> {
+  const response = await authorizedFetch('/api/account/telegram/status');
+  const body = await parseOrThrow(response, 'Не удалось загрузить статус Telegram.');
+  return body.data as TelegramLinkStatus[];
+}
+
+export async function createTelegramLinkToken(bot: string): Promise<{ deep_link: string }> {
+  const response = await authorizedFetch('/api/account/telegram/link-token', {
+    method: 'POST',
+    body: JSON.stringify({ bot }),
+  });
+  return parseOrThrow(response, 'Не удалось создать ссылку привязки.');
+}
+
+export async function unlinkTelegram(bot: string): Promise<void> {
+  const response = await authorizedFetch(`/api/account/telegram/${bot}`, {
+    method: 'DELETE',
+  });
+  await parseOrThrow(response, 'Не удалось отключить Telegram.');
 }

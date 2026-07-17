@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\OrderNotificationService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
@@ -370,6 +371,7 @@ class OrderController extends Controller
                 return response('OK', 200);
             }
 
+            $this->orderNotifications->paymentConfirmed($order);
             $this->executeOrder($order);
         } else {
             Log::info('Pally callback: статус не SUCCESS', [
@@ -441,6 +443,7 @@ class OrderController extends Controller
             return response('OK', 200);
         }
 
+        $this->orderNotifications->paymentConfirmed($order);
         $this->executeOrder($order);
 
         return response('OK', 200);
@@ -465,6 +468,7 @@ class OrderController extends Controller
             ]);
             DB::table('orders')->where('id', $order->id)->update(['status_id' => 3]);
             $this->sendToTelegram("✋ РУЧНАЯ ВЫДАЧА\n\nЗаказ: #{$order->id}\nТовар: {$product->name}\nИгровой ID: {$order->uid}\nСумма: {$order->price}₽\n\nНужно передать скин вручную!");
+            $this->orderNotifications->delivered($order);
             return;
         }
 
@@ -660,8 +664,10 @@ class OrderController extends Controller
                 'order_id' => $order->id,
                 'external_order_id' => $lastExternalId,
             ]);
+            $this->orderNotifications->delivered($order);
         } else {
             Log::warning('executeOrder: заказ выполнен частично или с ошибками', ['order_id' => $order->id]);
+            $this->orderNotifications->deliveryFailed($order);
         }
 
         $productSummary = implode(', ', array_unique(array_column($itemsToSend, 'name')));
@@ -706,5 +712,9 @@ class OrderController extends Controller
         'order'   => $order,
         'product' => $product,
     ]);
+}
+    public function __construct(
+    private readonly OrderNotificationService $orderNotifications
+) {
 }
 } // закрывает класс

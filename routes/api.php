@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AccountOrderController;
 use App\Http\Controllers\Api\PubgAccountController;
 use App\Http\Controllers\Api\TelegramLinkController;
 use App\Http\Controllers\Api\TelegramWebhookController;
+use App\Http\Controllers\Api\NotificationPrefsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,9 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])
 
         Route::delete('/telegram/{bot}', [TelegramLinkController::class, 'unlink'])
             ->name('api.account.telegram.unlink');
+
+        Route::patch('/notifications', [NotificationPrefsController::class, 'update'])
+            ->name('api.account.notifications.update');
 
         Route::get('/orders/{orderId}', [AccountOrderController::class, 'show'])
             ->whereNumber('orderId')

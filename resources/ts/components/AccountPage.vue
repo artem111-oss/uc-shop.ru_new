@@ -80,6 +80,9 @@
             <span>{{ formatDate(order.created_at) }}</span>
             <span v-if="order.pubg_id">ID: {{ order.pubg_id }}</span>
           </div>
+          <a :href="buildSupportLink(order)" target="_blank" class="uc-account__support-link">
+            Написать в поддержку
+          </a>
         </li>
       </ul>
 
@@ -102,6 +105,9 @@
           Далее
         </button>
       </div>
+
+      <PubgAccounts />
+      <NotificationSettings />
     </div>
   </div>
 </template>
@@ -116,6 +122,17 @@ import {
   fetchOrders,
   logout as logoutRequest,
 } from '../services/auth';
+import PubgAccounts from './PubgAccounts.vue';
+import NotificationSettings from './NotificationSettings.vue';
+
+function buildSupportLink(order: OrderSummary): string {
+  const text = `Здравствуйте! Вопрос по заказу #${order.id}\n`
+    + `Товар: ${order.product.name}\n`
+    + `PUBG ID: ${order.pubg_id || '—'}\n`
+    + `Статус: ${order.status.label}`;
+
+  return `https://t.me/ucshop_air?text=${encodeURIComponent(text)}`;
+}
 
 const user = ref<AuthUser | null>(null);
 const loadingUser = ref(true);
@@ -228,6 +245,14 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.uc-account__support-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #ffc107;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
 .uc-account {
   max-width: 480px;
   margin: 0 auto;

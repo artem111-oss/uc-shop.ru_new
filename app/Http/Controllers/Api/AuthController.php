@@ -86,11 +86,15 @@ class AuthController extends Controller
 
     public function me(Request $request): JsonResponse
     {
+        $user = $request->user();
+
         return response()->json([
             'user' => [
-                'id' => $request->user()->id,
-                'name' => $request->user()->name,
-                'email' => $request->user()->email,
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'notify_email' => (bool) $user->notify_email,
+                'notify_telegram' => (bool) $user->notify_telegram,
             ],
         ]);
     }
