@@ -6,6 +6,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AccountOrderController;
 use App\Http\Controllers\Api\PubgAccountController;
+use App\Http\Controllers\Api\TelegramLinkController;
+use App\Http\Controllers\Api\TelegramWebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +89,15 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])
         Route::get('/orders', [AccountOrderController::class, 'index'])
             ->name('api.account.orders.index');
 
+        Route::post('/telegram/link-token', [TelegramLinkController::class, 'createLinkToken'])
+            ->name('api.account.telegram.link-token');
+
+        Route::get('/telegram/status', [TelegramLinkController::class, 'status'])
+            ->name('api.account.telegram.status');
+
+        Route::delete('/telegram/{bot}', [TelegramLinkController::class, 'unlink'])
+            ->name('api.account.telegram.unlink');
+
         Route::get('/orders/{orderId}', [AccountOrderController::class, 'show'])
             ->whereNumber('orderId')
             ->name('api.account.orders.show');
@@ -105,3 +116,8 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])
             ->whereNumber('id')
             ->name('api.account.pubg-accounts.destroy');
     });
+
+Route::post('/telegram/uctyt/webhook', [TelegramWebhookController::class, 'uctyt'])
+    ->name('api.telegram.uctyt.webhook')
+    ->middleware('throttle:30,1')
+    ->withoutMiddleware(['api']);
