@@ -28,3 +28,5 @@ docker/db/ddl_recovery-backup.log
 docker/db/ib_logfile0
 docker/log/nginx/access.log
 docker/log/nginx/error.log
+/docker/db/
+/docker/log/
