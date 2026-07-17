@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\View;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -89,6 +90,11 @@ Route::post('/payment/pallypostback', [OrderController::class, 'handlePallyCallb
 Route::post('/webhook/payment', [OrderController::class, 'handlePaymentCallback'])
     ->name('webhook.payment.callback')
     ->withoutMiddleware(['web']);
+
+// ===== Customer Account Page =====
+Route::get('/account', function () {
+    return view('account');
+})->name('account');
 
 // ===== Testing Routes (only local) =====
 Route::get("/tg", function (\App\Helpers\Telegram $telegram) {
