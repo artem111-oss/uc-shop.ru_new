@@ -22,10 +22,8 @@
     </label>
 
     <div v-if="!hasTelegramLink" class="uc-notify__link-block">
-      <p class="uc-account__hint">Чтобы получать уведомления в Telegram, привяжите бота.</p>
-      <button type="button" class="uc-account__button" :disabled="linking" @click="handleLink">
-        {{ linking ? 'Открываем…' : 'Привязать @uctyt_bot' }}
-      </button>
+      <p class="uc-account__hint">Чтобы получать уведомления в Telegram, войдите через бота.</p>
+      <div id="telegram-login-widget"></div>
     </div>
 
     <div v-else class="uc-notify__link-block">
@@ -46,13 +44,18 @@ import {
   fetchNotificationPrefs,
   updateNotificationPrefs,
   fetchTelegramStatus,
-  createTelegramLinkToken,
+  linkTelegramWidget,
   unlinkTelegram,
 } from '../services/auth';
 
+declare global {
+  interface Window {
+    onTelegramAuth?: (user: Record<string, any>) => void;
+  }
+}
+
 const prefs = ref({ notify_email: true, notify_telegram: false });
 const links = ref<TelegramLinkStatus[]>([]);
-const linking = ref(false);
 const errorMessage = ref('');
 
 const hasTelegramLink = computed(() => links.value.length > 0);
@@ -80,18 +83,44 @@ async function toggle(key: 'notify_email' | 'notify_telegram', event: Event): Pr
   }
 }
 
-async function handleLink(): Promise<void> {
-  errorMessage.value = '';
-  linking.value = true;
-
-  try {
-    const response = await createTelegramLinkToken('uctyt');
-    window.open(response.deep_link, '_blank');
-  } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Не удалось создать ссылку.';
-  } finally {
-    linking.value = false;
+function mountTelegramWidget(): void {
+  if (hasTelegramLink.value) {
+    return;
   }
+
+  const container = document.getElementById('telegram-login-widget');
+
+  if (!container || container.childElementCount > 0) {
+    return;
+  }
+
+  window.onTelegramAuth = async (user) => {
+    errorMessage.value = '';
+    try {
+      await linkTelegramWidget({
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        username: user.username,
+        photo_url: user.photo_url,
+        auth_date: user.auth_date,
+        hash: user.hash,
+      });
+      await load();
+    } catch (error) {
+      errorMessage.value = error instanceof Error ? error.message : 'Не удалось привязать Telegram.';
+    }
+  };
+
+  const script = document.createElement('script');
+  script.src = 'https://telegram.org/js/telegram-widget.js?22';
+  script.setAttribute('data-telegram-login', 'uctyt_bot');
+  script.setAttribute('data-size', 'large');
+  script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+  script.setAttribute('data-request-access', 'write');
+  script.async = true;
+
+  container.appendChild(script);
 }
 
 async function handleUnlink(): Promise<void> {
@@ -105,7 +134,10 @@ async function handleUnlink(): Promise<void> {
   }
 }
 
-onMounted(load);
+onMounted(async () => {
+  await load();
+  mountTelegramWidget();
+});
 </script>
 
 <style scoped>

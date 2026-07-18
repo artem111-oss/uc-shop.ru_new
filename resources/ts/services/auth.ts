@@ -262,12 +262,23 @@ export async function fetchTelegramStatus(): Promise<TelegramLinkStatus[]> {
   return body.data as TelegramLinkStatus[];
 }
 
-export async function createTelegramLinkToken(bot: string): Promise<{ deep_link: string }> {
-  const response = await authorizedFetch('/api/account/telegram/link-token', {
+export interface TelegramWidgetAuthPayload {
+  id: number;
+  first_name?: string;
+  last_name?: string;
+  username?: string;
+  photo_url?: string;
+  auth_date: number;
+  hash: string;
+}
+
+export async function linkTelegramWidget(payload: TelegramWidgetAuthPayload): Promise<TelegramLinkStatus> {
+  const response = await authorizedFetch('/api/account/telegram/widget-link', {
     method: 'POST',
-    body: JSON.stringify({ bot }),
+    body: JSON.stringify(payload),
   });
-  return parseOrThrow(response, 'Не удалось создать ссылку привязки.');
+  const body = await parseOrThrow(response, 'Не удалось привязать Telegram.');
+  return body.data as TelegramLinkStatus;
 }
 
 export async function unlinkTelegram(bot: string): Promise<void> {
