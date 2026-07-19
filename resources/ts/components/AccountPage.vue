@@ -57,34 +57,59 @@
         </button>
       </div>
 
-      <h2 class="uc-account__subtitle">Мои заказы</h2>
+      <section class="uc-card">
+  <h2 class="uc-card__title">Мои заказы</h2>
 
-      <p v-if="loadingOrders" class="uc-account__loading">Загружаем заказы…</p>
-      <p v-else-if="orders.length === 0" class="uc-account__empty">
-        У вас пока нет заказов, оформленных из личного кабинета.
-      </p>
+  <p v-if="loadingOrders" class="uc-account__loading">Загружаем заказы…</p>
+  <p v-else-if="orders.length === 0" class="uc-account__empty">
+    У вас пока нет заказов, оформленных из личного кабинета.
+  </p>
 
-      <ul v-else class="uc-account__orders">
-        <li v-for="order in orders" :key="order.id" class="uc-account__order">
-          <div class="uc-account__order-row">
-            <span class="uc-account__order-id">Заказ #{{ order.id }}</span>
-            <span class="uc-account__order-status" :data-status="order.status.code">
-              {{ order.status.label }}
-            </span>
-          </div>
-          <div class="uc-account__order-row">
-            <span>{{ order.product.name }}</span>
-            <span>{{ order.price }} ₽</span>
-          </div>
-          <div class="uc-account__order-row uc-account__order-row--muted">
-            <span>{{ formatDate(order.created_at) }}</span>
-            <span v-if="order.pubg_id">ID: {{ order.pubg_id }}</span>
-          </div>
-          <a :href="buildSupportLink(order)" target="_blank" class="uc-account__support-link">
-            Написать в поддержку
-          </a>
-        </li>
-      </ul>
+  <ul v-else class="uc-account__orders">
+    <li v-for="order in orders" :key="order.id" class="uc-account__order">
+      <div class="uc-account__order-row">
+        <span class="uc-account__order-id">Заказ #{{ order.id }}</span>
+        <span class="uc-account__order-status" :data-status="order.status.code">
+          {{ order.status.label }}
+        </span>
+      </div>
+      <div class="uc-account__order-row">
+        <span>{{ order.product.name }}</span>
+        <span>{{ order.price }} ₽</span>
+      </div>
+      <div class="uc-account__order-row uc-account__order-row--muted">
+        <span>{{ formatDate(order.created_at) }}</span>
+        <span v-if="order.pubg_id">ID: {{ order.pubg_id }}</span>
+      </div>
+      <a :href="buildSupportLink(order)" target="_blank" class="uc-account__support-link">
+        Написать в поддержку
+      </a>
+    </li>
+  </ul>
+
+  <div v-if="orders.length > 0" class="uc-account__pagination">
+    <button
+      type="button"
+      class="uc-account__page-button"
+      :disabled="currentPage <= 1"
+      @click="changePage(currentPage - 1)"
+    >
+      Назад
+    </button>
+    <span class="uc-account__page-info">{{ currentPage }} / {{ lastPage }}</span>
+    <button
+      type="button"
+      class="uc-account__page-button"
+      :disabled="currentPage >= lastPage"
+      @click="changePage(currentPage + 1)"
+    >
+      Далее
+    </button>
+  </div>
+</section>
+
+<PubgAccounts />
+<NotificationSettings />
 
       <div v-if="orders.length > 0" class="uc-account__pagination">
         <button
@@ -245,6 +270,24 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.uc-card {
+  background: #1e2227;
+  border: 1px solid #2a3140;
+  border-radius: 14px;
+  padding: 18px 16px;
+  margin-top: 20px;
+}
+
+.uc-card__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f2f4f7;
+  margin: 0 0 14px;
+  padding-left: 12px;
+  border-left: 3px solid #ffc107;
+  line-height: 1.2;
+}
+
 .uc-account__support-link {
   display: inline-block;
   margin-top: 8px;
@@ -345,12 +388,6 @@ onMounted(async () => {
   font-size: 0.85rem;
   cursor: pointer;
   white-space: nowrap;
-}
-
-.uc-account__subtitle {
-  margin-top: 24px;
-  margin-bottom: 12px;
-  font-size: 1.1rem;
 }
 
 .uc-account__orders {

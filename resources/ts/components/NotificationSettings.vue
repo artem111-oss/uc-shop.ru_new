@@ -1,34 +1,44 @@
 <template>
-  <div class="uc-notify">
-    <h2 class="uc-account__subtitle">Уведомления</h2>
+  <section class="uc-card">
+    <h2 class="uc-card__title">Уведомления</h2>
 
-    <label class="uc-notify__row">
-      <span>Email</span>
-      <input
-        type="checkbox"
-        :checked="prefs.notify_email"
-        @change="toggle('notify_email', $event)"
-      >
-    </label>
+    <div class="uc-notify__card">
+      <label class="uc-notify__row">
+        <span class="uc-notify__label">Email</span>
+        <span class="uc-toggle">
+          <input
+            type="checkbox"
+            class="uc-toggle__input"
+            :checked="prefs.notify_email"
+            @change="toggle('notify_email', $event)"
+          >
+          <span class="uc-toggle__track"></span>
+        </span>
+      </label>
 
-    <label class="uc-notify__row">
-      <span>Telegram</span>
-      <input
-        type="checkbox"
-        :checked="prefs.notify_telegram"
-        :disabled="!hasTelegramLink"
-        @change="toggle('notify_telegram', $event)"
-      >
-    </label>
+      <label class="uc-notify__row">
+        <span class="uc-notify__label">Telegram</span>
+        <span class="uc-toggle" :class="{ 'uc-toggle--disabled': !hasTelegramLink }">
+          <input
+            type="checkbox"
+            class="uc-toggle__input"
+            :checked="prefs.notify_telegram"
+            :disabled="!hasTelegramLink"
+            @change="toggle('notify_telegram', $event)"
+          >
+          <span class="uc-toggle__track"></span>
+        </span>
+      </label>
+    </div>
 
     <div v-if="!hasTelegramLink" class="uc-notify__link-block">
-      <p class="uc-account__hint">Чтобы получать уведомления в Telegram, войдите через бота.</p>
-      <div id="telegram-login-widget"></div>
+      <p class="uc-account__hint">Чтобы получать уведомления в Telegram, войдите через бота</p>
+      <div id="telegram-login-widget" class="uc-notify__widget"></div>
     </div>
 
     <div v-else class="uc-notify__link-block">
-      <p class="uc-account__hint">Привязан: {{ linkedUsername }}</p>
-      <button type="button" class="uc-pubg__link uc-pubg__link--danger" @click="handleUnlink">
+      <p class="uc-notify__linked">Привязан аккаунт: <strong>@{{ linkedUsername }}</strong></p>
+      <button type="button" class="uc-notify__unlink" @click="handleUnlink">
         Отключить Telegram
       </button>
     </div>
@@ -141,20 +151,119 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.uc-notify {
-  margin-top: 24px;
+.uc-notify__link-block {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #2a3140;
+}
+
+.uc-notify__card {
+  background: #1e2227;
+  border: 1px solid #334056;
+  border-radius: 12px;
+  padding: 4px 16px;
 }
 
 .uc-notify__row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #334056;
+  padding: 14px 0;
+  border-bottom: 1px solid #2a3140;
+  cursor: pointer;
+}
+
+.uc-notify__row:last-child {
+  border-bottom: none;
+}
+
+.uc-notify__label {
   font-size: 0.95rem;
+  color: #e6e9ee;
+}
+
+.uc-toggle {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.uc-toggle__input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.uc-toggle__track {
+  position: absolute;
+  inset: 0;
+  background: #3a4356;
+  border-radius: 999px;
+  transition: background 0.2s ease;
+}
+
+.uc-toggle__track::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.uc-toggle__input:checked + .uc-toggle__track {
+  background: #ffc107;
+}
+
+.uc-toggle__input:checked + .uc-toggle__track::before {
+  transform: translateX(20px);
+}
+
+.uc-toggle--disabled {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 .uc-notify__link-block {
-  margin-top: 12px;
+  margin-top: 16px;
+  background: #1e2227;
+  border: 1px solid #334056;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.uc-notify__widget {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.uc-notify__linked {
+  color: #9aa5b1;
+  font-size: 0.9rem;
+  margin: 0 0 10px;
+}
+
+.uc-notify__unlink {
+  background: transparent;
+  border: 1px solid #ff6b6b;
+  color: #ff6b6b;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.uc-account__hint {
+  color: #9aa5b1;
+  font-size: 0.85rem;
+  margin: 0 0 4px;
 }
 </style>

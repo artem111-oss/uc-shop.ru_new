@@ -1,6 +1,6 @@
 <template>
-  <div class="uc-pubg">
-    <h2 class="uc-account__subtitle">Игровые аккаунты</h2>
+  <section class="uc-card">
+    <h2 class="uc-card__title">Игровые аккаунты</h2>
 
     <p v-if="loading" class="uc-account__loading">Загрузка…</p>
 
@@ -119,10 +119,6 @@ onMounted(load);
 </script>
 
 <style scoped>
-.uc-pubg {
-  margin-top: 24px;
-}
-
 .uc-pubg__list {
   list-style: none;
   padding: 0;
@@ -133,7 +129,7 @@ onMounted(load);
 }
 
 .uc-pubg__item {
-  background: #1e2227;
+  background: #262c36;
   border: 1px solid #334056;
   border-radius: 10px;
   padding: 12px 14px;
@@ -148,36 +144,45 @@ onMounted(load);
 .uc-pubg__id {
   font-weight: 600;
   font-size: 1rem;
+  color: #e6e9ee;
+  letter-spacing: 0.3px;
 }
 
 .uc-pubg__badge {
   background: #ffc107;
-  color: #000;
-  font-size: 0.75rem;
-  padding: 2px 8px;
+  color: #14161a;
+  font-size: 0.68rem;
+  padding: 3px 9px;
   border-radius: 6px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .uc-pubg__nickname {
-  color: #9aa5b1;
-  font-size: 0.85rem;
-  margin-top: 2px;
+  color: #8a94a3;
+  font-size: 0.82rem;
+  margin-top: 4px;
 }
 
 .uc-pubg__actions {
   display: flex;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 18px;
+  margin-top: 10px;
 }
 
 .uc-pubg__link {
   background: none;
   border: none;
   color: #ffc107;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   cursor: pointer;
   padding: 0;
+  font-weight: 500;
+  transition: opacity 0.15s ease;
+}
+
+.uc-pubg__link:hover {
+  opacity: 0.75;
 }
 
 .uc-pubg__link--danger {
@@ -188,5 +193,50 @@ onMounted(load);
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.uc-pubg__form input {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #334056;
+  background: #14161a;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.uc-pubg__form input::placeholder {
+  color: #5c6570;
+}
+
+.uc-pubg__form input:focus {
+  outline: none;
+  border-color: #ffc107;
+}
+
+.uc-pubg__form button {
+  background: #ffc107;
+  color: #14161a;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.uc-pubg__form button:hover {
+  filter: brightness(1.08);
+}
+
+.uc-pubg__form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.uc-account__error {
+  color: #ff6b6b;
+  margin-top: 10px;
+  font-size: 0.85rem;
 }
 </style>
