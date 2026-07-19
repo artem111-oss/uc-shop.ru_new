@@ -16,10 +16,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class MainModel extends Model
 {
-  protected $connection = 'mysql';
+    public function __construct(array $attributes = [])
+    {
+        $this->connection = app()->environment('testing') ? null : 'mysql';
 
-  public static function table(): string
-  {
-    return (new static)->getTable();
-  }
+        parent::__construct($attributes);
+    }
+
+    public static function table(): string
+    {
+        return (new static)->getTable();
+    }
 }
