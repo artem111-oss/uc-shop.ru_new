@@ -4,7 +4,7 @@
 
     <p v-if="loading" class="uc-account__loading">Загрузка…</p>
 
-    <ul v-else class="uc-pubg__list">
+    <ul v-else-if="accounts.length > 0" class="uc-pubg__list">
       <li v-for="account in accounts" :key="account.id" class="uc-pubg__item">
         <div class="uc-pubg__row">
           <span class="uc-pubg__id">{{ account.pubg_id }}</span>
@@ -27,28 +27,28 @@
       </li>
     </ul>
 
+    <p v-else class="uc-account__empty">У вас пока нет привязанных PUBG ID.</p>
+
     <form class="uc-pubg__form" @submit.prevent="handleAdd">
       <input
         v-model="newId"
         type="text"
         inputmode="numeric"
         placeholder="PUBG ID (например 512345678)"
-        class="uc-account__input"
         required
       >
       <input
         v-model="newNickname"
         type="text"
         placeholder="Ник (необязательно)"
-        class="uc-account__input"
       >
-      <button type="submit" class="uc-account__button" :disabled="submitting">
+      <button type="submit" :disabled="submitting">
         {{ submitting ? 'Добавляем…' : 'Добавить PUBG ID' }}
       </button>
     </form>
 
     <p v-if="errorMessage" class="uc-account__error">{{ errorMessage }}</p>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -122,10 +122,10 @@ onMounted(load);
 .uc-pubg__list {
   list-style: none;
   padding: 0;
+  margin: 0 0 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 16px;
 }
 
 .uc-pubg__item {
@@ -156,6 +156,7 @@ onMounted(load);
   border-radius: 6px;
   font-weight: 700;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .uc-pubg__nickname {
@@ -193,6 +194,7 @@ onMounted(load);
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-top: 4px;
 }
 
 .uc-pubg__form input {
@@ -232,11 +234,5 @@ onMounted(load);
 .uc-pubg__form button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.uc-account__error {
-  color: #ff6b6b;
-  margin-top: 10px;
-  font-size: 0.85rem;
 }
 </style>

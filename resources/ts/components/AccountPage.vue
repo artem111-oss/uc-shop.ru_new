@@ -58,78 +58,55 @@
       </div>
 
       <section class="uc-card">
-  <h2 class="uc-card__title">Мои заказы</h2>
+        <h2 class="uc-card__title">Мои заказы</h2>
 
-  <p v-if="loadingOrders" class="uc-account__loading">Загружаем заказы…</p>
-  <p v-else-if="orders.length === 0" class="uc-account__empty">
-    У вас пока нет заказов, оформленных из личного кабинета.
-  </p>
+        <p v-if="loadingOrders" class="uc-account__loading">Загружаем заказы…</p>
+        <p v-else-if="orders.length === 0" class="uc-account__empty">
+          У вас пока нет заказов, оформленных из личного кабинета.
+        </p>
 
-  <ul v-else class="uc-account__orders">
-    <li v-for="order in orders" :key="order.id" class="uc-account__order">
-      <div class="uc-account__order-row">
-        <span class="uc-account__order-id">Заказ #{{ order.id }}</span>
-        <span class="uc-account__order-status" :data-status="order.status.code">
-          {{ order.status.label }}
-        </span>
-      </div>
-      <div class="uc-account__order-row">
-        <span>{{ order.product.name }}</span>
-        <span>{{ order.price }} ₽</span>
-      </div>
-      <div class="uc-account__order-row uc-account__order-row--muted">
-        <span>{{ formatDate(order.created_at) }}</span>
-        <span v-if="order.pubg_id">ID: {{ order.pubg_id }}</span>
-      </div>
-      <a :href="buildSupportLink(order)" target="_blank" class="uc-account__support-link">
-        Написать в поддержку
-      </a>
-    </li>
-  </ul>
+        <ul v-else class="uc-account__orders">
+          <li v-for="order in orders" :key="order.id" class="uc-account__order">
+            <div class="uc-account__order-row">
+              <span class="uc-account__order-id">Заказ #{{ order.id }}</span>
+              <span class="uc-account__order-status" :data-status="order.status.code">
+                {{ order.status.label }}
+              </span>
+            </div>
+            <div class="uc-account__order-row">
+              <span>{{ order.product.name }}</span>
+              <span>{{ order.price }} ₽</span>
+            </div>
+            <div class="uc-account__order-row uc-account__order-row--muted">
+              <span>{{ formatDate(order.created_at) }}</span>
+              <span v-if="order.pubg_id">ID: {{ order.pubg_id }}</span>
+            </div>
+            <a :href="buildSupportLink(order)" target="_blank" class="uc-account__support-link">
+              Написать в поддержку
+            </a>
+          </li>
+        </ul>
 
-  <div v-if="orders.length > 0" class="uc-account__pagination">
-    <button
-      type="button"
-      class="uc-account__page-button"
-      :disabled="currentPage <= 1"
-      @click="changePage(currentPage - 1)"
-    >
-      Назад
-    </button>
-    <span class="uc-account__page-info">{{ currentPage }} / {{ lastPage }}</span>
-    <button
-      type="button"
-      class="uc-account__page-button"
-      :disabled="currentPage >= lastPage"
-      @click="changePage(currentPage + 1)"
-    >
-      Далее
-    </button>
-  </div>
-</section>
-
-<PubgAccounts />
-<NotificationSettings />
-
-      <div v-if="orders.length > 0" class="uc-account__pagination">
-        <button
-          type="button"
-          class="uc-account__page-button"
-          :disabled="currentPage <= 1"
-          @click="changePage(currentPage - 1)"
-        >
-          Назад
-        </button>
-        <span class="uc-account__page-info">{{ currentPage }} / {{ lastPage }}</span>
-        <button
-          type="button"
-          class="uc-account__page-button"
-          :disabled="currentPage >= lastPage"
-          @click="changePage(currentPage + 1)"
-        >
-          Далее
-        </button>
-      </div>
+        <div v-if="orders.length > 0" class="uc-account__pagination">
+          <button
+            type="button"
+            class="uc-account__page-button"
+            :disabled="currentPage <= 1"
+            @click="changePage(currentPage - 1)"
+          >
+            Назад
+          </button>
+          <span class="uc-account__page-info">{{ currentPage }} / {{ lastPage }}</span>
+          <button
+            type="button"
+            class="uc-account__page-button"
+            :disabled="currentPage >= lastPage"
+            @click="changePage(currentPage + 1)"
+          >
+            Далее
+          </button>
+        </div>
+      </section>
 
       <PubgAccounts />
       <NotificationSettings />
@@ -270,6 +247,14 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.uc-account {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  color: #fff;
+  font-family: inherit;
+}
+
 .uc-card {
   background: #1e2227;
   border: 1px solid #2a3140;
@@ -286,21 +271,6 @@ onMounted(async () => {
   padding-left: 12px;
   border-left: 3px solid #ffc107;
   line-height: 1.2;
-}
-
-.uc-account__support-link {
-  display: inline-block;
-  margin-top: 8px;
-  color: #ffc107;
-  font-size: 0.8rem;
-  text-decoration: none;
-}
-
-.uc-account {
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 24px 16px 48px;
-  color: #fff;
 }
 
 .uc-account__title {
@@ -324,20 +294,30 @@ onMounted(async () => {
   padding: 12px 14px;
   border-radius: 8px;
   border: 1px solid #334056;
-  background: #1e2227;
+  background: #14161a;
   color: #fff;
   font-size: 1rem;
 }
 
+.uc-account__input:focus {
+  outline: none;
+  border-color: #ffc107;
+}
+
 .uc-account__button {
   background: #ffc107;
-  color: #000;
+  color: #14161a;
   border: none;
   border-radius: 8px;
   padding: 12px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.uc-account__button:hover {
+  filter: brightness(1.08);
 }
 
 .uc-account__button:disabled {
@@ -367,6 +347,12 @@ onMounted(async () => {
   font-size: 0.9rem;
 }
 
+.uc-account__hint {
+  color: #9aa5b1;
+  font-size: 0.85rem;
+  margin: 0 0 4px;
+}
+
 .uc-account__header {
   display: flex;
   justify-content: space-between;
@@ -388,6 +374,17 @@ onMounted(async () => {
   font-size: 0.85rem;
   cursor: pointer;
   white-space: nowrap;
+  transition: border-color 0.15s ease;
+}
+
+.uc-account__logout:hover {
+  border-color: #ffc107;
+}
+
+.uc-account__loading,
+.uc-account__empty {
+  color: #9aa5b1;
+  font-size: 0.9rem;
 }
 
 .uc-account__orders {
@@ -396,10 +393,11 @@ onMounted(async () => {
   flex-direction: column;
   gap: 10px;
   padding: 0;
+  margin: 0;
 }
 
 .uc-account__order {
-  background: #1e2227;
+  background: #262c36;
   border: 1px solid #334056;
   border-radius: 10px;
   padding: 12px 14px;
@@ -433,6 +431,18 @@ onMounted(async () => {
   color: #ff6b6b;
 }
 
+.uc-account__support-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #ffc107;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.uc-account__support-link:hover {
+  text-decoration: underline;
+}
+
 .uc-account__pagination {
   display: flex;
   align-items: center;
@@ -447,6 +457,7 @@ onMounted(async () => {
   border-radius: 8px;
   padding: 8px 14px;
   cursor: pointer;
+  font-size: 0.85rem;
 }
 
 .uc-account__page-button:disabled {
@@ -454,8 +465,8 @@ onMounted(async () => {
   cursor: not-allowed;
 }
 
-.uc-account__empty {
+.uc-account__page-info {
   color: #9aa5b1;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 </style>

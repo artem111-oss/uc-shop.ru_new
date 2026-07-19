@@ -44,7 +44,7 @@
     </div>
 
     <p v-if="errorMessage" class="uc-account__error">{{ errorMessage }}</p>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -151,14 +151,8 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.uc-notify__link-block {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #2a3140;
-}
-
 .uc-notify__card {
-  background: #1e2227;
+  background: #262c36;
   border: 1px solid #334056;
   border-radius: 12px;
   padding: 4px 16px;
@@ -169,7 +163,7 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: center;
   padding: 14px 0;
-  border-bottom: 1px solid #2a3140;
+  border-bottom: 1px solid #334056;
   cursor: pointer;
 }
 
@@ -232,7 +226,7 @@ onMounted(async () => {
 
 .uc-notify__link-block {
   margin-top: 16px;
-  background: #1e2227;
+  background: #262c36;
   border: 1px solid #334056;
   border-radius: 12px;
   padding: 16px;
@@ -250,20 +244,35 @@ onMounted(async () => {
   margin: 0 0 10px;
 }
 
+.uc-notify__linked strong {
+  color: #e6e9ee;
+}
+
 .uc-notify__unlink {
   background: transparent;
   border: 1px solid #ff6b6b;
   color: #ff6b6b;
   border-radius: 8px;
-  padding: 8px 14px;
+  padding: 10px 14px;
   font-size: 0.85rem;
   cursor: pointer;
   width: 100%;
+  transition: background 0.15s ease;
+}
+
+.uc-notify__unlink:hover {
+  background: rgba(255, 107, 107, 0.1);
 }
 
 .uc-account__hint {
   color: #9aa5b1;
   font-size: 0.85rem;
   margin: 0 0 4px;
+}
+
+.uc-account__error {
+  color: #ff6b6b;
+  margin-top: 10px;
+  font-size: 0.85rem;
 }
 </style>
