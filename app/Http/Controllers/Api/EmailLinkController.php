@@ -35,7 +35,7 @@ class EmailLinkController extends Controller
 
         if ($this->isRealEmail($user->email)) {
             return response()->json([
-                'message' => 'Email уже привязан к этому аккаунту.',
+                'message' => 'Email уже привязан к этому аккаунту',
             ], 422);
         }
 
@@ -46,14 +46,16 @@ class EmailLinkController extends Controller
 
         if ($emailOwner) {
             return response()->json([
-                'message' => 'Этот email уже используется другим аккаунтом. Войдите через email.',
+                'message' => 'Этот email уже используется другим аккаунтом. Войдите через email',
             ], 409);
         }
 
         $rateLimitKey = 'customer-email-link:' . $user->id;
 
         if (RateLimiter::tooManyAttempts($rateLimitKey, self::RATE_LIMIT)) {
-            return $this->genericResponse();
+            return response()->json([
+                'message' => 'Слишком много запросов кода. Попробуйте через 10 минут',
+            ], 429);
         }
 
         RateLimiter::hit($rateLimitKey, self::RATE_LIMIT_SECONDS);
@@ -63,7 +65,7 @@ class EmailLinkController extends Controller
         try {
             Mail::to($email)->send(new LoginCodeMail($code));
         } catch (\Throwable $exception) {
-            Log::warning('Customer email link code delivery failed.', [
+            Log::warning('Customer email link code delivery failed', [
                 'exception_class' => $exception::class,
                 'error' => $exception->getMessage(),
             ]);
@@ -84,7 +86,7 @@ class EmailLinkController extends Controller
 
         if ($this->isRealEmail($user->email)) {
             return response()->json([
-                'message' => 'Email уже привязан к этому аккаунту.',
+                'message' => 'Email уже привязан к этому аккаунту',
             ], 422);
         }
 
@@ -95,13 +97,13 @@ class EmailLinkController extends Controller
 
         if ($emailOwner) {
             return response()->json([
-                'message' => 'Этот email уже используется другим аккаунтом. Войдите через email.',
+                'message' => 'Этот email уже используется другим аккаунтом. Войдите через email',
             ], 409);
         }
 
         if (!$this->loginCodeService->consume($email, $validated['code'], 'email_link')) {
             throw ValidationException::withMessages([
-                'code' => ['Код неверен, истёк или больше недоступен.'],
+                'code' => ['Код неверен, истёк или больше недоступен'],
             ]);
         }
 
@@ -113,7 +115,7 @@ class EmailLinkController extends Controller
             ])->save();
         } catch (\Illuminate\Database\QueryException) {
             return response()->json([
-                'message' => 'Этот email уже используется другим аккаунтом. Войдите через email.',
+                'message' => 'Этот email уже используется другим аккаунтом. Войдите через email',
             ], 409);
         }
 
@@ -132,7 +134,7 @@ class EmailLinkController extends Controller
     private function genericResponse(): JsonResponse
     {
         return response()->json([
-            'message' => 'Если адрес доступен для привязки, код отправлен на email.',
+            'message' => 'Код отправлен на email',
         ]);
     }
 
