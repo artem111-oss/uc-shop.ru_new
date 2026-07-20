@@ -376,25 +376,41 @@
     }
 
     // Load Player ID from localStorage
-    function loadPlayerId() {
-      try {
-        const savedId = localStorage.getItem('lastPlayerId');
-        const savedDate = localStorage.getItem('lastPlayerIdDate');
-        
-        if (savedId && savedDate) {
-          const daysSinceLastUse = (Date.now() - new Date(savedDate)) / (1000 * 60 * 60 * 24);
-          if (daysSinceLastUse < 30) {
-            const input = document.querySelector('.uc-id-form__input');
-            if (input && !input.value) {
-              input.value = savedId;
-              input.classList.add('uc-input-autofilled');
-            }
-          }
+async function loadPlayerId() {
+  try {
+    const input = document.querySelector('.uc-id-form__input');
+    if (!input || input.value) return;
+
+    const customerToken = localStorage.getItem('uc_shop_customer_token');
+
+    if (customerToken) {
+      const response = await fetch('/api/account/pubg-accounts', {
+        headers: { Accept: 'application/json', Authorization: 'Bearer ' + customerToken },
+      });
+      if (response.ok) {
+        const body = await response.json();
+        const primary = body.data.find(a => a.is_primary) || body.data[0];
+        if (primary) {
+          input.value = primary.pubg_id;
+          input.classList.add('uc-input-autofilled');
+          return;
         }
-      } catch (e) {
-        console.warn('Cannot load from localStorage:', e);
       }
     }
+
+    const savedId = localStorage.getItem('lastPlayerId');
+    const savedDate = localStorage.getItem('lastPlayerIdDate');
+    if (savedId && savedDate) {
+      const daysSinceLastUse = (Date.now() - new Date(savedDate)) / (1000 * 60 * 60 * 24);
+      if (daysSinceLastUse < 30) {
+        input.value = savedId;
+        input.classList.add('uc-input-autofilled');
+      }
+    }
+  } catch (e) {
+    console.warn('Cannot load player id:', e);
+  }
+}
 
     // Checkout function
     window.proceedToCheckout = async function() {
