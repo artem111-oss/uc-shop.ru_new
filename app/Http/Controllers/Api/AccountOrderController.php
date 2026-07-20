@@ -24,7 +24,7 @@ class AccountOrderController extends Controller
             })
             ->with('product:id,name')
             ->latest('id')
-            ->paginate(20);
+            ->paginate(5);
 
         return response()->json([
             'data' => $orders->getCollection()
