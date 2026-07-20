@@ -51,21 +51,52 @@
 
       @if($product && $product->delivery_mode === 'manual')
       <div class="uc-result-infobox" style="border-color: rgba(255,165,0,0.4); background: rgba(255,165,0,0.06);">
-          <strong>⚠️ Ручная передача:</strong> Этот товар передаётся вручную. Напишите нам в Telegram, укажите номер заказа <strong>#{{ $order->id }}</strong> — мы добавим тебя в друзья и передадим скин. Передача займёт до 72 часов с момента добавления в друзья (требование игры).
+          <strong>⚠️ Ручная передача:</strong>
+          Этот товар передаётся вручную. Напишите нам в Telegram, укажите номер заказа
+          <strong>#{{ $order->id }}</strong> — мы добавим тебя в друзья и передадим скин.
+          Передача займёт до 72 часов с момента добавления в друзья (требование игры).
       </div>
       @else
       <div class="uc-result-infobox">
-          <strong>⚡ Мгновенная доставка:</strong> UC зачисляются в течение 30–60 секунд. Убедись, что игра открыта.
+          <strong>⚡ Мгновенная доставка:</strong>
+          UC зачисляются в течение 30–60 секунд. Убедись, что игра открыта.
       </div>
       @endif
 
+      @php
+          $supportText = $order
+              ? "Здравствуйте! Нужна помощь по заказу.\n"
+                  . "Номер заказа: #{$order->id}\n"
+                  . "Игровой ID: " . ($order->game_id ?: '—') . "\n"
+                  . "Товар: " . ($order->uc_amount ?: ($product?->name ?: '—')) . "\n"
+                  . "Сумма: " . number_format((float) $order->price, 0, ',', ' ') . " ₽"
+              : 'Здравствуйте! Нужна помощь с заказом.';
+
+          $supportUrl = 'https://t.me/ucshop_air?text=' . rawurlencode($supportText);
+      @endphp
+
       <div class="uc-result-actions">
-        <a href="/" class="uc-result-btn uc-result-btn--primary">← На главную</a>
-        @if($product && $product->delivery_mode === 'manual')
-            <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-result-btn uc-result-btn--outline">✍️ Написать для получения скина</a>
-        @else
-            <a href="https://t.me/ucshop_air" target="_blank" rel="noopener" class="uc-result-btn uc-result-btn--outline">💬 Поддержка</a>
-        @endif
+          <a href="/" class="uc-result-btn uc-result-btn--primary">← На главную</a>
+
+          @if($product && $product->delivery_mode === 'manual')
+              <a
+                  href="{{ $supportUrl }}"
+                  target="_blank"
+                  rel="noopener"
+                  class="uc-result-btn uc-result-btn--outline"
+              >
+                  ✍️ Написать для получения скина
+              </a>
+          @else
+              <a
+                  href="{{ $supportUrl }}"
+                  target="_blank"
+                  rel="noopener"
+                  class="uc-result-btn uc-result-btn--outline"
+              >
+                  💬 Поддержка
+              </a>
+          @endif
       </div>
 
       @if($order)
