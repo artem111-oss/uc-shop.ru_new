@@ -18,6 +18,21 @@ class NotificationPrefsController extends Controller
 
         $user = $request->user();
 
+        $isTelegramPlaceholderEmail = preg_match(
+            '/^telegram-\d+@users\.uc-shop\.ru$/',
+            $user->email
+        );
+
+        if (
+            array_key_exists('notify_email', $validated)
+            && $validated['notify_email']
+            && $isTelegramPlaceholderEmail
+        ) {
+            return response()->json([
+                'message' => 'Сначала привяжите реальный email.',
+            ], 422);
+        }
+
         if (array_key_exists('notify_telegram', $validated) && $validated['notify_telegram'] && !$user->telegramLinks()->exists()) {
             return response()->json([
                 'message' => 'Сначала привяжите Telegram.',

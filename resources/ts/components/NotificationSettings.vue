@@ -5,11 +5,15 @@
     <div class="uc-notify__card">
       <label class="uc-notify__row">
         <span class="uc-notify__label">Email</span>
-        <span class="uc-toggle">
+        <span
+          class="uc-toggle"
+          :class="{ 'uc-toggle--disabled': !emailIsLinked }"
+        >
           <input
             type="checkbox"
             class="uc-toggle__input"
             :checked="prefs.notify_email"
+            :disabled="!emailIsLinked"
             @change="toggle('notify_email', $event)"
           >
           <span class="uc-toggle__track"></span>
@@ -31,6 +35,81 @@
       </label>
     </div>
 
+    <div v-if="!emailIsLinked" class="uc-notify__link-block">
+      <p class="uc-account__hint">
+        Привяжите email, чтобы получать чеки и уведомления о заказах.
+      </p>
+
+      <form
+       v-if="emailStep === 'email'"
+        class="uc-notify__email-form"
+        @submit.prevent="handleRequestEmailCode"
+      >
+        <label class="uc-account__label" for="notification-email">
+          Ваш email
+        </label>
+        <input
+          id="notification-email"
+          v-model="email"
+          type="email"
+          required
+          autocomplete="email"
+          class="uc-account__input"
+          placeholder="you@example.com"
+        >
+        <button
+          type="submit"
+          class="uc-account__button"
+          :disabled="emailSubmitting"
+        >
+          {{ emailSubmitting ? 'Отправляем…' : 'Получить код' }}
+        </button>
+      </form>
+    
+      <form
+        v-else
+        class="uc-notify__email-form"
+        @submit.prevent="handleVerifyEmailCode"
+      >
+        <p class="uc-account__hint">
+          Код отправлен на {{ email }}
+        </p>
+        <label class="uc-account__label" for="notification-email-code">
+          Код из письма
+        </label>
+        <input
+          id="notification-email-code"
+          v-model="emailCode"
+          inputmode="numeric"
+          pattern="\d{6}"
+          maxlength="6"
+          required
+          class="uc-account__input"
+          placeholder="123456"
+        >
+        <button
+          type="submit"
+          class="uc-account__button"
+          :disabled="emailSubmitting"
+        >
+          {{ emailSubmitting ? 'Проверяем…' : 'Подтвердить email' }}
+        </button>
+        <button
+          type="button"
+          class="uc-account__link"
+          :disabled="emailSubmitting"
+          @click="resetEmailStep"
+        >
+          Изменить email
+        </button>
+      </form>
+    </div>
+
+    <div v-else class="uc-notify__email-linked">
+      <span>Email для уведомлений:</span>
+      <strong>{{ accountEmail }}</strong>
+    </div>
+
     <div v-if="!hasTelegramLink" class="uc-notify__link-block">
       <p class="uc-account__hint">Чтобы получать уведомления в Telegram, войдите через бота</p>
       <div id="telegram-login-widget" class="uc-notify__widget"></div>
@@ -49,13 +128,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick } from 'vue';
-import type { TelegramLinkStatus } from '../services/auth';
+import type { AuthUser, TelegramLinkStatus } from '../services/auth';
 import {
+  fetchCurrentUser,
   fetchNotificationPrefs,
   updateNotificationPrefs,
   fetchTelegramStatus,
   linkTelegramWidget,
   unlinkTelegram,
+  requestEmailLinkCode,
+  verifyEmailLinkCode,
 } from '../services/auth';
 
 declare global {
@@ -67,14 +149,29 @@ declare global {
 const prefs = ref({ notify_email: true, notify_telegram: false });
 const links = ref<TelegramLinkStatus[]>([]);
 const errorMessage = ref('');
+const accountUser = ref<AuthUser | null>(null);
+const email = ref('');
+const emailCode = ref('');
+const emailStep = ref<'email' | 'code'>('email');
+const emailSubmitting = ref(false);
+
+const emailIsLinked = computed(() => accountUser.value?.email_is_linked === true);
+const accountEmail = computed(() => accountUser.value?.email ?? '');
 
 const hasTelegramLink = computed(() => links.value.length > 0);
 const linkedUsername = computed(() => links.value[0]?.telegram_username || 'Telegram');
 
 async function load(): Promise<void> {
   try {
-    prefs.value = await fetchNotificationPrefs();
-    links.value = await fetchTelegramStatus();
+    const [currentUser, notificationPrefs, telegramLinks] = await Promise.all([
+      fetchCurrentUser(),
+      fetchNotificationPrefs(),
+      fetchTelegramStatus(),
+    ]);
+
+    accountUser.value = currentUser;
+    prefs.value = notificationPrefs;
+    links.value = telegramLinks;
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : 'Ошибка загрузки настроек.';
   }
@@ -91,6 +188,55 @@ async function toggle(key: 'notify_email' | 'notify_telegram', event: Event): Pr
     errorMessage.value = error instanceof Error ? error.message : 'Не удалось сохранить.';
     (event.target as HTMLInputElement).checked = !checked;
   }
+}
+
+async function handleRequestEmailCode(): Promise<void> {
+  errorMessage.value = '';
+  emailSubmitting.value = true;
+
+  try {
+    await requestEmailLinkCode(email.value.trim().toLowerCase());
+    emailStep.value = 'code';
+  } catch (error) {
+    errorMessage.value = error instanceof Error
+      ? error.message
+      : 'Не удалось отправить код.';
+  } finally {
+    emailSubmitting.value = false;
+  }
+}
+
+async function handleVerifyEmailCode(): Promise<void> {
+  errorMessage.value = '';
+  emailSubmitting.value = true;
+
+  try {
+    const response = await verifyEmailLinkCode(
+      email.value.trim().toLowerCase(),
+      emailCode.value.trim()
+    );
+
+    accountUser.value = response.user;
+    prefs.value = {
+      notify_email: !!response.user.notify_email,
+      notify_telegram: !!response.user.notify_telegram,
+    };
+
+    emailCode.value = '';
+    emailStep.value = 'email';
+  } catch (error) {
+    errorMessage.value = error instanceof Error
+      ? error.message
+      : 'Не удалось подтвердить email.';
+  } finally {
+    emailSubmitting.value = false;
+  }
+}
+
+function resetEmailStep(): void {
+  emailStep.value = 'email';
+  emailCode.value = '';
+  errorMessage.value = '';
 }
 
 function mountTelegramWidget(): void {
@@ -279,5 +425,29 @@ onMounted(async () => {
   color: #ff6b6b;
   margin-top: 10px;
   font-size: 0.85rem;
+}
+
+.uc-notify__email-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.uc-notify__email-linked {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: #262c36;
+  border: 1px solid #334056;
+  border-radius: 12px;
+  color: #9aa5b1;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.uc-notify__email-linked strong {
+  color: #e6e9ee;
 }
 </style>

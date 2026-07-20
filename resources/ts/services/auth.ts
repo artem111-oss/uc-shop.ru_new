@@ -2,8 +2,8 @@ export interface AuthUser {
   id: number;
   name: string;
   email: string;
+  email_is_linked?: boolean;
   notify_email?: boolean;
-  notify_telegram?: boolean;
 }
 
 export interface OrderSummary {
@@ -305,6 +305,27 @@ export async function updateNotificationPrefs(
     body: JSON.stringify(data),
   });
   await parseOrThrow(response, 'Не удалось сохранить настройки уведомлений.');
+}
+
+export async function requestEmailLinkCode(email: string): Promise<{ message: string }> {
+  const response = await authorizedFetch('/api/account/email-link/request-code', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+
+  return parseOrThrow(response, 'Не удалось отправить код для привязки email.');
+}
+
+export async function verifyEmailLinkCode(
+  email: string,
+  code: string
+): Promise<{ user: AuthUser }> {
+  const response = await authorizedFetch('/api/account/email-link/verify-code', {
+    method: 'POST',
+    body: JSON.stringify({ email, code }),
+  });
+
+  return parseOrThrow(response, 'Не удалось подтвердить email.');
 }
 
 export async function fetchTelegramStatus(): Promise<TelegramLinkStatus[]> {

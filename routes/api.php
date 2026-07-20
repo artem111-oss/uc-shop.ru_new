@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\PubgAccountController;
 use App\Http\Controllers\Api\TelegramWidgetLinkController;
 use App\Http\Controllers\Api\NotificationPrefsController;
 use App\Http\Controllers\Api\TelegramAuthController;
+use App\Http\Controllers\Api\EmailLinkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -123,4 +124,12 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])
 
         Route::delete('/telegram/{bot}', [TelegramWidgetLinkController::class, 'unlink'])
             ->name('api.account.telegram.unlink');
+
+        Route::post('/email-link/request-code', [EmailLinkController::class, 'requestCode'])
+            ->middleware('throttle:3,10')
+            ->name('api.account.email-link.request-code');
+
+        Route::post('/email-link/verify-code', [EmailLinkController::class, 'verifyCode'])
+            ->middleware('throttle:10,10')
+            ->name('api.account.email-link.verify-code');
     });

@@ -93,6 +93,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'email_is_linked' => !preg_match('/^telegram-\d+@users\.uc-shop\.ru$/', $user->email),
                 'notify_email' => (bool) $user->notify_email,
                 'notify_telegram' => (bool) $user->notify_telegram,
             ],
