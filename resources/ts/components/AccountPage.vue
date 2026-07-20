@@ -124,7 +124,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import type { AuthUser, OrderSummary } from '../services/auth';
 import {
   fetchCurrentUser,
@@ -243,11 +243,17 @@ function resetToEmailStep(): void {
 
 async function handleLogout(): Promise<void> {
   await logoutRequest();
+
   user.value = null;
   orders.value = [];
   step.value = 'email';
   email.value = '';
   code.value = '';
+  errorMessage.value = '';
+  infoMessage.value = '';
+
+  await nextTick();
+  mountTelegramLoginWidget();
 }
 
 function mountTelegramLoginWidget(): void {
@@ -297,9 +303,13 @@ function mountTelegramLoginWidget(): void {
 
 onMounted(async () => {
   loadingUser.value = true;
+
   const currentUser = await fetchCurrentUser();
+
   user.value = currentUser;
   loadingUser.value = false;
+
+  await nextTick();
 
   if (currentUser) {
     await loadOrders(1);

@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, nextTick } from 'vue';
 import type { TelegramLinkStatus } from '../services/auth';
 import {
   fetchNotificationPrefs,
@@ -139,6 +139,9 @@ async function handleUnlink(): Promise<void> {
   try {
     await unlinkTelegram('uctyt');
     await load();
+
+    await nextTick();
+    mountTelegramWidget();
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : 'Не удалось отключить.';
   }
@@ -146,6 +149,8 @@ async function handleUnlink(): Promise<void> {
 
 onMounted(async () => {
   await load();
+
+  await nextTick();
   mountTelegramWidget();
 });
 </script>
