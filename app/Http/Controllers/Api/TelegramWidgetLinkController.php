@@ -19,22 +19,38 @@ class TelegramWidgetLinkController extends Controller
     {
         $validated = $request->validate([
             'id' => ['required', 'integer'],
-            'first_name' => ['nullable', 'string'],
-            'last_name' => ['nullable', 'string'],
-            'username' => ['nullable', 'string'],
-            'photo_url' => ['nullable', 'string'],
+            'first_name' => ['nullable', 'string', 'max:255'],
+            'last_name' => ['nullable', 'string', 'max:255'],
+            'username' => ['nullable', 'string', 'max:255'],
+            'photo_url' => ['nullable', 'string', 'max:2048'],
             'auth_date' => ['required', 'integer'],
             'hash' => ['required', 'string'],
         ]);
 
-        $botToken = config('services.telegram.bot_token');
+        $botToken = (string) config('services.telegram.bot_token');
 
-        if (!$this->service->verify($validated, $botToken)) {
-            return response()->json(['message' => 'Подпись Telegram недействительна.'], 422);
+        if ($botToken === '' || !$this->service->verify($validated, $botToken)) {
+            return response()->json([
+                'message' => 'Подпись Telegram недействительна.',
+            ], 422);
+        }
+
+        $existingLink = TelegramLink::query()
+            ->where('bot', 'uctyt')
+            ->where('telegram_id', $validated['id'])
+            ->first();
+
+        if ($existingLink && $existingLink->user_id !== $request->user()->id) {
+            return response()->json([
+                'message' => 'Этот Telegram уже привязан к другому аккаунту.',
+            ], 409);
         }
 
         $link = TelegramLink::query()->updateOrCreate(
-            ['bot' => 'uctyt', 'telegram_id' => $validated['id']],
+            [
+                'bot' => 'uctyt',
+                'telegram_id' => $validated['id'],
+            ],
             [
                 'user_id' => $request->user()->id,
                 'telegram_username' => $validated['username'] ?? null,
@@ -44,13 +60,14 @@ class TelegramWidgetLinkController extends Controller
         );
 
         return response()->json([
-            'data' => [
+                'data' => [
                 'bot' => $link->bot,
                 'telegram_username' => $link->telegram_username,
                 'linked_at' => $link->linked_at?->toIso8601String(),
             ],
         ]);
     }
+    
     public function status(Request $request): JsonResponse
     {
         $links = $request->user()->telegramLinks()->get(['bot', 'telegram_username', 'linked_at']);

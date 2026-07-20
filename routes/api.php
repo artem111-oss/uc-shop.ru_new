@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AccountOrderController;
 use App\Http\Controllers\Api\PubgAccountController;
 use App\Http\Controllers\Api\TelegramWidgetLinkController;
 use App\Http\Controllers\Api\NotificationPrefsController;
+use App\Http\Controllers\Api\TelegramAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,10 @@ Route::middleware('throttle:5,1')
         Route::post('/verify-code', [AuthController::class, 'verifyCode'])
             ->name('api.auth.verify-code');
     });
+
+Route::post('/auth/telegram', [TelegramAuthController::class, 'login'])
+    ->middleware('throttle:5,1')
+    ->name('api.auth.telegram');
 
 Route::middleware(['auth:sanctum', 'throttle:60,1'])
     ->prefix('auth')

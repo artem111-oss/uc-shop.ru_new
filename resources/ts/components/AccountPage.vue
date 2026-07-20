@@ -11,9 +11,9 @@
           id="account-email"
           v-model="email"
           type="email"
-          required
+         required
           autocomplete="email"
-          class="uc-account__input"
+         class="uc-account__input"
           placeholder="you@example.com"
         >
         <button type="submit" class="uc-account__button" :disabled="submitting">
@@ -41,6 +41,15 @@
           Изменить email
         </button>
       </form>
+
+      <div class="uc-account__login-divider">
+        <span>или</span>
+      </div>
+
+      <div class="uc-account__telegram-login">
+        <p class="uc-account__hint">Войти или зарегистрироваться через Telegram</p>
+        <div id="telegram-account-login-widget"></div>
+      </div>
 
       <p v-if="errorMessage" class="uc-account__error">{{ errorMessage }}</p>
       <p v-if="infoMessage" class="uc-account__info">{{ infoMessage }}</p>
@@ -121,11 +130,18 @@ import {
   fetchCurrentUser,
   requestLoginCode,
   verifyLoginCode,
+  loginWithTelegram,
   fetchOrders,
   logout as logoutRequest,
 } from '../services/auth';
 import PubgAccounts from './PubgAccounts.vue';
 import NotificationSettings from './NotificationSettings.vue';
+
+declare global {
+  interface Window {
+    onTelegramAccountAuth?: (telegramUser: Record<string, unknown>) => void;
+  }
+}
 
 function buildSupportLink(order: OrderSummary): string {
   const text = `Здравствуйте! Вопрос по заказу #${order.id}\n`
@@ -234,6 +250,51 @@ async function handleLogout(): Promise<void> {
   code.value = '';
 }
 
+function mountTelegramLoginWidget(): void {
+  const container = document.getElementById('telegram-account-login-widget');
+
+  if (!container || container.childElementCount > 0) {
+    return;
+  }
+
+  window.onTelegramAccountAuth = async (telegramUser) => {
+    errorMessage.value = '';
+    infoMessage.value = '';
+    submitting.value = true;
+
+    try {
+      const response = await loginWithTelegram({
+        id: Number(telegramUser.id),
+        first_name: typeof telegramUser.first_name === 'string' ? telegramUser.first_name : undefined,
+        last_name: typeof telegramUser.last_name === 'string' ? telegramUser.last_name : undefined,
+        username: typeof telegramUser.username === 'string' ? telegramUser.username : undefined,
+        photo_url: typeof telegramUser.photo_url === 'string' ? telegramUser.photo_url : undefined,
+        auth_date: Number(telegramUser.auth_date),
+        hash: String(telegramUser.hash ?? ''),
+      });
+
+      user.value = response.user;
+      await loadOrders();
+    } catch (error) {
+      errorMessage.value = error instanceof Error
+        ? error.message
+        : 'Не удалось войти через Telegram.';
+    } finally {
+      submitting.value = false;
+    }
+  };
+
+  const script = document.createElement('script');
+  script.src = 'https://telegram.org/js/telegram-widget.js?22';
+  script.setAttribute('data-telegram-login', 'uctyt_bot');
+  script.setAttribute('data-size', 'large');
+  script.setAttribute('data-onauth', 'onTelegramAccountAuth(user)');
+  script.setAttribute('data-request-access', 'write');
+  script.async = true;
+
+  container.appendChild(script);
+}
+
 onMounted(async () => {
   loadingUser.value = true;
   const currentUser = await fetchCurrentUser();
@@ -242,7 +303,10 @@ onMounted(async () => {
 
   if (currentUser) {
     await loadOrders(1);
+    return;
   }
+
+  mountTelegramLoginWidget();
 });
 </script>
 
@@ -468,5 +532,33 @@ onMounted(async () => {
 .uc-account__page-info {
   color: #9aa5b1;
   font-size: 0.85rem;
+}
+
+.uc-account__login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 18px;
+  color: #9ba5b5;
+  font-size: 0.9rem;
+}
+
+.uc-account__login-divider::before,
+.uc-account__login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #334056;
+}
+
+.uc-account__telegram-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.uc-account__telegram-login .uc-account__hint {
+  margin: 0 0 12px;
+  text-align: center;
 }
 </style>

@@ -135,6 +135,29 @@ export async function verifyLoginCode(email: string, code: string): Promise<{ us
   return body;
 }
 
+export async function loginWithTelegram(
+  payload: TelegramWidgetAuthPayload
+): Promise<TelegramLoginResponse> {
+  const response = await fetch('/api/auth/telegram', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const body = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(body.message || 'Не удалось войти через Telegram.');
+  }
+
+  setToken(body.token);
+
+  return body as TelegramLoginResponse;
+}
+
 export async function fetchCurrentUser(): Promise<AuthUser | null> {
   const token = getToken();
 
@@ -298,6 +321,11 @@ export interface TelegramWidgetAuthPayload {
   photo_url?: string;
   auth_date: number;
   hash: string;
+}
+
+export interface TelegramLoginResponse {
+  user: AuthUser;
+  token: string;
 }
 
 export async function linkTelegramWidget(payload: TelegramWidgetAuthPayload): Promise<TelegramLinkStatus> {
