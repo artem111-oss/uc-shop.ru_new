@@ -129,6 +129,5 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])
             ->name('api.account.email-link.request-code');
 
         Route::post('/email-link/verify-code', [EmailLinkController::class, 'verifyCode'])
-            ->middleware('throttle:10,10')
             ->name('api.account.email-link.verify-code');
     });
