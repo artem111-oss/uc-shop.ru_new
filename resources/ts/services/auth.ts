@@ -49,6 +49,7 @@ export interface TelegramLinkStatus {
 }
 
 const TOKEN_KEY = 'uc_shop_customer_token';
+const PRIMARY_PUBG_ID_KEY = 'uc_shop_primary_pubg_id';
 
 export function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
@@ -60,6 +61,33 @@ export function setToken(token: string): void {
 
 export function clearToken(): void {
   localStorage.removeItem(TOKEN_KEY);
+}
+
+export function getStoredPrimaryPubgId(): string | null {
+  return localStorage.getItem(PRIMARY_PUBG_ID_KEY);
+}
+
+export function setStoredPrimaryPubgId(pubgId: string | null): void {
+  if (pubgId && pubgId.trim()) {
+    localStorage.setItem(PRIMARY_PUBG_ID_KEY, pubgId.trim());
+    return;
+  }
+
+  localStorage.removeItem(PRIMARY_PUBG_ID_KEY);
+}
+
+export async function fetchPrimaryPubgId(): Promise<string | null> {
+  if (!getToken()) {
+    return getStoredPrimaryPubgId();
+  }
+
+  const accounts = await fetchPubgAccounts();
+  const primary = accounts.find((account) => account.is_primary) ?? accounts[0] ?? null;
+  const pubgId = primary?.pubg_id ?? null;
+
+  setStoredPrimaryPubgId(pubgId);
+
+  return pubgId;
 }
 
 function authHeaders(): Record<string, string> {

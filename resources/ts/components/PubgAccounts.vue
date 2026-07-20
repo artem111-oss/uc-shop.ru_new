@@ -59,6 +59,7 @@ import {
   createPubgAccount,
   updatePubgAccount,
   deletePubgAccount,
+  setStoredPrimaryPubgId,
 } from '../services/auth';
 
 const accounts = ref<PubgAccount[]>([]);
@@ -68,10 +69,19 @@ const newNickname = ref('');
 const submitting = ref(false);
 const errorMessage = ref('');
 
+function syncPrimaryToStorage(items: PubgAccount[]): void {
+  const primary = items.find((account) => account.is_primary) ?? items[0] ?? null;
+  setStoredPrimaryPubgId(primary?.pubg_id ?? null);
+}
+
 async function load(): Promise<void> {
   loading.value = true;
+  errorMessage.value = '';
+
   try {
-    accounts.value = await fetchPubgAccounts();
+    const items = await fetchPubgAccounts();
+    accounts.value = items;
+    syncPrimaryToStorage(items);
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : 'Ошибка загрузки.';
   } finally {

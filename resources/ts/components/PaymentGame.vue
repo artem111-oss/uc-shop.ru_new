@@ -113,12 +113,15 @@
 
 <script lang="ts" setup>
 
-import {ref, computed, onMounted} from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 declare function ym(id: number, action: string, goal?: string, params?: object): void;
-import {useForm,} from 'vee-validate';
+import { useForm } from 'vee-validate';
 import * as Yup from 'yup';
-import {localize} from '@vee-validate/i18n';
-import {authorizationHeader} from '../services/auth';
+import {
+  authorizationHeader,
+  fetchPrimaryPubgId,
+  getStoredPrimaryPubgId,
+} from '../services/auth';
 
 const prods = document.getElementById('payment-game').getAttribute('products')
 //const products = defineProps(prods)
@@ -152,12 +155,39 @@ const schema = Yup.object({
   uid: Yup.string().required().min(9, 'Игровой ID введен не верно').max(13, 'Игровой ID введен не верно'),
 });
 
-const {values, errors, defineInputBinds, handleSubmit} = useForm({
+const { values, errors, defineInputBinds, handleSubmit, setFieldValue } = useForm({
   validationSchema: schema,
 });
 
 const uid = defineInputBinds('uid');
 const email = defineInputBinds('email');
+
+const syncPrimaryPubgId = async (force = false): Promise<void> => {
+  try {
+    const previousStoredId = getStoredPrimaryPubgId();
+    const currentValue = String(uid.value.value ?? '').trim();
+    const primaryPubgId = await fetchPrimaryPubgId();
+
+    if (!primaryPubgId) {
+      return;
+    }
+
+    const canReplaceCurrentValue =
+      force ||
+      currentValue === '' ||
+      (previousStoredId !== null && currentValue === previousStoredId);
+
+    if (canReplaceCurrentValue) {
+      setFieldValue('uid', primaryPubgId);
+    }
+  } catch (error) {
+    console.warn('UC SHOP primary PUBG sync failed', error);
+  }
+};
+
+const handleWindowFocus = () => {
+  syncPrimaryPubgId(false);
+};
 
 export interface Product {
   id: number
@@ -272,11 +302,15 @@ const submit = function (selectedProduct) {
 }
 
 // lifecycle hooks
-onMounted(() => {
-  console.log(`The initial count is ${productsList.value[0].price}.`)
+onMounted(async () => {
+  console.log(`The initial count is ${productsList.value[0].price}.`);
+  await syncPrimaryPubgId(true);
+  window.addEventListener('focus', handleWindowFocus);
+});
 
-
-})
+onUnmounted(() => {
+  window.removeEventListener('focus', handleWindowFocus);
+});
 
 // helpers
 const numeric = (event) => {
