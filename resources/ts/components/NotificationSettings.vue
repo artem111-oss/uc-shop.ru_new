@@ -35,75 +35,87 @@
       </label>
     </div>
 
-    <div v-if="!emailIsLinked" class="uc-notify__link-block">
-      <p class="uc-account__hint">
-        Привяжите email, чтобы получать чеки и уведомления о заказах.
-      </p>
-
-      <form
-       v-if="emailStep === 'email'"
-        class="uc-notify__email-form"
-        @submit.prevent="handleRequestEmailCode"
-      >
-        <label class="uc-account__label" for="notification-email">
-          Ваш email
-        </label>
-        <input
-          id="notification-email"
-          v-model="email"
-          type="email"
-          required
-          autocomplete="email"
-          class="uc-account__input"
-          placeholder="you@example.com"
-        >
-        <button
-          type="submit"
-          class="uc-account__button"
-          :disabled="emailSubmitting"
-        >
-          {{ emailSubmitting ? 'Отправляем…' : 'Получить код' }}
-        </button>
-      </form>
-    
-      <form
-        v-else
-        class="uc-notify__email-form"
-        @submit.prevent="handleVerifyEmailCode"
-      >
-        <p class="uc-account__hint">
-          Код отправлен на {{ email }}
-        </p>
-        <label class="uc-account__label" for="notification-email-code">
-          Код из письма
-        </label>
-        <input
-          id="notification-email-code"
-          v-model="emailCode"
-          inputmode="numeric"
-          pattern="\d{6}"
-          maxlength="6"
-          required
-          class="uc-account__input"
-          placeholder="123456"
-        >
-        <button
-          type="submit"
-          class="uc-account__button"
-          :disabled="emailSubmitting"
-        >
-          {{ emailSubmitting ? 'Проверяем…' : 'Подтвердить email' }}
-        </button>
-        <button
-          type="button"
-          class="uc-account__link"
-          :disabled="emailSubmitting"
-          @click="resetEmailStep"
-        >
-          Изменить email
-        </button>
-      </form>
+    <div v-if="!emailIsLinked" class="uc-notify__link-block uc-notify__email-link">
+  <div class="uc-notify__email-heading">
+    <span class="uc-notify__email-icon">✉</span>
+    <div>
+      <h3>Привязать email</h3>
+      <p>Получайте чеки и уведомления о заказах.</p>
     </div>
+  </div>
+
+  <form
+    v-if="emailStep === 'email'"
+    class="uc-notify__email-form"
+    @submit.prevent="handleRequestEmailCode"
+  >
+    <label class="uc-notify__email-label" for="notification-email">
+      Ваш email
+    </label>
+
+    <input
+      id="notification-email"
+      v-model="email"
+      type="email"
+      required
+      autocomplete="email"
+      class="uc-notify__email-input"
+      placeholder="name@example.com"
+    >
+
+    <button
+      type="submit"
+      class="uc-notify__email-button"
+      :disabled="emailSubmitting"
+    >
+      {{ emailSubmitting ? 'Отправляем код…' : 'Получить код' }}
+    </button>
+  </form>
+
+  <form
+    v-else
+    class="uc-notify__email-form"
+    @submit.prevent="handleVerifyEmailCode"
+  >
+    <p class="uc-notify__email-sent">
+      Код отправлен на <strong>{{ email }}</strong>
+    </p>
+
+    <label class="uc-notify__email-label" for="notification-email-code">
+      Код из письма
+    </label>
+
+    <input
+      id="notification-email-code"
+      v-model="emailCode"
+      type="text"
+      inputmode="numeric"
+      autocomplete="one-time-code"
+      pattern="\d{6}"
+      maxlength="6"
+      required
+      class="uc-notify__email-input uc-notify__email-input--code"
+      placeholder="123456"
+    >
+
+    <button
+      type="submit"
+      class="uc-notify__email-button"
+      :disabled="emailSubmitting"
+    >
+      {{ emailSubmitting ? 'Проверяем…' : 'Подтвердить email' }}
+    </button>
+
+    <button
+      type="button"
+      class="uc-notify__email-change"
+      :disabled="emailSubmitting"
+      @click="resetEmailStep"
+    >
+      Изменить email
+    </button>
+  </form>
+</div>
 
     <div v-else class="uc-notify__email-linked">
       <span>Email для уведомлений:</span>
@@ -449,5 +461,123 @@ onMounted(async () => {
 
 .uc-notify__email-linked strong {
   color: #e6e9ee;
+}
+
+.uc-notify__email-link {
+  padding: 18px;
+}
+
+.uc-notify__email-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.uc-notify__email-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 10px;
+  background: rgba(255, 193, 7, 0.14);
+  color: #ffc107;
+  font-size: 1.05rem;
+}
+
+.uc-notify__email-heading h3 {
+  margin: 0 0 4px;
+  color: #e6e9ee;
+  font-size: 1rem;
+}
+
+.uc-notify__email-heading p,
+.uc-notify__email-sent {
+  margin: 0;
+  color: #9aa5b1;
+  font-size: 0.87rem;
+  line-height: 1.45;
+}
+
+.uc-notify__email-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.uc-notify__email-label {
+  color: #e6e9ee;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.uc-notify__email-input {
+  width: 100%;
+  min-height: 46px;
+  box-sizing: border-box;
+  border: 1px solid #46536a;
+  border-radius: 8px;
+  outline: none;
+  background: #171b22;
+  color: #f1f3f5;
+  padding: 11px 13px;
+  font: inherit;
+}
+
+.uc-notify__email-input::placeholder {
+  color: #718096;
+}
+
+.uc-notify__email-input:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.12);
+}
+
+.uc-notify__email-input--code {
+  letter-spacing: 0.18em;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.uc-notify__email-button {
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  border-radius: 8px;
+  background: #ffc107;
+  color: #20242c;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.uc-notify__email-button:hover:not(:disabled) {
+  background: #ffcf32;
+  transform: translateY(-1px);
+}
+
+.uc-notify__email-button:disabled,
+.uc-notify__email-change:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.uc-notify__email-change {
+  align-self: center;
+  border: 0;
+  background: transparent;
+  color: #ffc107;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 4px 8px;
+}
+
+.uc-notify__email-change:hover:not(:disabled) {
+  text-decoration: underline;
 }
 </style>

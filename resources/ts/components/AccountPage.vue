@@ -59,7 +59,13 @@
       <div class="uc-account__header">
         <div>
           <h1 class="uc-account__title">Личный кабинет</h1>
-          <p class="uc-account__email">{{ user.email }}</p>
+          <p v-if="user.email_is_linked" class="uc-account__email">
+            {{ user.email }}
+          </p>
+
+          <p v-else class="uc-account__email">
+            Вход через Telegram
+          </p>
         </div>
         <button type="button" class="uc-account__logout" @click="handleLogout">
           Выйти

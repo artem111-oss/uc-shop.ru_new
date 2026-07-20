@@ -82,6 +82,10 @@ class TelegramAuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'email_is_linked' => !preg_match(
+                        '/^telegram-\d+@users\.uc-shop\.ru$/',
+                        $user->email
+                    ),
             ],
             'token' => $token,
         ]);
