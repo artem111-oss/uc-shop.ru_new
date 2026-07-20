@@ -8,6 +8,7 @@ class LoginCode extends Model
 {
     protected $fillable = [
         'email',
+        'purpose',
         'code_hash',
         'attempts',
         'expires_at',
