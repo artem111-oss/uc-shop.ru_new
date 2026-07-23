@@ -1,32 +1,32 @@
-/.phpunit.cache
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/vendor
-.env
-.env.backup
-.env.production
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-auth.json
-npm-debug.log
-yarn-error.log
-/.fleet
-/.idea
-/.vscode
-# Database files
-docker/db/avasiliev8/
-docker/db/*.log
-docker/db/ibtmp1
-docker/db/ib_logfile*
-docker/db/ibdata*
-*.sql
-docker/db/ddl_recovery-backup.log
-docker/db/ib_logfile0
-docker/log/nginx/access.log
-docker/log/nginx/error.log
-/docker/db/
-/docker/log/
+- /.phpunit.cache
+- /node_modules
+- /public/build
+- /public/hot
+- /public/storage
+- /storage/*.key
+- /vendor
+- .env
+- .env.backup
+- .env.production
+- .phpunit.result.cache
+- Homestead.json
+- Homestead.yaml
+- auth.json
+- npm-debug.log
+- yarn-error.log
+- /.fleet
+- /.idea
+- /.vscode
+
+- docker/db/avasiliev8/
+- docker/db/*.log
+- docker/db/ibtmp1
+- docker/db/ib_logfile*
+- docker/db/ibdata*
+- *.sql
+- docker/db/ddl_recovery-backup.log
+- docker/db/ib_logfile0
+- docker/log/nginx/access.log
+- docker/log/nginx/error.log
+- /docker/db/
+- /docker/log/
