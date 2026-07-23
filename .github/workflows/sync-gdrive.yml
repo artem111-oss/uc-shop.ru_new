@@ -1,0 +1,29 @@
+name: Sync GitHub and Google Drive
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  rclone-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install rclone
+        run: |
+          curl https://rclone.org/install.sh | sudo bash
+
+      - name: Write rclone config
+        run: |
+          mkdir -p ~/.config/rclone
+          echo "${{ secrets.RCLONE_CONF }}" > ~/.config/rclone/rclone.conf
+
+      - name: Sync repository to Google Drive
+        run: |
+          rclone sync . google_drive:uc-shop-ru_new \
+            --filter-from .rclone-filter.txt \
+            --exclude ".git/**" \
+            --fast-list \
+            --transfers 8
