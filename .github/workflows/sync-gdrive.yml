@@ -22,15 +22,37 @@ jobs:
           mkdir -p ~/.config/rclone
           printf '%s' "$RCLONE_CONF" > ~/.config/rclone/rclone.conf
 
-      - name: Sync repository to Google Drive
+      - name: Sync raw repository to Google Drive
         run: |
           rclone sync . google_drive:uc-shop-ru_new \
             --filter-from .rclone-filter.txt \
             --exclude ".git/**" \
-            --transfers 2 \
-            --checkers 4 \
-            --tpslimit 4 \
-            --drive-pacer-min-sleep 100ms \
-            --retries 5 \
-            --low-level-retries 10 \
-            -v
+            --fast-list \
+            --transfers 4 \
+            --retries 3 \
+            --low-level-retries 10
+
+      - name: Convert code files to markdown for Drive
+        run: |
+          mkdir -p drive_export
+          find . -type f \( -name "*.php" -o -name "*.vue" -o -name "*.ts" -o -name "*.scss" -o -name "*.blade.php" \) \
+            ! -path "*/vendor/*" ! -path "*/node_modules/*" ! -path "*/.git/*" ! -path "*/drive_export/*" | while read -r f; do
+            safe_name=$(echo "$f" | sed 's/^\.\///' | tr '/' '__')
+            {
+              echo "FILE PATH: $f"
+              echo ""
+              echo '```'
+              cat "$f"
+              echo '```'
+            } > "drive_export/${safe_name}.md"
+          done
+          echo "Total converted files:"
+          find drive_export -type f | wc -l
+
+      - name: Sync exported code to Google Drive
+        run: |
+          rclone sync drive_export google_drive:uc-shop-ru_new/code_export \
+            --fast-list \
+            --transfers 4 \
+            --retries 3 \
+            --low-level-retries 10
