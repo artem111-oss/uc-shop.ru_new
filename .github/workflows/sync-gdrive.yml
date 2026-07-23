@@ -32,22 +32,25 @@ jobs:
             --retries 3 \
             --low-level-retries 10
 
-      - name: Convert code files to markdown for Drive
+      - name: Convert code files to grouped markdown
         run: |
           mkdir -p drive_export
-          find . -type f \( -name "*.php" -o -name "*.vue" -o -name "*.ts" -o -name "*.scss" -o -name "*.blade.php" \) \
-            ! -path "*/vendor/*" ! -path "*/node_modules/*" ! -path "*/.git/*" ! -path "*/drive_export/*" -size -30M | while read -r f; do
-            safe_name=$(echo "$f" | sed 's/^\.\///' | tr '/' '_' | sed 's/\.php/_php/g; s/\.vue/_vue/g; s/\.ts/_ts/g; s/\.scss/_scss/g')
-            {
-              echo "FILE PATH: $f"
-              echo ""
-              echo '```'
-              cat "$f"
-              echo '```'
-            } > "drive_export/${safe_name}.md"
+          for dir in app/Http/Controllers app/Http/Controllers/Api app/Services app/Models app/Http/Middleware app/Http/Requests routes resources/views resources/js; do
+            safe_name=$(echo "$dir" | tr '/' '_')
+            out="drive_export/${safe_name}_bundle.md"
+            > "$out"
+            find "$dir" -maxdepth 1 -type f \( -name "*.php" -o -name "*.vue" -o -name "*.blade.php" \) 2>/dev/null | while read -r f; do
+              echo "## FILE: $f" >> "$out"
+              echo '```' >> "$out"
+              cat "$f" >> "$out"
+              echo '```' >> "$out"
+              echo "" >> "$out"
+            done
           done
-          echo "Total converted files:"
-          find drive_export -type f | wc -l
+      - name: Sync bundled code to Google Drive
+        run: |
+          rclone sync drive_export google_drive:uc-shop-ru_new/code_bundles \
+            --fast-list --transfers 4 --retries 3 --low-level-retries 10
 
       - name: Sync exported code to Google Drive
         run: |
