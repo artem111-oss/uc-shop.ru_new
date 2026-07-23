@@ -18,7 +18,7 @@ jobs:
       - name: Write rclone config
         run: |
           mkdir -p ~/.config/rclone
-          echo "${{ secrets.RCLONE_CONF }}" > ~/.config/rclone/rclone.conf
+          echo "${{ secrets.RCLONE_CONF }}" | base64 -d > ~/.config/rclone/rclone.conf
 
       - name: Sync repository to Google Drive
         run: |
