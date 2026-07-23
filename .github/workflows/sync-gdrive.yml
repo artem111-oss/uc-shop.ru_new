@@ -16,9 +16,11 @@ jobs:
           curl https://rclone.org/install.sh | sudo bash
 
       - name: Write rclone config
+        env:
+          RCLONE_CONF_B64: ${{ secrets.RCLONE_CONF }}
         run: |
           mkdir -p ~/.config/rclone
-          echo "${{ secrets.RCLONE_CONF }}" | base64 -d > ~/.config/rclone/rclone.conf
+          printf '%s' "$RCLONE_CONF_B64" | tr -d '\n' | base64 -d > ~/.config/rclone/rclone.conf
 
       - name: Sync repository to Google Drive
         run: |
