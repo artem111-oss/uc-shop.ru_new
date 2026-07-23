@@ -27,5 +27,10 @@ jobs:
           rclone sync . google_drive:uc-shop-ru_new \
             --filter-from .rclone-filter.txt \
             --exclude ".git/**" \
-            --fast-list \
-            --transfers 8
+            --transfers 2 \
+            --checkers 4 \
+            --tpslimit 4 \
+            --drive-pacer-min-sleep 100ms \
+            --retries 5 \
+            --low-level-retries 10 \
+            -v
