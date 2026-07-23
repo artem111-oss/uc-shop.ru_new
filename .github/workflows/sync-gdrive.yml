@@ -36,8 +36,8 @@ jobs:
         run: |
           mkdir -p drive_export
           find . -type f \( -name "*.php" -o -name "*.vue" -o -name "*.ts" -o -name "*.scss" -o -name "*.blade.php" \) \
-            ! -path "*/vendor/*" ! -path "*/node_modules/*" ! -path "*/.git/*" ! -path "*/drive_export/*" | while read -r f; do
-            safe_name=$(echo "$f" | sed 's/^\.\///' | tr '/' '__')
+            ! -path "*/vendor/*" ! -path "*/node_modules/*" ! -path "*/.git/*" ! -path "*/drive_export/*" -size -30M | while read -r f; do
+            safe_name=$(echo "$f" | sed 's/^\.\///' | tr '/' '_' | sed 's/\.php/_php/g; s/\.vue/_vue/g; s/\.ts/_ts/g; s/\.scss/_scss/g')
             {
               echo "FILE PATH: $f"
               echo ""
